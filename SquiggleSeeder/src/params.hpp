@@ -10,16 +10,17 @@ constexpr int KMER_LEN = 6;
 constexpr int Q = 9;
 constexpr int p = 3;
 constexpr int LOW_BITS = Q - p - 2;
-constexpr int BITS_PER_EVENT = 8; // 2 ^ ceil(log2(Q-p))
+constexpr int BITS_PER_EVENT = Q - p;
 
-/* Amount of events to group into a seed 
+/* Amount of events to group into a seed (computed at runtime) 
     VIRAL:                  N = 5
     SMALL (< 50M bases):    N = 6
     LARGE (> 50M bases):    N = 7
 */
-constexpr int N = 5;
+constexpr int VIRAL_BASE_THRESHOLD = 1'000'000; // TODO: Confirm this
+constexpr int SMALL_BASE_THRESHOLD = 50'000'000;
 
-// # bits in hash value (CHANGEABLE)
+// # bits in hash value (CHANGEABLE: 32 or 16)
 constexpr int HASH_BITS = 32;
 
 /*
@@ -27,8 +28,8 @@ constexpr int HASH_BITS = 32;
     TODO: implement tiling logic in HashTable.cpp
 */
 constexpr bool IS_TILED = false;
-constexpr int TILE_SIZE = 100000; // # bases in reference genome to compute 1 hashtable
-constexpr int TILE_OVERLAP = 10000; // # bases to overlap with previous reference genome segment
+constexpr int TILE_SIZE = 100'000; // # bases in reference genome to compute 1 hashtable
+constexpr int TILE_OVERLAP = 10'000; // # bases to overlap with previous reference genome segment
 
 // TODO: use a better hash function
 uint32_t hash64to32(uint64_t x) {

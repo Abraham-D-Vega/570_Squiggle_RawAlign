@@ -27,6 +27,7 @@ static uint8_t quantize_event(float x) {
     uint32_t low = topQ & low_mask;
 
     uint8_t code = static_cast<uint8_t>((top2 << LOW_BITS) | low);
+    assert(code >> 6 == 0);
     return code;
 }
 
@@ -131,7 +132,11 @@ int main(int argc, char** argv) {
             event_codes[i] = quantize_event(norm_events[i]);
         }
 
-        // 5. Build hash table: hash -> list of locations
+        // 5. Decide N: # of events grouped together into a seed
+        const int N = (ref_seq.size() < VIRAL_BASE_THRESHOLD) ? 5 : (ref_seq.size() < SMALL_BASE_THRESHOLD) ? 6 : 7;
+        std::cout << "This genome has " << ref_seq.size() << " bases => N = " << N << "\n";
+
+        // 6. Build hash table: hash -> list of locations
         std::unordered_map<uint32_t, std::vector<uint32_t>> hash_table;
 
         const size_t num_seeds = num_events - N + 1;
@@ -154,12 +159,12 @@ int main(int argc, char** argv) {
             }
         }
 
-        // 6. Write out: "<hash>,loc1,loc2,...\n"
+        // 7. Write out: "<hash>,loc1,loc2,...\n"
         std::ofstream out(out_path);
         if (!out) {
             throw std::runtime_error("Failed to open output file: " + out_path);
         }
-
+        out << "<hash>,loc1,loc2,loc3...\n";
         for (const auto &[h, locs]: hash_table) {
             out << h;
             for (uint32_t loc : locs) {

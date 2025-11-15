@@ -10,8 +10,8 @@ fi
 
 GENOME="$1"
 
-REF="SquiggleFilter/data/${GENOME}/reference.fasta"
-KMER="SquiggleFilter/data/dna_kmer_model.txt"
+REF="data/${GENOME}/reference.fasta"
+KMER="data/dna_kmer_model.txt"
 OUT_DIR="SquiggleSeeder/hashtables/${GENOME}"
 OUT="${OUT_DIR}/hashtable.txt"
 
@@ -27,6 +27,7 @@ if [ ! -f "$KMER" ]; then
 fi
 
 # Ensure output directory exists
+rm -rf "$OUT_DIR"
 mkdir -p "$OUT_DIR"
 
 # Compile HashTable.cpp
