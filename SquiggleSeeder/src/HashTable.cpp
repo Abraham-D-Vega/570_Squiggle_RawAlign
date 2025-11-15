@@ -78,6 +78,26 @@ read_kmer_lookup(const std::string& table_path) {
     return table;
 }
 
+void dump_hashtable(const std::string& out_path, const std::unordered_map<uint32_t, std::vector<uint32_t>>& hash_table, int start_idx, int end_idx){
+    std::ofstream out(out_path);
+    if (!out) {
+        throw std::runtime_error("Failed to open output file: " + out_path);
+    }
+    out << "Hashtable for reference seeds[" << start_idx << ", " << end_idx << ")\n" << "<hash>,loc1,loc2,loc3...\n";
+    for (const auto &[h, locs]: hash_table) {
+        out << h;
+        for (uint32_t loc : locs) {
+            out << "," << loc;
+        }
+        out << "\n";
+    }
+
+    out.flush();
+    if (!out) {
+        throw std::runtime_error("Error while writing output file: " + out_path);
+    }
+}
+
 int main(int argc, char** argv) {
     if (argc != 4) {
         usage(argv[0]);
@@ -102,7 +122,7 @@ int main(int argc, char** argv) {
 
         // 2. Generate event values from reference using the k-mer lookup table
         std::vector<double> events;
-        const size_t num_events = ref_seq.size() - KMER_LEN + 1;
+        const uint32_t num_events = ref_seq.size() - KMER_LEN + 1;
         events.reserve(num_events);
 
         for (size_t i = 0; i < num_events; ++i) {
@@ -137,45 +157,50 @@ int main(int argc, char** argv) {
         std::cout << "This genome has " << ref_seq.size() << " bases => N = " << N << "\n";
 
         // 6. Build hash table: hash -> list of locations
-        std::unordered_map<uint32_t, std::vector<uint32_t>> hash_table;
+        const uint32_t num_seeds = num_events - N + 1;
+        uint32_t tile = 0;
+        uint32_t start_idx = 0;
+        uint32_t end_idx = num_seeds;
+        if (IS_TILED) {
+            end_idx = std::min(num_seeds, TILE_SIZE + TILE_OVERLAP);
+        }
+        while (true) {
+            std::unordered_map<uint32_t, std::vector<uint32_t>> hash_table;
+            for (uint32_t e = start_idx; e < end_idx; ++e) {
+                // Build seed from N consecutive event codes
+                uint64_t seed_code = 0;
+                for (int j = 0; j < N; ++j) {
+                    seed_code <<= BITS_PER_EVENT;
+                    seed_code |= static_cast<uint64_t>(event_codes[e + j]);
+                }
+                uint32_t hash32_val = hash64to32(seed_code);
+                uint16_t hash16_val = fold32to16(hash32_val);
 
-        const size_t num_seeds = num_events - N + 1;
-        for (size_t e = 0; e < num_seeds; ++e) {
-            // Build seed from N consecutive event codes
-            uint64_t seed_code = 0;
-            for (int j = 0; j < N; ++j) {
-                seed_code <<= BITS_PER_EVENT;
-                seed_code |= static_cast<uint64_t>(event_codes[e + j]);
+                // Location: use event start index as reference position
+                uint32_t loc = static_cast<uint32_t>(e);
+                if (HASH_BITS == 32) {
+                    hash_table[hash32_val].push_back(loc);
+                } else if (HASH_BITS == 16) {
+                    hash_table[hash16_val].push_back(loc);
+                }
             }
-            uint32_t hash32_val = hash64to32(seed_code);
-            uint16_t hash16_val = fold32to16(hash32_val);
 
-            // Location: use event start index as reference position
-            uint32_t loc = static_cast<uint32_t>(e);
-            if (HASH_BITS == 32) {
-                hash_table[hash32_val].push_back(loc);
-            } else if (HASH_BITS == 16) {
-                hash_table[hash16_val].push_back(loc);
+            // 7. Write out hashtable
+            std::string hashtable_path = out_path + std::to_string(tile) + ".txt";
+            dump_hashtable(hashtable_path, hash_table, start_idx, end_idx);
+
+            // Finished all hashtables
+            if (end_idx == num_seeds) {
+                break;
             }
+
+            tile += 1;
+            end_idx = std::min(num_seeds, end_idx + TILE_SIZE);
+            start_idx += TILE_SIZE;
         }
 
-        // 7. Write out: "<hash>,loc1,loc2,...\n"
-        std::ofstream out(out_path);
-        if (!out) {
-            throw std::runtime_error("Failed to open output file: " + out_path);
-        }
-        out << "<hash>,loc1,loc2,loc3...\n";
-        for (const auto &[h, locs]: hash_table) {
-            out << h;
-            for (uint32_t loc : locs) {
-                out << "," << loc;
-            }
-            out << "\n";
-        }
-
-        out.flush();
-        if (!out) {
-            throw std::runtime_error("Error while writing output file: " + out_path);
+        if (tile > 0) {
+            std::cout << "Hash tables are tiled... look for several files\n";
         }
 
     } catch (const std::exception& ex) {

@@ -13,7 +13,7 @@ GENOME="$1"
 REF="data/${GENOME}/reference.fasta"
 KMER="data/dna_kmer_model.txt"
 OUT_DIR="SquiggleSeeder/hashtables/${GENOME}"
-OUT="${OUT_DIR}/hashtable.txt"
+OUT="${OUT_DIR}/hashtable"
 
 # Check input files
 if [ ! -f "$REF" ]; then
@@ -42,7 +42,7 @@ echo "Running hash table builder..."
 ./hashtable_builder "$REF" "$KMER" "$OUT"
 
 if [ $? -eq 0 ]; then
-    echo "Hash table successfully generated at: $OUT"
+    echo "Hash table(s) successfully generated at: $OUT_DIR/"
 else
     echo "Error: Hash table generation failed."
     exit 1
