@@ -27,7 +27,7 @@ static uint8_t quantize_event(float x) {
     uint32_t low = topQ & low_mask;
 
     uint8_t code = static_cast<uint8_t>((top2 << LOW_BITS) | low);
-    assert(code >> 6 == 0);
+    assert(code >> (LOW_BITS + 2) == 0);
     return code;
 }
 
