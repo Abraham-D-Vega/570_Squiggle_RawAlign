@@ -1,8 +1,8 @@
 Welcome to SquiggleSeeder!
 
 Prerequisites:
-    
-    Create virtual environment to install dependencies (run following commands):
+
+Create virtual environment to install dependencies (run following commands):
 
     Navigate to root directory
 
@@ -20,7 +20,6 @@ To run preprocessing steps (compute hash tables and normalized 8-bit reference e
     
     <genome> can be any of the ones available in "data/" (i.e. covid)
     
-    Output hash tables will appear in "SquiggleSeeder/hash_tables/"
-
-    Note: You may change parameters in "SquiggleSeeder/params.hpp" (default ones are chosen due to compatibility or from RawHash).
-    Tiling is used to generate hash tables over sections of the reference genome (set IS_TILED to true)
+Output hash tables will appear in "SquiggleSeeder/hash_tables/".
+Note: You may change parameters in "SquiggleSeeder/params.hpp" (default ones are chosen due to compatibility or from RawHash).
+Tiling is used to generate hash tables over sections of the reference genome (set IS_TILED to true)
