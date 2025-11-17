@@ -1,4 +1,4 @@
 hash_table_builder
-./SquiggleFilter/design/verilog_v2/*
+SquiggleFilter/*
 RawAlign/*
 .vscode

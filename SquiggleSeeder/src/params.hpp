@@ -23,13 +23,13 @@ constexpr int VIRAL_BASE_THRESHOLD = 1'000'000; // TODO: Confirm this
 constexpr int SMALL_BASE_THRESHOLD = 50'000'000;
 
 // # bits in hash value (CHANGEABLE: 32 or 16)
-constexpr int HASH_BITS = 32;
+constexpr int HASH_BITS = 16;
 static_assert(HASH_BITS == 32 || HASH_BITS == 16);
 
 /*
     Hash table configuration (CHANGEABLE)
 */
-constexpr bool IS_TILED = true;
+constexpr bool IS_TILED = false;
 constexpr uint32_t TILE_SIZE = 100'000; // # seeds in reference genome to compute 1 hash table
 constexpr uint32_t TILE_OVERLAP = 10'000; // # seeds to overlap with previous tile
 static_assert(TILE_OVERLAP < TILE_SIZE);
