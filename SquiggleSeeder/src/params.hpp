@@ -27,10 +27,10 @@ constexpr int HASH_BITS = 32;
 static_assert(HASH_BITS == 32 || HASH_BITS == 16);
 
 /*
-    Hashtable configuration (CHANGEABLE)
+    Hash table configuration (CHANGEABLE)
 */
 constexpr bool IS_TILED = true;
-constexpr uint32_t TILE_SIZE = 100'000; // # seeds in reference genome to compute 1 hashtable
+constexpr uint32_t TILE_SIZE = 100'000; // # seeds in reference genome to compute 1 hash table
 constexpr uint32_t TILE_OVERLAP = 10'000; // # seeds to overlap with previous tile
 static_assert(TILE_OVERLAP < TILE_SIZE);
 
