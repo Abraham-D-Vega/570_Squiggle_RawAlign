@@ -56,14 +56,25 @@ ${CXX} ${CXXFLAGS} "${SRC}" -o "${BIN}"
 
 # Default parameters for simple segmenter
 WINDOW=${WINDOW:-3}
-THRESHOLD=${THRESHOLD:-10.0}
+THRESHOLD_FACTOR=${THRESHOLD_FACTOR:-2.0}
+USE_ADAPTIVE=${USE_ADAPTIVE:-yes}
+
+# Build command line args
+CMD_ARGS="-i ${IN_PATH} -o ${OUT_PATH} -n ${WINDOW}"
+if [[ "${USE_ADAPTIVE}" == "yes" ]]; then
+  CMD_ARGS="${CMD_ARGS} --adaptive -k ${THRESHOLD_FACTOR}"
+  echo "[RUN ] ${BIN} ${CMD_ARGS} (adaptive mode, factor=${THRESHOLD_FACTOR})"
+else
+  THRESHOLD=${THRESHOLD:-10.0}
+  CMD_ARGS="${CMD_ARGS} -t ${THRESHOLD}"
+  echo "[RUN ] ${BIN} ${CMD_ARGS} (fixed threshold)"
+fi
 
 # Run
-echo "[RUN ] ${BIN} -i ${IN_PATH} -o ${OUT_PATH} -n ${WINDOW} -t ${THRESHOLD}"
 if [[ "${OUT_PATH}" != "-" ]]; then
   mkdir -p "$(dirname "${OUT_PATH}")"
 fi
-"./${BIN}" -i "${IN_PATH}" -o "${OUT_PATH}" -n "${WINDOW}" -t "${THRESHOLD}"
+"./${BIN}" ${CMD_ARGS}
 
 # If writing to a file, summarize
 if [[ "${OUT_PATH}" != "-" ]]; then

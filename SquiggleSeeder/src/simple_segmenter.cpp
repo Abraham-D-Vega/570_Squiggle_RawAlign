@@ -9,18 +9,22 @@
 using namespace std;
 
 static void print_usage(const char *prog) {
-    cerr << "Usage: " << prog << " -i input.txt -o output.txt [-n window_size] [-t threshold]\n";
-    cerr << "  -i, --input     Input file (one integer per line)\n";
-    cerr << "  -o, --output    Output events file\n";
-    cerr << "  -n, --window    Window size (default 3)\n";
-    cerr << "  -t, --threshold Absolute difference threshold (default 1.0)\n";
+    cerr << "Usage: " << prog << " -i input.txt -o output.txt [-n window_size] [-k threshold_factor] [--adaptive]\n";
+    cerr << "  -i, --input      Input file (one integer per line)\n";
+    cerr << "  -o, --output     Output events file\n";
+    cerr << "  -n, --window     Window size (default 3)\n";
+    cerr << "  -k, --factor     Threshold factor multiplier for adaptive mode (default 1.0)\n";
+    cerr << "  --adaptive       Enable adaptive threshold based on signal variance (recommended)\n";
+    cerr << "  -t, --threshold  Fixed absolute difference threshold (overrides adaptive if set)\n";
 }
 
 int main(int argc, char **argv) {
     string input_path;
     string output_path;
     int window = 3;
-    double threshold = 1.0;
+    double threshold = -1.0;  // -1 means use adaptive
+    double threshold_factor = 1.0;  // multiplier for adaptive threshold
+    bool use_adaptive = true;  // default to adaptive
 
     for (int i = 1; i < argc; ++i) {
         string a = argv[i];
@@ -30,8 +34,16 @@ int main(int argc, char **argv) {
             if (i + 1 < argc) output_path = argv[++i];
         } else if (a == "-n" || a == "--window") {
             if (i + 1 < argc) window = stoi(argv[++i]);
+        } else if (a == "-k" || a == "--factor") {
+            if (i + 1 < argc) threshold_factor = stod(argv[++i]);
+        } else if (a == "--adaptive") {
+            use_adaptive = true;
+            threshold = -1.0;
         } else if (a == "-t" || a == "--threshold") {
-            if (i + 1 < argc) threshold = stod(argv[++i]);
+            if (i + 1 < argc) {
+                threshold = stod(argv[++i]);
+                use_adaptive = false;
+            }
         } else if (a == "-h" || a == "--help") {
             print_usage(argv[0]);
             return 0;
@@ -95,6 +107,47 @@ int main(int argc, char **argv) {
         return double(s) / double(window);
     };
 
+    // Compute adaptive threshold if needed
+    if (use_adaptive && threshold < 0) {
+        // Compute all window-to-window differences
+        vector<double> diffs;
+        if (N >= 2 * window) {
+            for (size_t i = 0; i + 2 * window <= N; ++i) {
+                double avg1 = window_avg(i);
+                double avg2 = window_avg(i + 1);
+                diffs.push_back(fabs(avg2 - avg1));
+            }
+        }
+        
+        if (!diffs.empty()) {
+            // Compute standard deviation of differences
+            double sum = 0.0;
+            for (double d : diffs) sum += d;
+            double mean = sum / diffs.size();
+            
+            double var_sum = 0.0;
+            for (double d : diffs) {
+                double delta = d - mean;
+                var_sum += delta * delta;
+            }
+            double stddev = sqrt(var_sum / diffs.size());
+            
+            // Set threshold as factor * stddev
+            // Higher factor = fewer, longer events
+            // Lower factor = more, shorter events
+            threshold = threshold_factor * stddev;
+            
+            // Ensure minimum threshold to avoid over-segmentation
+            if (threshold < 0.5) threshold = 0.5;
+            
+            cerr << "[ADAPTIVE] mean_diff=" << mean << " stddev=" << stddev 
+                 << " threshold=" << threshold << " (factor=" << threshold_factor << ")\n";
+        } else {
+            threshold = 1.0; // fallback
+            cerr << "[ADAPTIVE] Insufficient data, using threshold=" << threshold << "\n";
+        }
+    }
+
     struct Event { size_t start; size_t end; size_t count; double avg; };
     vector<Event> events;
 
@@ -149,18 +202,17 @@ int main(int argc, char **argv) {
         cerr << "Failed to open output: " << output_path << '\n';
         return 1;
     }
-    out << "# start_index(1-based) end_index(1-based) count average\n";
-    out << fixed << setprecision(6);
+    out << "# start_index(1-based) end_index(1-based) count average(10-bit)\n";
     for (auto &e : events) {
-        out << (e.start + 1) << ' ' << (e.end + 1) << ' ' << e.count << ' ' << e.avg << '\n';
+        int avg_10bit = static_cast<int>(round(e.avg));
+        if (avg_10bit < 0) avg_10bit = 0;
+        if (avg_10bit > 1023) avg_10bit = 1023;
+        out << (e.start + 1) << ' ' << (e.end + 1) << ' ' << e.count << ' ' << avg_10bit << '\n';
     }
     out.close();
 
     // Also print a short summary to stdout
     cout << "Wrote " << events.size() << " events to " << output_path << "\n";
-    for (auto &e : events) {
-        cout << "Event " << (e.start + 1) << "-" << (e.end + 1) << ": count=" << e.count << " avg=" << fixed << setprecision(6) << e.avg << '\n';
-    }
 
     return 0;
 }

@@ -302,20 +302,24 @@ int main(int argc, char** argv) {
 
     auto events = detect_events_from_u10(sig_u10, opt);
 
-    // Open output (file or stdout) and write in format: start(1-based) end(1-based) count average
+    // Open output (file or stdout) and write in format: start(1-based) end(1-based) count average(10-bit)
     if (out_path == "-" || out_path.empty()) {
-        std::cout << "# start_index(1-based) end_index(1-based) count average\n";
-        std::cout.setf(std::ios::fixed); std::cout.precision(6);
+        std::cout << "# start_index(1-based) end_index(1-based) count average(10-bit)\n";
         for (const auto& e : events) {
-            std::cout << (e.start + 1) << ' ' << (e.end + 1) << ' ' << e.count << ' ' << e.avg << "\n";
+            int avg_10bit = static_cast<int>(std::round(e.avg));
+            if (avg_10bit < 0) avg_10bit = 0;
+            if (avg_10bit > 1023) avg_10bit = 1023;
+            std::cout << (e.start + 1) << ' ' << (e.end + 1) << ' ' << e.count << ' ' << avg_10bit << "\n";
         }
     } else {
         std::ofstream ofs(out_path);
         if (!ofs) { std::cerr << "Failed to open for write: " << out_path << "\n"; return 1; }
-        ofs << "# start_index(1-based) end_index(1-based) count average\n";
-        ofs.setf(std::ios::fixed); ofs.precision(6);
+        ofs << "# start_index(1-based) end_index(1-based) count average(10-bit)\n";
         for (const auto& e : events) {
-            ofs << (e.start + 1) << ' ' << (e.end + 1) << ' ' << e.count << ' ' << e.avg << "\n";
+            int avg_10bit = static_cast<int>(std::round(e.avg));
+            if (avg_10bit < 0) avg_10bit = 0;
+            if (avg_10bit > 1023) avg_10bit = 1023;
+            ofs << (e.start + 1) << ' ' << (e.end + 1) << ' ' << e.count << ' ' << avg_10bit << "\n";
         }
         ofs.close();
         std::cout << "Wrote " << events.size() << " events to " << out_path << "\n";
