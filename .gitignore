@@ -2,3 +2,5 @@ hash_table_builder
 SquiggleFilter/*
 RawAlign/*
 .vscode
+oracle_segmenter
+simple_segmenter
