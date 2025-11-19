@@ -1,0 +1,13 @@
+venv3/
+data/covid/fast5
+data/human/fast5
+.ipynb*
+*.sam
+*.bam
+*.bam.bai
+*.nfs*
+img/*
+*index.db
+__pycache__
+scripts/results/artifact-eval
+aws
