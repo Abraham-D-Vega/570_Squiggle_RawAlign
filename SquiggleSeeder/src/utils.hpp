@@ -33,7 +33,7 @@ constexpr int VIRAL_BASE_THRESHOLD = 1'000'000;
 constexpr int SMALL_BASE_THRESHOLD = 50'000'000;
 
 // # bits in hash value (CHANGEABLE: 32 or 16)
-constexpr int HASH_BITS = 32;
+constexpr int HASH_BITS = 16;
 static_assert(HASH_BITS == 32 || HASH_BITS == 16);
 
 /*
@@ -183,37 +183,3 @@ inline int compute_N_from_genome_size(uint32_t genome_size) {
         return 7;
     }
 }
-
-// ============================================================================
-// ADDITIONAL STRUCTS FOR CHAINING (from chain_seeds.cpp)
-// ============================================================================
-// Self-contained anchor and chain structs
-struct ri_anchor_t {
-    uint32_t target_position;
-    uint32_t query_position;
-};
-
-struct ri_chain_t {
-    float score;
-    uint32_t reference_sequence_index;
-    uint32_t start_position;
-    uint32_t end_position;
-    uint32_t n_anchors;
-    uint8_t mapq;
-    int strand;
-    std::vector<ri_anchor_t> anchors;
-    ri_chain_t() : score(0), reference_sequence_index(0), start_position(0), end_position(0), n_anchors(0), mapq(0), strand(0) {}
-    ri_chain_t(float s, uint32_t ref_idx, uint32_t start, uint32_t end, uint32_t n, uint8_t mq, int str, const std::vector<ri_anchor_t>& anc)
-        : score(s), reference_sequence_index(ref_idx), start_position(start), end_position(end), n_anchors(n), mapq(mq), strand(str), anchors(anc) {}
-};
-
-// Chaining options struct (self-contained)
-struct ri_mapopt_t {
-    int max_gap_length = 1000;
-    int max_target_gap_length = 5000;
-    int chaining_band_length = 10;
-    int max_num_skips = 10000;
-    int min_num_anchors = 2;
-    int num_best_chains = 25;
-    float min_chaining_score = 0.0f;
-};

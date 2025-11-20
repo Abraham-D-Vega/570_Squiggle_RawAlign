@@ -1,0 +1,57 @@
+# Seeding + Chaining based sDTW Alignment Results
+# Genome: lambda
+# Reference: datasets/lambda/ref.txt
+#
+# Format: read_type read_id read_size cost ref_start ref_end alignment_length
+#
+    lambda     lambda_raw0       5000      43835      15087      16013        926
+    lambda     lambda_raw1       5000      23892       9751      10281        530
+    lambda     lambda_raw2       5000      44098      21067      21918        851
+    lambda     lambda_raw3       5000      44202      80686      81559        873
+    lambda     lambda_raw4       5000      70086      19946      21102       1156
+    lambda     lambda_raw5       5000      49525      41491      42630       1139
+    lambda     lambda_raw6       5000      42233      86442      87256        814
+    lambda     lambda_raw7       5000      44765      92261      93096        835
+    lambda     lambda_raw8       5000      23616      42215      42804        589
+    lambda     lambda_raw9       5000      37280        664       1197        533
+    lambda    lambda_raw10       5000      30115      46470      47064        594
+    lambda    lambda_raw11       5000      48661      19856      20917       1061
+    lambda    lambda_raw12       5000      26990      35376      35972        596
+    lambda    lambda_raw13       5000      40284      73187      74385       1198
+    lambda    lambda_raw14       5000      37719       8567       9242        675
+    lambda    lambda_raw15       5000      46032      64915      65843        928
+    lambda    lambda_raw16       5000      29073      68552      69033        481
+    lambda    lambda_raw17       5000      54319      86571      87271        700
+    lambda    lambda_raw18       5000      44545      11477      12485       1008
+    lambda    lambda_raw19       5000      31717      81529      82108        579
+     human      human_raw0       5000      39527      17951      18706        755
+     human      human_raw1       5000      38837      47538      48307        769
+     human      human_raw2       5000      40084       2294       3081        787
+     human      human_raw3       5000      43503      34850      35587        737
+     human      human_raw4       5000      46232      39541      40410        869
+     human      human_raw5       5000      43393      23710      24661        951
+     human      human_raw6       5000      45844      24466      25214        748
+     human      human_raw7       5000      43357      56959      57874        915
+     human      human_raw8       5000      39189      52200      52959        759
+     human      human_raw9       5000      41790      56833      57717        884
+     human     human_raw10       5000      45695      13075      13949        874
+     human     human_raw11       5000      44872      58664      59548        884
+     human     human_raw12       5000      42683      55247      56174        927
+     human     human_raw13       5000      41591       2020       2811        791
+     human     human_raw14       5000      44737       3483       4348        865
+     human     human_raw15       5000      42624       1731       2536        805
+     human     human_raw16       5000      41412      58615      59346        731
+     human     human_raw17       5000      40783        470       1150        680
+     human     human_raw18       5000      47257      55696      56290        594
+     human     human_raw19       5000      38402       3862       4638        776
+
+#
+# ================================================
+# Alignment Cost Statistics
+# ================================================
+# lambda reads:   Mean:    40649  StdDev:    10948
+# Human reads:    Mean:    42591  StdDev:     2572
+#
+# Separation: 0.24 standard deviations
+# ✗ Weak separation - poorly discriminative
+# ================================================

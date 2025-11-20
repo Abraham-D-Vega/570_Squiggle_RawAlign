@@ -48,20 +48,32 @@ if [ ! -f "datasets/$GENOME/ref.txt" ]; then
     exit 1
 fi
 
+NUM_FILES=100
+while [[ $# -gt 0 ]]; do
+    case $1 in
+        --num_files)
+            NUM_FILES="$2"
+            shift 2
+            ;;
+        *)
+            shift
+            ;;
+    esac
+done
 # Step 4: Preprocess genome read signals
 echo ""
 echo "Step 4: Preprocessing $GENOME read signals..."
-python3 SquiggleSeeder/scripts/preprocess_reads.py "$GENOME" --num-files 20
+python3 SquiggleSeeder/scripts/preprocess_reads.py "$GENOME" --num-files "$NUM_FILES"
 SAMPLE_GENOME_READ="datasets/$GENOME/${GENOME}_raw0.txt"
 if [ ! -f "$SAMPLE_GENOME_READ" ]; then
-    echo "Error: Genome read preprocessing failed"
-    exit 1
+        echo "Error: Genome read preprocessing failed"
+        exit 1
 fi
 
 # Step 5: Preprocess human read signals
 echo ""
 echo "Step 5: Preprocessing human read signals..."
-python3 SquiggleSeeder/scripts/preprocess_reads.py human --num-files 20
+python3 SquiggleSeeder/scripts/preprocess_reads.py human --num-files "$NUM_FILES"
 SAMPLE_HUMAN_READ="datasets/human/human_raw0.txt"
 if [ ! -f "$SAMPLE_HUMAN_READ" ]; then
     echo "Error: Human read preprocessing failed"
@@ -83,9 +95,9 @@ mkdir -p "results/seeder"
 OUTPUT_FILE="results/seeder/${GENOME}"
 
 if [ -n "$ALIGN_FLAG" ]; then
-    ./SquiggleSeeder/src/simulate_seeder.o "$GENOME" "$OUTPUT_FILE" --align
+    ./SquiggleSeeder/src/simulate_seeder.o "$GENOME" "$OUTPUT_FILE" "$NUM_FILES" --align
 else
-    ./SquiggleSeeder/src/simulate_seeder.o "$GENOME" "$OUTPUT_FILE"
+    ./SquiggleSeeder/src/simulate_seeder.o "$GENOME" "$OUTPUT_FILE" "$NUM_FILES"
 fi
 
 echo ""

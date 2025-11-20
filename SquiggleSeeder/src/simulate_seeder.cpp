@@ -98,7 +98,7 @@ bool load_hash_table(const std::string &path, std::unordered_map<uint32_t, std::
 
 int main(int argc, char **argv) {
     if (argc < 3) {
-        std::cerr << "Usage: " << argv[0] << " <genome> <output_file> [--align]\n";
+        std::cerr << "Usage: " << argv[0] << " <genome> <output_file> <num_reads> [--align]\n";
         std::cerr << "  genome: genome name (e.g., lambda, ecoli, covid)\n";
         std::cerr << "  output_file: path to output results file\n";
         std::cerr << "  --align: (optional) output sDTW alignment results\n";
@@ -107,8 +107,9 @@ int main(int argc, char **argv) {
 
     std::string genome = argv[1];
     std::string output_file = argv[2];
+    int num_reads = std::stoi(argv[3]);
     output_file = output_file + ".txt";
-    bool do_align = (argc > 3 && std::string(argv[3]) == "--align");
+    bool do_align = (argc > 4 && std::string(argv[4]) == "--align");
     std::string align_file = argv[2];
     align_file = align_file + "_align.txt";
 
@@ -153,7 +154,7 @@ int main(int argc, char **argv) {
         out_align << "#\n";
     }
 
-    // Process genome and human reads (20 each)
+    // Process genome and human reads (<num_reads> each)
     for (int pass = 0; pass < 2; ++pass) {
         std::string read_type = (pass == 0) ? genome : "human";
         std::string base_path = (pass == 0) ? ("datasets/" + genome + "/") : "datasets/human/";
@@ -175,7 +176,7 @@ int main(int argc, char **argv) {
                 ref_signal.push_back(static_cast<uint8_t>(val));
             }
         }
-        for (int i = 0; i < 20; i++) {
+        for (int i = 0; i < num_reads; i++) {
             std::string read_id = id_prefix + std::to_string(i);
             std::string query_path = base_path + read_id + ".txt";
 
@@ -210,48 +211,38 @@ int main(int argc, char **argv) {
             out << "# " << read_type << " " << read_id << "\n";
 
             // Output seeds
-            int num_seeds = 0, num_hits = 0;
-            std::vector<std::vector<std::vector<ri_anchor_t>>> anchors_fr(2);
-            anchors_fr[0].resize(ref_size);
-            anchors_fr[1].resize(ref_size);
-            if ((int)codes.size() >= N) {
-                for (size_t j = 0; j <= codes.size() - N; ++j) {
-                    uint32_t hash = generate_seed_hash(codes, j, N);
-                    num_seeds++;
-                    auto it = hash_table.find(hash);
-                    if (it != hash_table.end()) {
-                        num_hits++;
-                        out << std::setw(10) << read_type << " "
-                            << std::setw(15) << read_id << " "
-                            << std::setw(10) << j << " ";
-                        for (size_t k = 0; k < it->second.size(); ++k) {
-                            if (k > 0) out << ",";
-                            out << it->second[k];
-                            // For chaining
-                            anchors_fr[0][0].emplace_back(ri_anchor_t{it->second[k], (uint32_t)j});
-                        }
-                        out << "\n";
+            int num_seeds = codes.size() - N + 1;
+            int num_hits = 0;
+
+            std::vector<std::vector<uint32_t>> anchors(num_seeds);
+            for (size_t j = 0; j < num_seeds; ++j) {
+                uint32_t hash = generate_seed_hash(codes, j, N);
+                auto it = hash_table.find(hash);
+                if (it != hash_table.end()) {
+                    num_hits++;
+                    out << std::setw(10) << read_type << " "
+                        << std::setw(15) << read_id << " "
+                        << std::setw(10) << j << " ";
+                    for (size_t k = 0; k < it->second.size(); ++k) {
+                        if (k > 0) out << ",";
+                        out << it->second[k];
+                        // For chaining
+                        anchors[j].push_back(it->second[k]);
                     }
+                    out << "\n";
                 }
             }
             out << "\n";
 
             // Output chains
-            ri_mapopt_t opt_chain;
-            std::vector<ri_chain_t> chains;
-            chain_seeds(anchors_fr, &opt_chain, chains);
-            if (chains.empty()) {
-                out << "(no chains found)\n";
-            } else {
-                for (const auto &chain : chains) {
-                    out << "CHAIN " << read_type << " " << read_id << " "
-                        << "score=" << chain.score << " ref=" << chain.reference_sequence_index
-                        << " start=" << chain.start_position << " end=" << chain.end_position
-                        << " n_anchors=" << chain.n_anchors << " mapq=" << (int)chain.mapq << " strand=" << chain.strand << "\n";
-                    for (const auto& anchor : chain.anchors) {
-                        out << "  ANCHOR ref_pos=" << anchor.target_position << " query_pos=" << anchor.query_position << "\n";
-                    }
+            std::vector<std::vector<std::pair<uint32_t, uint32_t>>> chains;
+            chain_seeds(anchors, chains);
+            for (const auto& chain : chains) {
+                out << "CHAIN " << read_type << " " << read_id << " ";
+                for (const auto& anchor : chain) {
+                    out << "  ANCHOR ref_pos=" << anchor.second << " query_pos=" << anchor.first << "\n";
                 }
+                out << "\n";
             }
             out << "\n";
 

@@ -3,7 +3,7 @@
 preprocess_reads.py
 
 Extracts raw ADC values from FAST5 files without any normalization.
-Creates 20 files with entire raw signal from each read.
+Creates N files with entire raw signal from each read.
 Output files are stored in datasets/lambda/ directory.
 """
 
@@ -158,8 +158,8 @@ Examples:
     )
     parser.add_argument('genome', type=str,
                         help='Genome name (e.g., lambda, human, covid)')
-    parser.add_argument('--num-files', type=int, default=20,
-                        help='Number of read files to generate (default: 20)')
+    parser.add_argument('--num-files', type=int, default=100,
+                        help='Number of read files to generate (default: 100)')
     
     args = parser.parse_args()
     

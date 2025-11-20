@@ -56,8 +56,8 @@ bool read_16bit_signal(const std::string &filepath, std::vector<uint16_t> &signa
 }
 
 int main(int argc, char **argv) {
-    if (argc < 3) {
-        std::cerr << "Usage: " << argv[0] << " <genome> <output_file>\n";
+    if (argc < 4) {
+        std::cerr << "Usage: " << argv[0] << " <genome> <output_file> <num_reads>\n";
         std::cerr << "  genome: genome name (e.g., lambda, ecoli, covid)\n";
         std::cerr << "  output_file: path to output results file\n";
         return 1;
@@ -65,6 +65,7 @@ int main(int argc, char **argv) {
 
     std::string genome = argv[1];
     std::string output_file = argv[2];
+    int num_reads = std::stoi(argv[3]);
 
     // Read reference 8-bit signal from datasets/<genome>/ref.txt
     std::string ref_path = "datasets/" + genome + "/ref.txt";
@@ -91,9 +92,9 @@ int main(int argc, char **argv) {
     out << "# Format: read_type read_id read_size cost ref_start ref_end alignment_length\n";
     out << "#\n";
 
-    // Process genome reads (20 reads from datasets/<genome>/)
+    // Process genome reads (num_reads reads from datasets/<genome>/)
     std::cout << "\nProcessing " << genome << " reads...\n";
-    for (int i = 0; i < 20; i++) {
+    for (int i = 0; i < num_reads; i++) {
         std::string read_type = genome;
         std::string read_id = genome + "_raw" + std::to_string(i);
         std::string query_path = "datasets/" + genome + "/" + read_id + ".txt";
@@ -123,9 +124,9 @@ int main(int argc, char **argv) {
                   << " (len=" << alignment_length << ")\n";
     }
 
-    // Process human reads (20 reads from datasets/human/)
+    // Process human reads (num_reads reads from datasets/human/)
     std::cout << "\nProcessing human reads...\n";
-    for (int i = 0; i < 20; i++) {
+    for (int i = 0; i < num_reads; i++) {
         std::string read_type = "human";
         std::string read_id = "human_raw" + std::to_string(i);
         std::string query_path = "datasets/human/" + read_id + ".txt";

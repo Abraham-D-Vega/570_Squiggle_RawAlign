@@ -26,28 +26,41 @@ if [ ! -f "datasets/$GENOME/ref.txt" ]; then
     exit 1
 fi
 
+# Parse --num_files argument
+NUM_FILES=100
+while [[ $# -gt 0 ]]; do
+    case $1 in
+        --num_files)
+            NUM_FILES="$2"
+            shift 2
+            ;;
+        *)
+            shift
+            ;;
+    esac
+done
 # Step 2: Preprocess genome read signals
 echo ""
 echo "Step 2: Preprocessing $GENOME read signals..."
-python3 SquiggleSeeder/scripts/preprocess_reads.py "$GENOME" --num-files 20
+python3 SquiggleSeeder/scripts/preprocess_reads.py "$GENOME" --num-files "$NUM_FILES"
 
 # Check if genome read files were created
 SAMPLE_GENOME_READ="datasets/$GENOME/${GENOME}_raw0.txt"
 if [ ! -f "$SAMPLE_GENOME_READ" ]; then
-    echo "Error: Read preprocessing failed - $SAMPLE_GENOME_READ not found"
-    exit 1
+        echo "Error: Read preprocessing failed - $SAMPLE_GENOME_READ not found"
+        exit 1
 fi
 
 # Step 3: Preprocess human read signals
 echo ""
 echo "Step 3: Preprocessing human read signals..."
-python3 SquiggleSeeder/scripts/preprocess_reads.py human --num-files 20
+python3 SquiggleSeeder/scripts/preprocess_reads.py human --num-files "$NUM_FILES"
 
 # Check if human read files were created
 SAMPLE_HUMAN_READ="datasets/human/human_raw0.txt"
 if [ ! -f "$SAMPLE_HUMAN_READ" ]; then
-    echo "Error: Read preprocessing failed - $SAMPLE_HUMAN_READ not found"
-    exit 1
+        echo "Error: Read preprocessing failed - $SAMPLE_HUMAN_READ not found"
+        exit 1
 fi
 
 # Step 4: Compile C++ alignment program
@@ -64,7 +77,7 @@ echo "Step 5: Running sDTW alignments..."
 mkdir -p "results/squiggle_filter"
 OUTPUT_FILE="results/squiggle_filter/${GENOME}_align.txt"
 
-./SquiggleSeeder/src/simulate_squiggle_filter.o "$GENOME" "$OUTPUT_FILE"
+./SquiggleSeeder/src/simulate_squiggle_filter.o "$GENOME" "$OUTPUT_FILE" "$NUM_FILES"
 
 # Step 6: Analyze results
 echo ""

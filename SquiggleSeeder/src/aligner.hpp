@@ -143,7 +143,7 @@ struct ChainSDTWResult {
 inline ChainSDTWResult run_best_chain_sdtw(
     const std::vector<uint16_t>& raw_read,
     const std::vector<uint8_t>& ref_signal,
-    const std::vector<ri_chain_t>& chains,
+    const std::vector<std::vector<std::pair<uint32_t, uint32_t>>>& chains,
     int window_size = 5000
 ) {
     std::vector<uint8_t> norm_read;
@@ -152,7 +152,7 @@ inline ChainSDTWResult run_best_chain_sdtw(
     best_result.sdtw_result.cost = std::numeric_limits<uint32_t>::max();
     for (size_t i = 0; i < chains.size(); ++i) {
         const auto& chain = chains[i];
-        int chain_center_ref = (int(chain.anchors.front().target_position) + int(chain.anchors.back().target_position)) / 2;
+        int chain_center_ref = (int(chain.front().second) + int(chain.back().second)) / 2;
         int ref_start = chain_center_ref - window_size/2;
         if (ref_start < 0) ref_start = 0;
         int ref_end = ref_start + window_size;

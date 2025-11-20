@@ -1,176 +1,225 @@
-// chain_seeds.hpp
-// This file takes seed hits (anchors) for a read and produces chains using the same chaining logic as rmap.cpp
-// To be used by simulate_seeder.cpp
+// // chain_seeds.hpp
+// // This file takes seed hits (anchors) for a read and produces chains using the same chaining logic as rmap.cpp
+// // To be used by simulate_seeder.cpp
+
+// #ifndef CHAINSEEDS_HPP
+// #define CHAINSEEDS_HPP
+
+// #include <vector>
+// #include <algorithm>
+// #include <cstdio>
+// #include <cstring>
+
+// void chain_seeds(
+//     const std::vector<std::vector<uint32_t> >& anchors,
+//     uint32_t WINDOW_SIZE,
+//     uint32_t k,
+//     std::vector<std::vector<std::pair<uint32_t, uint32_t>>>& chains) 
+// {
+//     chains.clear();
+
+//     // Flatten: (q_pos, ref_pos) for each candidate
+//     struct Anchor {
+//         uint32_t q; // query position
+//         uint32_t r; // reference position
+//     };
+
+//     std::vector<Anchor> seeds;
+//     size_t total = 0;
+//     for (const auto& v : anchors) total += v.size();
+//     seeds.reserve(total);
+
+//     for (uint32_t q = 0; q < anchors.size(); ++q) {
+//         for (uint32_t r : anchors[q]) {
+//             seeds.push_back(Anchor{q, r});
+//         }
+//     }
+
+//     if (seeds.empty()) return;
+
+//     // Sort by (q, r) so we can run LIS over r with increasing q
+//     std::sort(seeds.begin(), seeds.end(),
+//               [](const Anchor& a, const Anchor& b) {
+//                   if (a.q != b.q) return a.q < b.q;
+//                   return a.r < b.r;
+//               });
+
+//     const int n = static_cast<int>(seeds.size());
+
+//     // dp[i]      = best chain length ending at i
+//     // parent[i]  = previous index in chain
+//     // start_idx[i] = index of the first anchor in the chain ending at i
+//     std::vector<int> dp(n, 1);
+//     std::vector<int> parent(n, -1);
+//     std::vector<int> start_idx(n);
+
+//     for (int i = 0; i < n; ++i) {
+//         start_idx[i] = i;
+//     }
+
+//     int best_len = 1;
+//     int best_i   = 0;
+
+//     // O(n^2) DP with window constraint on reference positions
+//     for (int i = 0; i < n; ++i) {
+//         for (int j = 0; j < i; ++j) {
+//             // Enforce strictly increasing in both query and ref
+//             if (seeds[j].q < seeds[i].q && seeds[j].r < seeds[i].r) {
+//                 uint32_t r_start = seeds[start_idx[j]].r;
+//                 // Because r is increasing along the chain, checking
+//                 // (r_i - r_start <= WINDOW_SIZE) enforces that all
+//                 // refs in the chain lie within a WINDOW_SIZE span.
+//                 if (seeds[i].r - r_start <= WINDOW_SIZE) {
+//                     if (dp[j] + 1 > dp[i]) {
+//                         dp[i]       = dp[j] + 1;
+//                         parent[i]   = j;
+//                         start_idx[i] = start_idx[j];
+//                     }
+//                 }
+//             }
+//         }
+//         if (dp[i] > best_len) {
+//             best_len = dp[i];
+//             best_i   = i;
+//         }
+//     }
+
+//     // Reconstruct best chain
+//     std::vector<std::pair<uint32_t, uint32_t> > tmp;
+//     for (int cur = best_i; cur != -1; cur = parent[cur]) {
+//         tmp.emplace_back(seeds[cur].q, seeds[cur].r);
+//     }
+//     std::reverse(tmp.begin(), tmp.end());
+
+//     chains.push_back(std::move(tmp));
+// }
+
+// #endif // CHAINSEEDS_HPP
 
 #ifndef CHAINSEEDS_HPP
 #define CHAINSEEDS_HPP
 
-#include "utils.hpp"
 #include <vector>
 #include <algorithm>
-#include <cstdio>
-#include <cstring>
+#include <cstdint>
+#include <utility>
 
-// Helper: compare for sorting chains
-bool compare_chain_score(const ri_chain_t &a, const ri_chain_t &b) {
-    return a.score > b.score;
-}
-
-// Helper: compare for sorting chaining scores
-bool compare_score_idx(const std::pair<float, size_t> &left, const std::pair<float, size_t> &right) {
-    if (left.first > right.first) return true;
-    else if (left.first == right.first) return (left.second > right.second);
-    else return false;
-}
-
-// Compute MAPQ for chains
-void comp_mapq(std::vector<ri_chain_t> &chains) {
-    if (chains.size() == 1) {
-        chains[0].mapq = 60;
-        return;
-    } else {
-        int mapq = 40 * (1 - chains[1].score / chains[0].score);
-        if (mapq > 60) mapq = 60;
-        if (mapq < 0) mapq = 0;
-        chains[0].mapq = (uint8_t)mapq;
-    }
-}
-
-// Generate primary chains (non-overlapping, high scoring)
-void gen_primary_chains(std::vector<ri_chain_t> &chains) {
-    // Output all chains, do not merge or filter
-}
-
-// Traceback to build a chain from DP
-void traceback_chains(
-    int min_num_anchors, int strand, size_t chain_end_anchor_index,
-    uint32_t chain_target_signal_index,
-    const std::vector<float> &chaining_scores,
-    const std::vector<size_t> &chaining_predecessors,
-    const std::vector<std::vector<ri_anchor_t> > &anchors_fr,
-    std::vector<bool> &anchor_is_used, std::vector<ri_chain_t> &chains) {
-
-    if (!anchor_is_used[chain_end_anchor_index]) {
-        std::vector<ri_anchor_t> anchors;
-        anchors.reserve(100);
-        bool stop_at_an_used_anchor = false;
-        size_t chain_start_anchor_index = chain_end_anchor_index;
-        anchors.push_back(anchors_fr[chain_target_signal_index][chain_start_anchor_index]);
-        if (chaining_predecessors[chain_start_anchor_index] != chain_start_anchor_index && anchor_is_used[chaining_predecessors[chain_start_anchor_index]]) {
-            stop_at_an_used_anchor = true;
-        }
-        anchor_is_used[chain_start_anchor_index] = true;
-        uint32_t chain_num_anchors = 1;
-        while (chaining_predecessors[chain_start_anchor_index] != chain_start_anchor_index && !anchor_is_used[chaining_predecessors[chain_start_anchor_index]]) {
-            chain_start_anchor_index = chaining_predecessors[chain_start_anchor_index];
-            anchors.push_back(anchors_fr[chain_target_signal_index][chain_start_anchor_index]);
-            if (chaining_predecessors[chain_start_anchor_index] != chain_start_anchor_index && anchor_is_used[chaining_predecessors[chain_start_anchor_index]]) {
-                stop_at_an_used_anchor = true;
-            }
-            anchor_is_used[chain_start_anchor_index] = true;
-            ++chain_num_anchors;
-        }
-        if (chain_num_anchors >= (uint32_t)min_num_anchors) {
-            float adjusted_chaining_score = chaining_scores[chain_end_anchor_index];
-            if (stop_at_an_used_anchor) {
-                adjusted_chaining_score -= chaining_scores[chaining_predecessors[chain_start_anchor_index]];
-            }
-            // Use std::vector for anchors
-            std::vector<ri_anchor_t> chain_anchors = anchors;
-            chains.emplace_back(ri_chain_t{adjusted_chaining_score, chain_target_signal_index,
-                anchors_fr[chain_target_signal_index][chain_start_anchor_index].target_position,
-                anchors_fr[chain_target_signal_index][chain_end_anchor_index].target_position,
-                chain_num_anchors, 0, strand, chain_anchors});
-        }
-    }
-}
-
-// Main chaining function: takes anchors and produces chains
 void chain_seeds(
-    const std::vector<std::vector<std::vector<ri_anchor_t> > > &anchors_fr, // [strand][ref][anchors]
-    const ri_mapopt_t *opt,
-    std::vector<ri_chain_t> &out_chains
-) {
-    int max_gap_length = opt->max_gap_length;
-    int max_target_gap_length = opt->max_target_gap_length;
-    int chaining_band_length = opt->chaining_band_length;
-    int max_num_skips = opt->max_num_skips;
-    int min_num_anchors = opt->min_num_anchors;
-    int num_best_chains = opt->num_best_chains;
-    float min_chaining_score = opt->min_chaining_score;
-    size_t n_seq = anchors_fr[0].size();
+    const std::vector<std::vector<uint32_t> >& anchors,
+    std::vector<std::vector<std::pair<uint32_t, uint32_t>>>& chains,
+    uint32_t WINDOW_SIZE = 2000,
+    std::size_t max_chains = 10 // top-K chains to extract
+) 
+{
+    chains.clear();
+    if (max_chains == 0) return;
 
-    float max_chaining_score = 0;
-    std::vector<ri_chain_t> chains;
-    for (size_t target_signal_index = 0; target_signal_index < n_seq; ++target_signal_index) {
-        for (int strand_i = 0; strand_i < 2; ++strand_i) {
-            const auto &anchors = anchors_fr[strand_i][target_signal_index];
-            std::vector<float> chaining_scores;
-            chaining_scores.reserve(anchors.size());
-            std::vector<size_t> chaining_predecessors;
-            chaining_predecessors.reserve(anchors.size());
-            std::vector<bool> anchor_is_used(anchors.size(), false);
-            std::vector<std::pair<float, size_t> > end_anchor_index_chaining_scores;
-            end_anchor_index_chaining_scores.reserve(10);
-            for (size_t anchor_index = 0; anchor_index < anchors.size(); ++anchor_index) {
-                float distance_coefficient = 1;
-                chaining_scores.emplace_back(distance_coefficient);
-                chaining_predecessors.emplace_back(anchor_index);
-                int32_t current_anchor_target_position = anchors[anchor_index].target_position;
-                int32_t current_anchor_query_position = anchors[anchor_index].query_position;
-                int32_t start_anchor_index = 0;
-                if (anchor_index > (size_t)chaining_band_length) start_anchor_index = anchor_index - chaining_band_length;
+    // Flatten: (q_pos, ref_pos) for each candidate
+    struct Anchor {
+        uint32_t q; // query position
+        uint32_t r; // reference position
+    };
 
-                int32_t previous_anchor_index = anchor_index - 1;
-                int32_t num_skips = 0;
-                for (; previous_anchor_index >= start_anchor_index; --previous_anchor_index) {
-                    int32_t previous_anchor_target_position = anchors[previous_anchor_index].target_position;
-                    int32_t previous_anchor_query_position = anchors[previous_anchor_index].query_position;
+    std::vector<Anchor> seeds;
+    seeds.reserve(
+        [&]() {
+            std::size_t total = 0;
+            for (const auto& v : anchors) total += v.size();
+            return total;
+        }()
+    );
 
-                    if (previous_anchor_query_position == current_anchor_query_position) continue;
-                    if (previous_anchor_target_position == current_anchor_target_position) continue;
-                    if (previous_anchor_target_position + max_target_gap_length < current_anchor_target_position) break;
-
-                    int32_t target_position_diff = current_anchor_target_position - previous_anchor_target_position;
-                    int32_t query_position_diff = current_anchor_query_position - previous_anchor_query_position;
-                    float current_chaining_score = 0;
-
-                    if (query_position_diff < 0) continue;
-                    float matching_dimensions = std::min(std::min(target_position_diff, query_position_diff), 1) * distance_coefficient;
-                    int gap_length = std::abs(target_position_diff - query_position_diff);
-                    float gap_scale = target_position_diff > 0 ? (float)query_position_diff / target_position_diff : 1;
-                    if (gap_length < max_gap_length && gap_scale < 1000000 && gap_scale > 0.0) {
-                        current_chaining_score = chaining_scores[previous_anchor_index] + matching_dimensions;
-                    }
-                    if (current_chaining_score > chaining_scores[anchor_index]) {
-                        chaining_scores[anchor_index] = current_chaining_score;
-                        chaining_predecessors[anchor_index] = previous_anchor_index;
-                        --num_skips;
-                    } else {
-                        ++num_skips;
-                        if (num_skips > max_num_skips) break;
-                    }
-                }
-                if (chaining_scores[anchor_index] > max_chaining_score) {
-                    max_chaining_score = chaining_scores[anchor_index];
-                }
-                if (chaining_scores.back() >= min_chaining_score && chaining_scores.back() > max_chaining_score / 2) {
-                    end_anchor_index_chaining_scores.emplace_back(chaining_scores.back(), anchor_index);
-                }
-            }
-            std::sort(end_anchor_index_chaining_scores.begin(), end_anchor_index_chaining_scores.end(), compare_score_idx);
-            for (size_t anchor_index = 0; anchor_index < end_anchor_index_chaining_scores.size() && anchor_index < (size_t)num_best_chains; ++anchor_index) {
-                traceback_chains(min_num_anchors, strand_i, end_anchor_index_chaining_scores[anchor_index].second, target_signal_index, chaining_scores,
-                    chaining_predecessors, anchors_fr[strand_i], anchor_is_used, chains);
-                if (chaining_scores[end_anchor_index_chaining_scores[anchor_index].second] < max_chaining_score / 2) break;
-            }
+    for (uint32_t q = 0; q < anchors.size(); ++q) {
+        for (uint32_t r : anchors[q]) {
+            seeds.push_back(Anchor{q, r});
         }
     }
-    if (chains.size() > 0) {
-        gen_primary_chains(chains);
-        comp_mapq(chains);
+
+    if (seeds.empty()) return;
+
+    // Sort by (q, r) so we can run LIS over r with increasing q
+    std::sort(seeds.begin(), seeds.end(),
+              [](const Anchor& a, const Anchor& b) {
+                  if (a.q != b.q) return a.q < b.q;
+                  return a.r < b.r;
+              });
+
+    const int n = static_cast<int>(seeds.size());
+
+    // Track which seeds are still available for chaining
+    std::vector<bool> active(n, true);
+
+    // Buffers reused across iterations
+    std::vector<int> dp(n);
+    std::vector<int> parent(n);
+    std::vector<int> start_idx(n);
+
+    for (std::size_t chain_idx = 0; chain_idx < max_chains; ++chain_idx) {
+        // Initialize DP for this round
+        int best_len = 0;
+        int best_i   = -1;
+
+        for (int i = 0; i < n; ++i) {
+            if (!active[i]) {
+                dp[i]       = 0;
+                parent[i]   = -1;
+                start_idx[i] = i;
+                continue;
+            }
+
+            dp[i]       = 1;
+            parent[i]   = -1;
+            start_idx[i] = i;
+
+            // Standard O(n^2) DP with window constraint, only over active seeds
+            for (int j = 0; j < i; ++j) {
+                if (!active[j] || dp[j] == 0) continue;
+
+                // Enforce strictly increasing in both query and ref
+                if (seeds[j].q < seeds[i].q && seeds[j].r < seeds[i].r) {
+                    uint32_t r_start = seeds[start_idx[j]].r;
+                    // r is increasing along the chain, so this enforces the window
+                    if (seeds[i].r - r_start <= WINDOW_SIZE) {
+                        if (dp[j] + 1 > dp[i]) {
+                            dp[i]        = dp[j] + 1;
+                            parent[i]    = j;
+                            start_idx[i] = start_idx[j];
+                        }
+                    }
+                }
+            }
+
+            if (dp[i] > best_len) {
+                best_len = dp[i];
+                best_i   = i;
+            }
+        }
+
+        // No more chains can be formed
+        if (best_len <= 0 || best_i == -1) break;
+
+        // Optional: skip trivial chains of length 1 if you don't care about them.
+        // if (best_len <= 1) break;
+
+        // Reconstruct best chain for this round
+        std::vector<std::pair<uint32_t, uint32_t>> cur_chain;
+        std::vector<int> used_indices; // to mark these anchors as inactive later
+
+        for (int cur = best_i; cur != -1; cur = parent[cur]) {
+            cur_chain.emplace_back(seeds[cur].q, seeds[cur].r);
+            used_indices.push_back(cur);
+        }
+        std::reverse(cur_chain.begin(), cur_chain.end());
+        std::reverse(used_indices.begin(), used_indices.end());
+
+        // Store this chain
+        chains.push_back(std::move(cur_chain));
+
+        // Mark used anchors as inactive so they won't appear in later chains
+        for (int idx : used_indices) {
+            active[idx] = false;
+        }
     }
-    out_chains = chains;
 }
 
 #endif // CHAINSEEDS_HPP
