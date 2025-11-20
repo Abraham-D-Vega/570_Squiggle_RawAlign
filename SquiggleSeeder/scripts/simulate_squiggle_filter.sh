@@ -62,7 +62,7 @@ echo "Compiled simulate_squiggle_filter.o"
 echo ""
 echo "Step 5: Running sDTW alignments..."
 mkdir -p "results/squiggle_filter"
-OUTPUT_FILE="results/squiggle_filter/${GENOME}.txt"
+OUTPUT_FILE="results/squiggle_filter/${GENOME}_align.txt"
 
 ./SquiggleSeeder/src/simulate_squiggle_filter.o "$GENOME" "$OUTPUT_FILE"
 
@@ -71,9 +71,9 @@ echo ""
 echo "Step 6: Analyzing alignment costs..."
 echo ""
 
-# Extract genome and human costs
-GENOME_COSTS=$(grep "^\s*$GENOME" "$OUTPUT_FILE" | awk '{print $3}')
-HUMAN_COSTS=$(grep "^\s*human" "$OUTPUT_FILE" | awk '{print $3}')
+# Extract genome and human costs (column 4 now that read_size is in column 3)
+GENOME_COSTS=$(grep "^\s*$GENOME" "$OUTPUT_FILE" | awk '{print $4}')
+HUMAN_COSTS=$(grep "^\s*human" "$OUTPUT_FILE" | awk '{print $4}')
 
 # Calculate mean and standard deviation for genome reads
 GENOME_MEAN=$(echo "$GENOME_COSTS" | awk '{sum+=$1; sumsq+=$1*$1} END {print sum/NR}')

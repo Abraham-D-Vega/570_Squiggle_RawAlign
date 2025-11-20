@@ -56,14 +56,14 @@ std::string rev_comp(const std::string& seq) {
 }
 
 // Read kmer → current lookup table: "<KMER>\t<value>"
-static std::unordered_map<std::string, double>
+static std::unordered_map<std::string, float>
 read_kmer_lookup(const std::string& table_path) {
     std::ifstream in(table_path);
     if (!in) {
         throw std::runtime_error("Failed to open k-mer lookup table: " + table_path);
     }
 
-    std::unordered_map<std::string, double> table;
+    std::unordered_map<std::string, float> table;
     std::string line;
     while (std::getline(in, line)) {
         if (line.empty()) continue;
@@ -121,7 +121,7 @@ int main(int argc, char** argv) {
         }
 
         // 2. Generate event values from reference using the k-mer lookup table
-        std::vector<double> events;
+        std::vector<float> events;
         const uint32_t num_events = ref_seq.size() - KMER_LEN + 1;
         events.reserve(num_events);
 

@@ -88,7 +88,7 @@ int main(int argc, char **argv) {
     out << "# Genome: " << genome << "\n";
     out << "# Reference: " << ref_path << "\n";
     out << "#\n";
-    out << "# Format: read_type read_id cost ref_start ref_end alignment_length\n";
+    out << "# Format: read_type read_id read_size cost ref_start ref_end alignment_length\n";
     out << "#\n";
 
     // Process genome reads (20 reads from datasets/<genome>/)
@@ -108,15 +108,17 @@ int main(int argc, char **argv) {
         SDTWResult result = single_sdtw(query_signal, ref_signal);
 
         uint32_t alignment_length = result.ref_end_pos - result.ref_start_pos;
+        uint32_t read_size = query_signal.size();
         
         out << std::setw(10) << read_type << " "
             << std::setw(15) << read_id << " "
+            << std::setw(10) << read_size << " "
             << std::setw(10) << result.cost << " "
             << std::setw(10) << result.ref_start_pos << " "
             << std::setw(10) << result.ref_end_pos << " "
             << std::setw(10) << alignment_length << "\n";
         
-        std::cout << "  " << read_id << ": cost=" << result.cost 
+        std::cout << "  " << read_id << " (" << read_size << " samples): cost=" << result.cost 
                   << ", ref[" << result.ref_start_pos << ":" << result.ref_end_pos << "]"
                   << " (len=" << alignment_length << ")\n";
     }
@@ -138,15 +140,17 @@ int main(int argc, char **argv) {
         SDTWResult result = single_sdtw(query_signal, ref_signal);
 
         uint32_t alignment_length = result.ref_end_pos - result.ref_start_pos;
+        uint32_t read_size = query_signal.size();
         
         out << std::setw(10) << read_type << " "
             << std::setw(15) << read_id << " "
+            << std::setw(10) << read_size << " "
             << std::setw(10) << result.cost << " "
             << std::setw(10) << result.ref_start_pos << " "
             << std::setw(10) << result.ref_end_pos << " "
             << std::setw(10) << alignment_length << "\n";
         
-        std::cout << "  " << read_id << ": cost=" << result.cost 
+        std::cout << "  " << read_id << " (" << read_size << " samples): cost=" << result.cost 
                   << ", ref[" << result.ref_start_pos << ":" << result.ref_end_pos << "]"
                   << " (len=" << alignment_length << ")\n";
     }

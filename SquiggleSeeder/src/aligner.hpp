@@ -8,6 +8,8 @@
 #include <limits>
 #include <cmath>
 #include <algorithm>
+#include <iostream>
+#include "utils.hpp" // for ri_chain_t
 
 // Discrete normalization as in SquiggleFilter
 // Converts signal to 8-bit integers with mean=0, scale=mean_avg_dev, clipped to [-4,4]
@@ -125,6 +127,48 @@ inline SDTWResult single_sdtw(const std::vector<uint16_t> &query, const std::vec
     std::vector<uint8_t> query_norm;
     discrete_normalize(query, query_norm);
     return sDTW(query_norm, ref);
+}
+
+struct ChainSDTWResult {
+    SDTWResult sdtw_result;
+    int chain_index;
+    uint32_t read_start;
+    uint32_t read_end;
+    uint32_t ref_start;
+    uint32_t ref_end;
+};
+
+// Run sDTW for all chains on a normalized read, expanding each chain region to 5000 events
+// Returns the best performing chain (lowest cost), its cost, and reference start/end positions
+inline ChainSDTWResult run_best_chain_sdtw(
+    const std::vector<uint16_t>& raw_read,
+    const std::vector<uint8_t>& ref_signal,
+    const std::vector<ri_chain_t>& chains,
+    int window_size = 5000
+) {
+    std::vector<uint8_t> norm_read;
+    discrete_normalize(raw_read, norm_read);
+    ChainSDTWResult best_result;
+    best_result.sdtw_result.cost = std::numeric_limits<uint32_t>::max();
+    for (size_t i = 0; i < chains.size(); ++i) {
+        const auto& chain = chains[i];
+        int chain_center_ref = (int(chain.anchors.front().target_position) + int(chain.anchors.back().target_position)) / 2;
+        int ref_start = chain_center_ref - window_size/2;
+        if (ref_start < 0) ref_start = 0;
+        int ref_end = ref_start + window_size;
+        if (ref_end > int(ref_signal.size())) {
+            ref_end = int(ref_signal.size());
+            ref_start = ref_end - window_size;
+        }
+        std::vector<uint8_t> ref_seg(ref_signal.begin() + ref_start, ref_signal.begin() + ref_end);
+        if (ref_seg.size() < window_size) ref_seg.resize(window_size, 0);
+        assert(ref_seg.size() == size_t(window_size));
+        SDTWResult sdtw_res = sDTW(norm_read, ref_seg);
+        if (sdtw_res.cost < best_result.sdtw_result.cost) {
+            best_result = {sdtw_res, int(i), 0, uint32_t(norm_read.size()), uint32_t(ref_start), uint32_t(ref_end)};
+        }
+    }
+    return best_result;
 }
 
 #endif // ALIGNER_HPP

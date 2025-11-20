@@ -108,72 +108,8 @@ inline uint8_t quantize_event(float x) {
  * Normalize a vector of event values using z-score normalization.
  * Computes mean and standard deviation, then normalizes: (x - mean) / stddev
  * 
- * @param events Input event values (double precision)
+ * @param events Input event values (float precision)
  * @param norm_events Output normalized events (float precision)
- */
-inline void normalize_events(const std::vector<double>& events, std::vector<float>& norm_events) {
-    const size_t n = events.size();
-    if (n == 0) return;
-
-    // Compute mean and variance
-    double sum = 0.0, sum_sq = 0.0;
-    for (double v : events) {
-        sum += v;
-        sum_sq += (v * v);
-    }
-    double mean = sum / n;
-    double var = sum_sq / n - mean * mean;
-    double stddev = std::sqrt(var);
-
-    // Normalize
-    norm_events.resize(n);
-    for (size_t i = 0; i < n; ++i) {
-        norm_events[i] = static_cast<float>((events[i] - mean) / stddev);
-    }
-}
-
-/**
- * RawHash-style streaming normalization for reads.
- * Normalizes events in windows (default 1 second at 4kHz sampling = ~500 events).
- * This accounts for signal drift over time during sequencing.
- * 
- * @param events Input event values
- * @param norm_events Output normalized events
- * @param window_size Number of events per normalization window (default: 500 for 1 sec at 4kHz)
- */
-inline void normalize_events_streaming(const std::vector<float>& events, std::vector<float>& norm_events, size_t window_size = 500) {
-    const size_t n = events.size();
-    if (n == 0) return;
-
-    norm_events.resize(n);
-
-    // Process events in sliding windows
-    for (size_t i = 0; i < n; ++i) {
-        // Define window boundaries centered on current event
-        size_t window_start = (i >= window_size / 2) ? (i - window_size / 2) : 0;
-        size_t window_end = std::min(n, window_start + window_size);
-        
-        // Compute mean and stddev for this window
-        double sum = 0.0, sum_sq = 0.0;
-        size_t window_count = window_end - window_start;
-        for (size_t j = window_start; j < window_end; ++j) {
-            sum += events[j];
-            sum_sq += events[j] * events[j];
-        }
-        
-        double mean = sum / window_count;
-        double var = sum_sq / window_count - mean * mean;
-        double stddev = std::sqrt(var);
-        
-        if (stddev < 1e-6) stddev = 1.0;  // Avoid division by zero
-        
-        // Normalize this event using window statistics
-        norm_events[i] = static_cast<float>((events[i] - mean) / stddev);
-    }
-}
-
-/**
- * Overload for float input events (global normalization - used for reference)
  */
 inline void normalize_events(const std::vector<float>& events, std::vector<float>& norm_events) {
     const size_t n = events.size();
@@ -247,3 +183,37 @@ inline int compute_N_from_genome_size(uint32_t genome_size) {
         return 7;
     }
 }
+
+// ============================================================================
+// ADDITIONAL STRUCTS FOR CHAINING (from chain_seeds.cpp)
+// ============================================================================
+// Self-contained anchor and chain structs
+struct ri_anchor_t {
+    uint32_t target_position;
+    uint32_t query_position;
+};
+
+struct ri_chain_t {
+    float score;
+    uint32_t reference_sequence_index;
+    uint32_t start_position;
+    uint32_t end_position;
+    uint32_t n_anchors;
+    uint8_t mapq;
+    int strand;
+    std::vector<ri_anchor_t> anchors;
+    ri_chain_t() : score(0), reference_sequence_index(0), start_position(0), end_position(0), n_anchors(0), mapq(0), strand(0) {}
+    ri_chain_t(float s, uint32_t ref_idx, uint32_t start, uint32_t end, uint32_t n, uint8_t mq, int str, const std::vector<ri_anchor_t>& anc)
+        : score(s), reference_sequence_index(ref_idx), start_position(start), end_position(end), n_anchors(n), mapq(mq), strand(str), anchors(anc) {}
+};
+
+// Chaining options struct (self-contained)
+struct ri_mapopt_t {
+    int max_gap_length = 1000;
+    int max_target_gap_length = 5000;
+    int chaining_band_length = 10;
+    int max_num_skips = 10000;
+    int min_num_anchors = 2;
+    int num_best_chains = 25;
+    float min_chaining_score = 0.0f;
+};

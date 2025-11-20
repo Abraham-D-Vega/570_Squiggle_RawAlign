@@ -49,6 +49,9 @@ def extract_signal_from_fast5_ont_api(fast5_path, max_length=5000, read_index=0)
             # Get raw signal (ADC values)
             signal = read.get_raw_data()
             
+            # Filter out values outside 0-1023 range
+            signal = signal[(signal >= 0) & (signal <= 1023)]
+            
             # Truncate to max_length
             if len(signal) > max_length:
                 signal = signal[:max_length]
@@ -87,6 +90,9 @@ def extract_signal_from_fast5_h5py(fast5_path, max_length=5000, read_index=0):
             
             # Extract raw signal (ADC values as int16)
             signal = np.array(f[read_id]['Raw']['Signal'][:], dtype=np.float64)
+            
+            # Filter out values outside 0-1023 range
+            signal = signal[(signal >= 0) & (signal <= 1023)]
             
             # Truncate to max_length
             if len(signal) > max_length:
@@ -184,9 +190,12 @@ Examples:
     print()
     
     # Generate read files - extract multiple reads from multi-FAST5 files if needed
+    # Only keep reads with at least 5000 samples
+    MIN_READ_LENGTH = 5000
     generated_count = 0
     file_index = 0
     read_index = 0
+    skipped_count = 0
     
     while generated_count < num_files and file_index < len(fast5_files):
         fast5_path = fast5_files[file_index]
@@ -195,10 +204,14 @@ Examples:
         signal = extract_signal_from_fast5(fast5_path, read_index=read_index)
         
         if signal is not None:
-            # Generate output file with genome-specific naming
-            output_path = os.path.join(output_dir, f"{genome}_raw{generated_count}.txt")
-            generate_read_file(output_path, signal)
-            generated_count += 1
+            # Check if read is long enough
+            if len(signal) >= MIN_READ_LENGTH:
+                # Generate output file with genome-specific naming
+                output_path = os.path.join(output_dir, f"{genome}_raw{generated_count}.txt")
+                generate_read_file(output_path, signal)
+                generated_count += 1
+            else:
+                skipped_count += 1
             
             # Try next read from same file
             read_index += 1
@@ -209,11 +222,11 @@ Examples:
     
     if generated_count < num_files:
         print(f"\nWarning: Only generated {generated_count}/{num_files} files", file=sys.stderr)
-        print(f"Not enough valid reads found in FAST5 files", file=sys.stderr)
+        print(f"Not enough valid reads found in FAST5 files (skipped {skipped_count} reads < 5000 samples)", file=sys.stderr)
         sys.exit(1)
     
     print(f"\n✓ Successfully generated {num_files} read files in {output_dir}/")
-    print(f"  Each file contains the entire raw ADC signal from one read")
+    print(f"  Each file contains the entire raw ADC signal from one read (≥5000 samples)")
 
 
 if __name__ == "__main__":
