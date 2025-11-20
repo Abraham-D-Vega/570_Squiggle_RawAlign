@@ -4,7 +4,6 @@
 #ifndef ALIGNER_HPP
 #define ALIGNER_HPP
 
-#include "chainer.hpp"
 #include <vector>
 #include <limits>
 #include <cmath>

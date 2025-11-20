@@ -50,18 +50,13 @@ if [ ! -f "$SAMPLE_HUMAN_READ" ]; then
     exit 1
 fi
 
-# Step 4: Compile C++ alignment program if needed
+# Step 4: Compile C++ alignment program
 echo ""
 echo "Step 4: Compiling alignment program..."
-if [ ! -f "SquiggleSeeder/src/simulate_squiggle_filter.o" ] || 
-   [ "SquiggleSeeder/src/simulate_squiggle_filter.cpp" -nt "SquiggleSeeder/src/simulate_squiggle_filter.o" ]; then
-    g++ -std=c++17 -O3 -I SquiggleSeeder/src \
-        SquiggleSeeder/src/simulate_squiggle_filter.cpp \
-        -o SquiggleSeeder/src/simulate_squiggle_filter.o
-    echo "Compiled simulate_squiggle_filter.o"
-else
-    echo "simulate_squiggle_filter.o already up to date"
-fi
+g++ -std=c++17 -O3 -I SquiggleSeeder/src \
+    SquiggleSeeder/src/simulate_squiggle_filter.cpp \
+    -o SquiggleSeeder/src/simulate_squiggle_filter.o
+echo "Compiled simulate_squiggle_filter.o"
 
 # Step 5: Run sDTW alignments
 echo ""
