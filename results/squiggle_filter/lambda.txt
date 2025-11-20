@@ -1,0 +1,57 @@
+# sDTW Alignment Results
+# Genome: lambda
+# Reference: datasets/lambda/ref.txt
+#
+# Format: read_type read_id cost ref_start ref_end alignment_length
+#
+    lambda     lambda_raw0      36026      20197      21146        949
+    lambda     lambda_raw1      22226      24136      24520        384
+    lambda     lambda_raw2      23892       9751      10281        530
+    lambda     lambda_raw3      24472      19320      19838        518
+    lambda     lambda_raw4      26034      64332      64945        613
+    lambda     lambda_raw5      27012      74378      74877        499
+    lambda     lambda_raw6      69794      11554      12670       1116
+    lambda     lambda_raw7      21085      20486      20950        464
+    lambda     lambda_raw8      21433      19721      20170        449
+    lambda     lambda_raw9      22912      75750      76130        380
+    lambda    lambda_raw10      49525      41491      42630       1139
+    lambda    lambda_raw11      25742      60960      61537        577
+    lambda    lambda_raw12      38257      80037      80624        587
+    lambda    lambda_raw13      23616      42215      42804        589
+    lambda    lambda_raw14      37280        664       1197        533
+    lambda    lambda_raw15      29004      46492      47068        576
+    lambda    lambda_raw16      21637      81043      81334        291
+    lambda    lambda_raw17      31352      93927      94602        675
+    lambda    lambda_raw18      26990      35376      35972        596
+    lambda    lambda_raw19      40284      73187      74385       1198
+     human      human_raw0      36275      20221      20967        746
+     human      human_raw1      37736      88532      89265        733
+     human      human_raw2      40602      20045      20820        775
+     human      human_raw3      43578      10693      11583        890
+     human      human_raw4      45040      92367      93196        829
+     human      human_raw5      42848      36998      38113       1115
+     human      human_raw6      44184      92182      92993        811
+     human      human_raw7      41935      83065      83999        934
+     human      human_raw8      39204      41529      42342        813
+     human      human_raw9      40732      19846      20727        881
+     human     human_raw10      43875      20058      20944        886
+     human     human_raw11      43555      83358      84446       1088
+     human     human_raw12      40925      10865      11675        810
+     human     human_raw13      39416       3694       4532        838
+     human     human_raw14      43229      19848      20684        836
+     human     human_raw15      41716      24779      25518        739
+     human     human_raw16      40487      19989      20713        724
+     human     human_raw17      40470      37599      38483        884
+     human     human_raw18      46374      37064      37778        714
+     human     human_raw19      38292      42031      42791        760
+
+#
+# ================================================
+# Alignment Cost Statistics
+# ================================================
+# lambda reads:   Mean:    30929  StdDev:    11635
+# Human reads:    Mean:    41524  StdDev:     2529
+#
+# Separation: 1.26 standard deviations
+# ⚠ Moderate separation - somewhat discriminative
+# ================================================

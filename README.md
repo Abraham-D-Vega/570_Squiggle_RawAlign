@@ -12,6 +12,18 @@ Create virtual environment to install dependencies (run following commands):
 
     3. pip install -r requirements.txt
 
+To simulate SquiggleFilter:
+
+    Navigate to root directory
+    
+    1. Run "sh SquiggleSeeder/scripts/simulate_squiggle_filter.sh <genome>"
+
+    <genome> can be any of the ones available in "data/" (i.e. covid). Make sure you downloaded fast5 files first for that genome. They would be stored in "data/<genome>/fast5/".
+
+    Results will show up in "results/squiggle_filter/".
+
+Below steps are for SquiggleSeeder.
+
 To run preprocessing steps (compute hash tables and normalized 8-bit reference event signals):
 
     Navigate to root directory
@@ -21,5 +33,5 @@ To run preprocessing steps (compute hash tables and normalized 8-bit reference e
     <genome> can be any of the ones available in "data/" (i.e. covid)
     
 Output hash tables will appear in "SquiggleSeeder/hash_tables/".
-Note: You may change parameters in "SquiggleSeeder/params.hpp" (default ones are chosen due to compatibility or from RawHash).
+Note: You may change parameters in "SquiggleSeeder/utils.hpp" (default ones are chosen due to compatibility or from RawHash).
 Tiling is used to generate hash tables over sections of the reference genome (set IS_TILED to true)

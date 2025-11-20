@@ -34,13 +34,15 @@ def ref_signal(fasta, kmer_model, k=6):
 
 def main():
     if len(sys.argv) != 2:
-        print("Usage: python3 SquiggleSeeder/scripts/preprocess_ref.py <genome>")
+        print("Usage: python3 preprocess_ref.py <genome>")
         sys.exit(1)
     genome = sys.argv[1]
     data_dir = "data"
+    output_dir = os.path.join("datasets", genome)
+    os.makedirs(output_dir, exist_ok=True)
     kmer_model_fn = os.path.join(data_dir, "dna_kmer_model.txt")
     ref_fasta_fn = os.path.join(data_dir, genome, "reference.fasta")
-    output_fn = os.path.join(data_dir, genome, "ref.txt")
+    output_fn = os.path.join(output_dir, "ref.txt")
     if not os.path.exists(ref_fasta_fn):
         print(f"Reference FASTA not found: {ref_fasta_fn}")
         sys.exit(1)
@@ -51,7 +53,7 @@ def main():
     ref = np.concatenate((fwd_ref_sig, rev_ref_sig))
     with open(output_fn, "w") as f:
         f.write("\n".join(str(int(x)) for x in ref))
-    print(f"ref.txt generated at: {output_fn}")
+    print(f"Generated 8-bit reference signal: {output_fn} ({len(ref)} samples)")
 
 if __name__ == "__main__":
     main()

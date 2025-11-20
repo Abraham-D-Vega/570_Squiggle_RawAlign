@@ -1,8 +1,7 @@
-#include "params.hpp"
+#include "utils.hpp"
 
 #include <algorithm>
 #include <cstdint>
-#include <cstring>
 #include <fstream>
 #include <iostream>
 #include <sstream>
@@ -10,26 +9,6 @@
 #include <string>
 #include <unordered_map>
 #include <vector>
-#include <cmath>
-#include <cassert>
-
-static uint8_t quantize_event(float x) {
-    uint32_t bits;
-    std::memcpy(&bits, &x, sizeof(float));
-
-    // Take the top Q bits of the 32-bit float representation
-    uint32_t topQ = bits >> (32 - Q);
-
-    // Now apply RawHash-style pruning: keep bits [1,2] and [3+p .. Q]
-    uint32_t top2 = topQ >> (Q - 2); // top 2 bits of the Q-bit window
-
-    uint32_t low_mask = (1u << LOW_BITS) - 1u;
-    uint32_t low = topQ & low_mask;
-
-    uint8_t code = static_cast<uint8_t>((top2 << LOW_BITS) | low);
-    assert(code >> (LOW_BITS + 2) == 0);
-    return code;
-}
 
 // Simple usage helper
 static void usage(const char* prog) {
@@ -153,28 +132,15 @@ int main(int argc, char** argv) {
         }
 
         // 3. Global normalization (z-score) over reference events (RawHash-style)
-        double sum = 0.0, sum_sq = 0.0;
-        for (double v : events) {
-            sum += v;
-            sum_sq += (v*v);
-        }
-        double mean = sum / num_events;
-        double var = sum_sq / num_events - mean * mean;
-        double stddev = std::sqrt(var);
-
-        std::vector<float> norm_events(num_events);
-        for (size_t i = 0; i < num_events; ++i) {
-            norm_events[i] = static_cast<float>((events[i] - mean) / stddev);
-        }
+        std::vector<float> norm_events;
+        normalize_events(events, norm_events);
 
         // 4. Quantize each event into (Q - p)-bit code
-        std::vector<uint8_t> event_codes(num_events);
-        for (size_t i = 0; i < num_events; ++i) {
-            event_codes[i] = quantize_event(norm_events[i]);
-        }
+        std::vector<uint8_t> event_codes;
+        quantize_events(norm_events, event_codes);
 
         // 5. Decide N: # of events grouped together into a seed
-        const int N = (ref_seq.size() < VIRAL_BASE_THRESHOLD) ? 5 : (ref_seq.size() < SMALL_BASE_THRESHOLD) ? 6 : 7;
+        const int N = compute_N_from_genome_size(ref_seq.size());
         std::cout << "This genome has " << ref_seq.size() << " bases => N = " << N << "\n";
 
         // 6. Build hash table: hash -> list of locations
@@ -188,22 +154,11 @@ int main(int argc, char** argv) {
         while (true) {
             std::unordered_map<uint32_t, std::vector<uint32_t>> hash_table;
             for (uint32_t e = start_idx; e < end_idx; ++e) {
-                // Build seed from N consecutive event codes
-                uint64_t seed_code = 0;
-                for (int j = 0; j < N; ++j) {
-                    seed_code <<= BITS_PER_EVENT;
-                    seed_code |= static_cast<uint64_t>(event_codes[e + j]);
-                }
-                uint32_t hash32_val = hash64to32(seed_code);
-                uint16_t hash16_val = fold32to16(hash32_val);
-
+                // Generate hash from N consecutive event codes
+                uint32_t hash_val = generate_seed_hash(event_codes, e, N);
+                
                 // Location: use event start index as reference position
-                uint32_t loc = static_cast<uint32_t>(e);
-                if (HASH_BITS == 32) {
-                    hash_table[hash32_val].push_back(loc);
-                } else if (HASH_BITS == 16) {
-                    hash_table[hash16_val].push_back(loc);
-                }
+                hash_table[hash_val].push_back(e);
             }
 
             // 7. Write out hash table

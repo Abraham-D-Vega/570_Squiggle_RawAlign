@@ -4,3 +4,8 @@ RawAlign/*
 .vscode
 oracle_segmenter
 simple_segmenter
+*.o
+venv/*
+.python-version
+data/*/fast5/*
+datasets/*
