@@ -4,7 +4,8 @@ import numpy as np
 
 def get_fasta(fasta_fn):
     with open(fasta_fn, 'r') as fasta:
-        return ''.join(fasta.read().split('\n')[1:])
+        seq = ''.join(fasta.read().split('\n')[1:])
+        return ''.join([b for b in seq if b in 'AGTC'])
 
 def rev_comp(bases):
     return bases.replace('A','t').replace('T','a').replace('G','c').replace('C','g').upper()[::-1]

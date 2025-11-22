@@ -4,6 +4,7 @@
 #include "oracle_segmenter.hpp"
 #include "chain_seeds.hpp"
 #include "aligner.hpp"
+#include "utils.hpp"
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -154,6 +155,10 @@ int main(int argc, char **argv) {
         out_align << "#\n";
     }
 
+    int genome_total = 0, genome_correct = 0;
+    int human_total = 0, human_correct = 0;
+    int overall_total = 0, overall_correct = 0;
+
     // Process genome and human reads (<num_reads> each)
     for (int pass = 0; pass < 2; ++pass) {
         std::string read_type = (pass == 0) ? genome : "human";
@@ -207,9 +212,6 @@ int main(int argc, char **argv) {
             std::vector<uint8_t> codes;
             quantize_events(norm_events, codes);
 
-            // Output header
-            out << "# " << read_type << " " << read_id << "\n";
-
             // Output seeds
             int num_seeds = codes.size() - N + 1;
             int num_hits = 0;
@@ -220,22 +222,16 @@ int main(int argc, char **argv) {
                 auto it = hash_table.find(hash);
                 if (it != hash_table.end()) {
                     num_hits++;
-                    out << std::setw(10) << read_type << " "
-                        << std::setw(15) << read_id << " "
-                        << std::setw(10) << j << " ";
                     for (size_t k = 0; k < it->second.size(); ++k) {
-                        if (k > 0) out << ",";
-                        out << it->second[k];
                         // For chaining
                         anchors[j].push_back(it->second[k]);
                     }
-                    out << "\n";
                 }
             }
-            out << "\n";
 
             // Output chains
             std::vector<std::vector<std::pair<uint32_t, uint32_t>>> chains;
+            // chain_seeds(anchors, chains, 6863650, 6864400);
             chain_seeds(anchors, chains);
             for (const auto& chain : chains) {
                 out << "CHAIN " << read_type << " " << read_id << " ";
@@ -247,10 +243,12 @@ int main(int argc, char **argv) {
             out << "\n";
 
             // Output best sDTW alignment only if requested
+            int cost = -1;
             if (do_align) {
                 if (!chains.empty()) {
                     std::vector<uint16_t> raw_read_uint16(raw_signal.begin(), raw_signal.end());
-                    ChainSDTWResult best_align = run_best_chain_sdtw(raw_read_uint16, ref_signal, chains, 5000);
+                    ChainSDTWResult best_align = run_best_chain_sdtw(raw_read_uint16, ref_signal, chains);
+                    cost = best_align.sdtw_result.cost;
                     uint32_t read_size = raw_read_uint16.size();
                     uint32_t start = best_align.ref_start + best_align.sdtw_result.ref_start_pos;
                     uint32_t end = best_align.ref_start + best_align.sdtw_result.ref_end_pos;
@@ -271,6 +269,13 @@ int main(int argc, char **argv) {
                               << std::setw(10) << -1 << " "
                               << std::setw(10) << -1 << "\n";
                 }
+                // Accuracy counting
+                if (cost != -1) {
+                    if (pass == 0) { genome_total++; if (cost <= MAX_ALIGN_COST_FOR_POSITIVE) genome_correct++; }
+                    else { human_total++; if (cost > MAX_ALIGN_COST_FOR_POSITIVE) human_correct++; }
+                    overall_total++;
+                    if ((pass == 0 && cost <= MAX_ALIGN_COST_FOR_POSITIVE) || (pass == 1 && cost > MAX_ALIGN_COST_FOR_POSITIVE)) overall_correct++;
+                }
             }
             std::cout << "  " << read_id << ": " << num_seeds << " seeds, " << num_hits << " hits, " << chains.size() << " chains\n";
         }
@@ -283,5 +288,14 @@ int main(int argc, char **argv) {
     } else {
         std::cout << "\nResults written to: " << output_file << "\n";
     }
+
+    // Print accuracy summary
+    if (do_align) {
+        std::cout << "\nClassification accuracy summary (threshold: " << MAX_ALIGN_COST_FOR_POSITIVE << "):\n";
+        std::cout << "  Genome reads: " << genome_correct << "/" << genome_total << " = " << (genome_total ? (100.0 * genome_correct / genome_total) : 0) << "%\n";
+        std::cout << "  Human reads:  " << human_correct << "/" << human_total << " = " << (human_total ? (100.0 * human_correct / human_total) : 0) << "%\n";
+        std::cout << "  Overall:      " << overall_correct << "/" << overall_total << " = " << (overall_total ? (100.0 * overall_correct / overall_total) : 0) << "%\n";
+    }
+
     return 0;
 }

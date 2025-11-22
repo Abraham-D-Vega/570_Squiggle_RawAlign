@@ -1,0 +1,31 @@
+CHAIN ecoli ecoli_raw0   ANCHOR ref_pos=6863950 query_pos=168
+  ANCHOR ref_pos=6863951 query_pos=169
+
+CHAIN ecoli ecoli_raw0   ANCHOR ref_pos=6863840 query_pos=445
+  ANCHOR ref_pos=6863841 query_pos=446
+
+
+CHAIN ecoli ecoli_raw1   ANCHOR ref_pos=6863796 query_pos=432
+
+
+CHAIN ecoli ecoli_raw2   ANCHOR ref_pos=6864395 query_pos=54
+
+CHAIN ecoli ecoli_raw2   ANCHOR ref_pos=6863876 query_pos=250
+
+CHAIN ecoli ecoli_raw2   ANCHOR ref_pos=6864174 query_pos=374
+
+
+CHAIN human human_raw0   ANCHOR ref_pos=6863732 query_pos=65
+  ANCHOR ref_pos=6864121 query_pos=379
+  ANCHOR ref_pos=6864122 query_pos=380
+
+CHAIN human human_raw0   ANCHOR ref_pos=6863730 query_pos=373
+  ANCHOR ref_pos=6863731 query_pos=374
+
+CHAIN human human_raw0   ANCHOR ref_pos=6863764 query_pos=179
+
+
+CHAIN human human_raw1   ANCHOR ref_pos=6863938 query_pos=22
+
+
+
