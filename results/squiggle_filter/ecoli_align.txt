@@ -7,17 +7,41 @@
      ecoli      ecoli_raw0       5000      22066    3858176    3858912        736
      ecoli      ecoli_raw1       5000      39063    2758688    2759199        511
      ecoli      ecoli_raw2       5000      19347    6863673    6864387        714
+     ecoli      ecoli_raw3       5000      29738    5582903    5583531        628
+     ecoli      ecoli_raw4       5000      28340    1671553    1672152        599
+     ecoli      ecoli_raw5       5000      26005    5961814    5962428        614
+     ecoli      ecoli_raw6       5000      37367     799065     799912        847
+     ecoli      ecoli_raw7       5000      26864    3399138    3399765        627
+     ecoli      ecoli_raw8       5000      33233    9786595    9787298        703
+     ecoli      ecoli_raw9       5000      47576   10327934   10328678        744
+     ecoli     ecoli_raw10       5000      26187    7283318    7283924        606
+     ecoli     ecoli_raw11       5000      25143    1002172    1002789        617
+     ecoli     ecoli_raw12       5000      21655    1765056    1765707        651
+     ecoli     ecoli_raw13       5000      23574    5831368    5832030        662
+     ecoli     ecoli_raw14       5000      24786    4956830    4957367        537
      human      human_raw0       5000      37811    5476997    5477821        824
      human      human_raw1       5000      36367     769709     770436        727
      human      human_raw2       5000      39756    9061986    9062731        745
+     human      human_raw3       5000      41855    8477734    8478571        837
+     human      human_raw4       5000      43653   10237461   10238318        857
+     human      human_raw5       5000      41935    6849385    6850304        919
+     human      human_raw6       5000      42914    2739510    2740307        797
+     human      human_raw7       5000      41053    3032737    3033483        746
+     human      human_raw8       5000      38340    4596673    4597596        923
+     human      human_raw9       5000      39882    5249310    5250161        851
+     human     human_raw10       5000      42277    1974470    1975337        867
+     human     human_raw11       5000      42642    6218668    6219534        866
+     human     human_raw12       5000      39940    3782228    3783092        864
+     human     human_raw13       5000      39013    3693059    3693869        810
+     human     human_raw14       5000      42343    9509102    9509899        797
 
 #
 # ================================================
 # Alignment Cost Statistics
 # ================================================
-# ecoli reads:    Mean:    26825  StdDev:     8724
-# Human reads:    Mean:    37978  StdDev:     1389
+# ecoli reads:    Mean:    28730  StdDev:     7361
+# Human reads:    Mean:    40652  StdDev:     2053
 #
-# Separation: 1.79 standard deviations
-# ⚠ Moderate separation - somewhat discriminative
+# Separation: 2.21 standard deviations
+# ✓ Good separation - discriminative
 # ================================================

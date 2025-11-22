@@ -9,6 +9,7 @@
 #include <algorithm>
 #include <cstdint>
 #include <utility>
+#include <iostream>
 
 // void chain_seeds(
 //     const std::vector<std::vector<uint32_t> >& anchors,
@@ -158,6 +159,12 @@ void chain_seeds(
             seeds.push_back({q, r});
         }
     }
+    // std::cout << "Finding chains from " << seeds.size() << " anchors\n";
+    if (DEBUG_START_REF_POS != 0) {
+        for (const auto &s : seeds) {
+            std::cout << "  Seed: q=" << s.q << " r=" << s.r << "\n";
+        }
+    }
 
     if (seeds.empty()) return;
 
@@ -185,6 +192,7 @@ void chain_seeds(
     std::size_t chains_found = 0;
 
     while (chains_found < max_chains) {
+        // std::cout << "On iteration " << (chains_found + 1) << "\n";
         // Recompute DP from scratch each iteration, skipping used anchors
         const double NEG_INF = -std::numeric_limits<double>::infinity();
 
