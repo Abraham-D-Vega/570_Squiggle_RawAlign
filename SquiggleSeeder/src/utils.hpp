@@ -35,7 +35,7 @@ constexpr int SMALL_BASE_THRESHOLD = 50'000'000;
 constexpr int MAX_ALIGN_COST_FOR_POSITIVE = 37'000; // Max cost to consider alignment "positive"
 
 // # bits in hash value (CHANGEABLE: 32 or 16)
-constexpr int HASH_BITS = 32;
+constexpr int HASH_BITS = 16;
 static_assert(HASH_BITS == 32 || HASH_BITS == 16);
 
 /*

@@ -10,18 +10,18 @@
      covid      covid_raw3       5000      24126       6343       6885        542
      covid      covid_raw4       5000      39453      52550      53017        467
      covid      covid_raw5       5000      35799      49210      49700        490
-     covid      covid_raw6       5000      33151      52865      53371        506
+     covid      covid_raw6       5000      33063      52865      53371        506
      covid      covid_raw7       5000      30496      52837      53235        398
      covid      covid_raw8       5000      24027      54689      55177        488
-     covid      covid_raw9       5000      42574      32716      33457        741
+     covid      covid_raw9       5000      30792      31226      31786        560
      covid     covid_raw10       5000      27425      15393      15899        506
      covid     covid_raw11       5000      30909      15068      15600        532
      covid     covid_raw12       5000      36245       2131       2916        785
      covid     covid_raw13       5000      24072       3082       3558        476
      covid     covid_raw14       5000      28172      12643      13311        668
-     covid     covid_raw15       5000      56414      57143      57777        634
+     covid     covid_raw15       5000      55066      29053      29969        916
      covid     covid_raw16       5000      29277      51332      51888        556
-     covid     covid_raw17       5000      26214       5446       5911        465
+     covid     covid_raw17       5000      26130       5446       5911        465
      covid     covid_raw18       5000      18257      40747      41224        477
      covid     covid_raw19       5000      26158      36800      37303        503
      covid     covid_raw20       5000      23344      49228      49738        510
@@ -29,15 +29,15 @@
      covid     covid_raw22       5000      29035      12861      13322        461
      covid     covid_raw23       5000      17012       7855       8347        492
      covid     covid_raw24       5000      29167      34875      35400        525
-     covid     covid_raw25       5000      21416      17869      18375        506
+     covid     covid_raw25       5000      21786      17869      18375        506
      covid     covid_raw26       5000      34407      12901      13267        366
      covid     covid_raw27       5000      19936      34354      34860        506
-     covid     covid_raw28       5000      17286      21581      22080        499
+     covid     covid_raw28       5000      17401      21581      22080        499
      covid     covid_raw29       5000      38175      51056      51544        488
      covid     covid_raw30       5000      51356      34396      35217        821
      covid     covid_raw31       5000      24153      43812      44342        530
      covid     covid_raw32       5000      15895      46330      46765        435
-     covid     covid_raw33       5000      26616       8124       8553        429
+     covid     covid_raw33       5000      26526       8124       8553        429
      covid     covid_raw34       5000      26568      41043      41575        532
      covid     covid_raw35       5000      22393      40706      41195        489
      covid     covid_raw36       5000      26381      10922      11391        469
@@ -45,15 +45,15 @@
      covid     covid_raw38       5000      29647       6377       6847        470
      covid     covid_raw39       5000      19650      42270      42753        483
      covid     covid_raw40       5000      21128       9669      10157        488
-     covid     covid_raw41       5000      27205      47467      47992        525
+     covid     covid_raw41       5000      27098      47467      47992        525
      covid     covid_raw42       5000      20193      40462      40938        476
-     covid     covid_raw43       5000      33159      12867      13362        495
-     covid     covid_raw44       5000      27380      45354      45917        563
+     covid     covid_raw43       5000      33298      12867      13362        495
+     covid     covid_raw44       5000      27262      45354      45917        563
      covid     covid_raw45       5000      22808      15390      15902        512
      covid     covid_raw46       5000      19331      53439      53897        458
-     covid     covid_raw47       5000      31065      48276      48806        530
+     covid     covid_raw47       5000      31275      48276      48806        530
      covid     covid_raw48       5000      23888      24318      24742        424
-     covid     covid_raw49       5000      41445      26067      26559        492
+     covid     covid_raw49       5000      41285      26067      26559        492
      covid     covid_raw50       5000      40432      53749      54188        439
      covid     covid_raw51       5000      24581      51352      51792        440
      covid     covid_raw52       5000      30369      50457      51159        702
@@ -61,61 +61,61 @@
      covid     covid_raw54       5000      31614      10906      11377        471
      covid     covid_raw55       5000      34290      16941      17435        494
      covid     covid_raw56       5000      34191      51283      51867        584
-     covid     covid_raw57       5000      30570      30633      31149        516
-     covid     covid_raw58       5000      27854      48301      48819        518
+     covid     covid_raw57       5000      31509      30673      31149        476
+     covid     covid_raw58       5000      28009      48301      48819        518
      covid     covid_raw59       5000      37193      10924      11409        485
      covid     covid_raw60       5000      25940      41042      41544        502
      covid     covid_raw61       5000      36333      53674      54255        581
-     covid     covid_raw62       5000      35669       7181       7661        480
+     covid     covid_raw62       5000      35456       7181       7661        480
      covid     covid_raw63       5000      31295      21293      21807        514
      covid     covid_raw64       5000      42404      11788      12262        474
      covid     covid_raw65       5000      25436      22460      22937        477
      covid     covid_raw66       5000      38579      44117      44614        497
      covid     covid_raw67       5000      24333      34050      34504        454
-     covid     covid_raw68       5000      35868      43799      44254        455
+     covid     covid_raw68       5000      35855      43799      44254        455
      covid     covid_raw69       5000      22249      52545      53042        497
      covid     covid_raw70       5000      21413      22335      22880        545
      covid     covid_raw71       5000      30297      50415      50919        504
-     covid     covid_raw72       5000      39120      29114      29966        852
+     covid     covid_raw72       5000      25881      42866      43369        503
      covid     covid_raw73       5000      19681      41912      42438        526
      covid     covid_raw74       5000      28879       1097       1539        442
      covid     covid_raw75       5000      32311      12931      13407        476
      covid     covid_raw76       5000      37725      47192      47720        528
-     covid     covid_raw77       5000      45980      16595      17342        747
+     covid     covid_raw77       5000      30285       4183       4795        612
      covid     covid_raw78       5000      46764      42826      43414        588
      covid     covid_raw79       5000      36467      32571      33215        644
      covid     covid_raw80       5000      33958       4182       4772        590
-     covid     covid_raw81       5000      26029      42867      43342        475
+     covid     covid_raw81       5000      26212      42857      43342        485
      covid     covid_raw82       5000      41059      29275      30075        800
      covid     covid_raw83       5000      39207      29240      30027        787
      covid     covid_raw84       5000      25782      52838      53311        473
-     covid     covid_raw85       5000      45911      41857      42408        551
-     covid     covid_raw86       5000      44232      16273      16739        466
+     covid     covid_raw85       5000      46015      41857      42408        551
+     covid     covid_raw86       5000      43673      16250      16739        489
      covid     covid_raw87       5000      34733      53726      54192        466
      covid     covid_raw88       5000      31512      20707      21151        444
-     covid     covid_raw89       5000      25821      14760      15276        516
+     covid     covid_raw89       5000      26225      14798      15276        478
      covid     covid_raw90       5000      19591      51356      51888        532
-     covid     covid_raw91       5000      20282      16978      17403        425
+     covid     covid_raw91       5000      20411      16978      17403        425
      covid     covid_raw92       5000      24836      29174      29604        430
      covid     covid_raw93       5000      22946      20684      21171        487
-     covid     covid_raw94       5000      40123       6359       6864        505
+     covid     covid_raw94       5000      40076       6359       6864        505
      covid     covid_raw95       5000      21481      41045      41556        511
      covid     covid_raw96       5000      21441      15394      15886        492
      covid     covid_raw97       5000      19334      14064      14600        536
      covid     covid_raw98       5000      25737      43814      44312        498
      covid     covid_raw99       5000      37374      34919      35331        412
      human      human_raw0       5000      37646      29004      29942        938
-     human      human_raw1       5000      38930       3823       4511        688
+     human      human_raw1       5000      38898      47554      48307        753
      human      human_raw2       5000      40084       2294       3081        787
-     human      human_raw3       5000      44029      21299      22043        744
-     human      human_raw4       5000      47023      23155      24058        903
-     human      human_raw5       5000      41854      29004      30048       1044
+     human      human_raw3       5000      42472      29184      30154        970
+     human      human_raw4       5000      46721        481       1361        880
+     human      human_raw5       5000      44037      35024      35918        894
      human      human_raw6       5000      41401      29736      30640        904
      human      human_raw7       5000      41358      29560      30482        922
      human      human_raw8       5000      39602      34740      35589        849
      human      human_raw9       5000      41138       1020       1880        860
      human     human_raw10       5000      42645      29232      30309       1077
-     human     human_raw11       5000      44321      29716      30650        934
+     human     human_raw11       5000      43800      29241      30310       1069
      human     human_raw12       5000      40507      29007      30036       1029
      human     human_raw13       5000      41442      37980      38796        816
      human     human_raw14       5000      43196      28985      29999       1014
@@ -123,50 +123,50 @@
      human     human_raw16       5000      41412      58615      59346        731
      human     human_raw17       5000      41247      34806      35709        903
      human     human_raw18       5000      46091      29268      29976        708
-     human     human_raw19       5000      37624      29828      30531        703
-     human     human_raw20       5000      45135        804       1824       1020
-     human     human_raw21       5000      41823      37159      37953        794
-     human     human_raw22       5000      39142      29656      30450        794
-     human     human_raw23       5000      40400      29655      30610        955
+     human     human_raw19       5000      38172      37397      37990        593
+     human     human_raw20       5000      45243       2111       3116       1005
+     human     human_raw21       5000      41777      33924      34766        842
+     human     human_raw22       5000      38994      29656      30450        794
+     human     human_raw23       5000      40345      29657      30610        953
      human     human_raw24       5000      40608       1770       2553        783
-     human     human_raw25       5000      45004       2143       3226       1083
+     human     human_raw25       5000      44945      57304      58245        941
      human     human_raw26       5000      40158      29586      30365        779
      human     human_raw27       5000      39786      29396      30205        809
      human     human_raw28       5000      41542      33676      34556        880
      human     human_raw29       5000      41398      49470      50306        836
-     human     human_raw30       5000      39370      29665      30444        779
-     human     human_raw31       5000      40832        879       1697        818
+     human     human_raw30       5000      39689      55254      56156        902
+     human     human_raw31       5000      41333      17019      17962        943
      human     human_raw32       5000      43978      55145      56001        856
      human     human_raw33       5000      42329       1699       2663        964
      human     human_raw34       5000      42113      37980      38711        731
      human     human_raw35       5000      45431      29868      30722        854
      human     human_raw36       5000      43157       3694       4463        769
-     human     human_raw37       5000      47040      37561      38131        570
-     human     human_raw38       5000      40451      29210      30198        988
+     human     human_raw37       5000      46224       3736       4463        727
+     human     human_raw38       5000      43284      37135      37986        851
      human     human_raw39       5000      40695       3690       4395        705
-     human     human_raw40       5000      41240      34963      35768        805
+     human     human_raw40       5000      41239        224       1080        856
      human     human_raw41       5000      40596      52139      52934        795
      human     human_raw42       5000      45955      49587      50373        786
-     human     human_raw43       5000      39085       3612       4523        911
-     human     human_raw44       5000      37925       2242       2835        593
-     human     human_raw45       5000      42756       4398       5268        870
+     human     human_raw43       5000      37797      29180      29924        744
+     human     human_raw44       5000      37503      29344      29996        652
+     human     human_raw45       5000      41721      29664      30524        860
      human     human_raw46       5000      42930       4246       4872        626
      human     human_raw47       5000      41684      47531      48452        921
      human     human_raw48       5000      41874      29476      30459        983
-     human     human_raw49       5000      42245       1681       2528        847
+     human     human_raw49       5000      43073       4319       5323       1004
      human     human_raw50       5000      44041      29536      30585       1049
-     human     human_raw51       5000      44267      34531      35372        841
-     human     human_raw52       5000      42229      38288      39189        901
-     human     human_raw53       5000      45499      55488      56377        889
-     human     human_raw54       5000      32552      49631      50224        593
-     human     human_raw55       5000      39103      29266      30133        867
+     human     human_raw51       5000      44235      34531      35372        841
+     human     human_raw52       5000      41374       3768       4702        934
+     human     human_raw53       5000      42230      29585      30531        946
+     human     human_raw54       5000      32576      33899      34406        507
+     human     human_raw55       5000      41030       2034       2778        744
      human     human_raw56       5000      43410      49255      50208        953
-     human     human_raw57       5000      45701      56833      57875       1042
+     human     human_raw57       5000      46459       2105       3091        986
      human     human_raw58       5000      39702      29293      30275        982
-     human     human_raw59       5000      46048      36869      37796        927
+     human     human_raw59       5000      45427      12619      13550        931
      human     human_raw60       5000      49061      13159      14228       1069
      human     human_raw61       5000      39629      29266      30091        825
-     human     human_raw62       5000      43048      37634      38493        859
+     human     human_raw62       5000      43040      37634      38493        859
      human     human_raw63       5000      37831      29476      30251        775
      human     human_raw64       5000      43481       3683       4666        983
      human     human_raw65       5000      38689      29125      30001        876
@@ -176,42 +176,42 @@
      human     human_raw69       5000      40583      29242      30115        873
      human     human_raw70       5000      42546       1867       2734        867
      human     human_raw71       5000      42547      29099      29950        851
-     human     human_raw72       5000      43840      17764      18637        873
-     human     human_raw73       5000      39260       2020       2957        937
+     human     human_raw72       5000      41816      29600      30375        775
+     human     human_raw73       5000      38950      29534      30500        966
      human     human_raw74       5000      40203      29850      30632        782
-     human     human_raw75       5000      43024      37224      38106        882
-     human     human_raw76       5000      40252      29261      30266       1005
+     human     human_raw75       5000      42182      57981      58822        841
+     human     human_raw76       5000      42359      28364      29249        885
      human     human_raw77       5000      44113      36302      37197        895
      human     human_raw78       5000      42921       3978       4785        807
      human     human_raw79       5000      39187      29223      30106        883
      human     human_raw80       5000      42043      34963      35926        963
      human     human_raw81       5000      43592       3764       4723        959
-     human     human_raw82       5000      43888      29110      30057        947
+     human     human_raw82       5000      46411       1709       2750       1041
      human     human_raw83       5000      38844       2152       2953        801
      human     human_raw84       5000      40313      29008      29994        986
-     human     human_raw85       5000      41146      37383      38128        745
+     human     human_raw85       5000      42283       3744       4437        693
      human     human_raw86       5000      40283       3692       4472        780
-     human     human_raw87       5000      41323      34968      35733        765
+     human     human_raw87       5000      40572       2297       3024        727
      human     human_raw88       5000      41317      58856      59553        697
      human     human_raw89       5000      40163      29631      30456        825
-     human     human_raw90       5000      46107       1860       2562        702
-     human     human_raw91       5000      43566      34962      35835        873
-     human     human_raw92       5000      40390       3573       4340        767
+     human     human_raw90       5000      44888      37205      37909        704
+     human     human_raw91       5000      43722       9488      10242        754
+     human     human_raw92       5000      40808       2323       3237        914
      human     human_raw93       5000      40929      29126      30004        878
      human     human_raw94       5000      40226       3853       4801        948
      human     human_raw95       5000      40892       3690       4673        983
      human     human_raw96       5000      38149      29902      30637        735
      human     human_raw97       5000      41368      29716      30544        828
-     human     human_raw98       5000      41691       3643       4591        948
+     human     human_raw98       5000      41308       1507       2366        859
      human     human_raw99       5000      43259      29770      30865       1095
 
 #
 # ================================================
 # Alignment Cost Statistics
 # ================================================
-# covid reads:    Mean:    29980  StdDev:     8110
-# Human reads:    Mean:    41747  StdDev:     2471
+# covid reads:    Mean:    29572  StdDev:     7733
+# Human reads:    Mean:    41744  StdDev:     2428
 #
-# Separation: 1.96 standard deviations
-# ⚠ Moderate separation - somewhat discriminative
+# Separation: 2.12 standard deviations
+# ✓ Good separation - discriminative
 # ================================================
