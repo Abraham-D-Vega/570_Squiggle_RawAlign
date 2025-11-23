@@ -39,10 +39,17 @@ while [[ $# -gt 0 ]]; do
             ;;
     esac
 done
+
+if [ "$GENOME" = "covid" ]; then
+    READ_SIZE=5000
+else
+    READ_SIZE=10000
+fi
+
 # Step 2: Preprocess genome read signals
 echo ""
-echo "Step 2: Preprocessing $GENOME read signals..."
-python3 SquiggleSeeder/scripts/preprocess_reads.py "$GENOME" --num-files "$NUM_FILES"
+echo "Step 2: Preprocessing $GENOME read signals..."z
+python3 SquiggleSeeder/scripts/preprocess_reads.py "$GENOME" --num-files "$NUM_FILES" --read-sie "$READ_SIZE"
 
 # Check if genome read files were created
 SAMPLE_GENOME_READ="datasets/$GENOME/${GENOME}_raw0.txt"
@@ -54,7 +61,7 @@ fi
 # Step 3: Preprocess human read signals
 echo ""
 echo "Step 3: Preprocessing human read signals..."
-python3 SquiggleSeeder/scripts/preprocess_reads.py human --num-files "$NUM_FILES"
+python3 SquiggleSeeder/scripts/preprocess_reads.py human --num-files "$NUM_FILES" --read-size "$READ_SIZE"
 
 # Check if human read files were created
 SAMPLE_HUMAN_READ="datasets/human/human_raw0.txt"

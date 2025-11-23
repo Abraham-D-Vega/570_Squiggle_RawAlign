@@ -32,11 +32,11 @@ static_assert(LOW_BITS == 3);
 constexpr int VIRAL_BASE_THRESHOLD = 1'000'000;
 constexpr int SMALL_BASE_THRESHOLD = 50'000'000;
 
-constexpr int MAX_ALIGN_COST_FOR_POSITIVE = 37'000; // Max cost to consider alignment "positive"
+constexpr int MAX_ALIGN_COST_FOR_POSITIVE = 75'000; // Max cost to consider alignment "positive"
 
 // # bits in hash value (CHANGEABLE: 32 or 16)
 constexpr int HASH_BITS = 16;
-static_assert(HASH_BITS == 32 || HASH_BITS == 16);
+static_assert(HASH_BITS >= 16 && HASH_BITS <= 32);
 
 /*
     Hash table configuration (CHANGEABLE)
@@ -48,7 +48,6 @@ static_assert(TILE_OVERLAP < TILE_SIZE);
 
 // Hashing functions
 constexpr uint64_t HASH32_MASK = (1ULL<<32)-1;
-constexpr uint32_t HASH16_MASK = (1UL<<16)-1;
 
 inline uint32_t hash64to32(uint64_t key){
     key = (~key + (key << 21)) & HASH32_MASK; // key = (key << 21) - key - 1;
@@ -57,13 +56,8 @@ inline uint32_t hash64to32(uint64_t key){
     key = key ^ key >> 14;
     key = ((key + (key << 2)) + (key << 4)) & HASH32_MASK; // key * 21
     key = key ^ key >> 28;
-    key = (key + (key << 31)) & HASH32_MASK;
+    key = (key + (key << 31)) & ((1ULL<<HASH_BITS)-1);
     return static_cast<uint32_t>(key);
-}
-
-// Trivially converts 32 bit hash to 16 bit hash
-inline uint16_t fold32to16(uint32_t h) {
-    return static_cast<uint16_t>(h & HASH16_MASK);
 }
 
 // ============================================================================
@@ -163,11 +157,7 @@ inline uint32_t generate_seed_hash(const std::vector<uint8_t>& codes, size_t sta
         seed_code |= static_cast<uint64_t>(codes[start_idx + j]);
     }
     uint32_t h32 = hash64to32(seed_code);
-    if (HASH_BITS == 32) {
-        return h32;
-    } else {
-        return static_cast<uint32_t>(fold32to16(h32));
-    }
+    return h32;
 }
 
 /**

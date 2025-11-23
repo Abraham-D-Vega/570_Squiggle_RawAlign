@@ -60,10 +60,17 @@ while [[ $# -gt 0 ]]; do
             ;;
     esac
 done
+
+if [ "$GENOME" = "covid" ]; then
+    READ_SIZE=5000
+else
+    READ_SIZE=10000
+fi
+
 # Step 4: Preprocess genome read signals
 echo ""
 echo "Step 4: Preprocessing $GENOME read signals..."
-python3 SquiggleSeeder/scripts/preprocess_reads.py "$GENOME" --num-files "$NUM_FILES"
+python3 SquiggleSeeder/scripts/preprocess_reads.py "$GENOME" --num-files "$NUM_FILES" --read-size "$READ_SIZE"
 SAMPLE_GENOME_READ="datasets/$GENOME/${GENOME}_raw0.txt"
 if [ ! -f "$SAMPLE_GENOME_READ" ]; then
         echo "Error: Genome read preprocessing failed"
@@ -73,7 +80,7 @@ fi
 # Step 5: Preprocess human read signals
 echo ""
 echo "Step 5: Preprocessing human read signals..."
-python3 SquiggleSeeder/scripts/preprocess_reads.py human --num-files "$NUM_FILES"
+python3 SquiggleSeeder/scripts/preprocess_reads.py human --num-files "$NUM_FILES" --read-size "$READ_SIZE"
 SAMPLE_HUMAN_READ="datasets/human/human_raw0.txt"
 if [ ! -f "$SAMPLE_HUMAN_READ" ]; then
     echo "Error: Human read preprocessing failed"

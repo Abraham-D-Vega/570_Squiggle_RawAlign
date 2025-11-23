@@ -218,7 +218,7 @@ CHAIN covid covid_raw2
   ANCHOR ref_pos=217 query_pos=160
   ANCHOR ref_pos=218 query_pos=161
   ANCHOR ref_pos=235 query_pos=171
-  ANCHOR ref_pos=302 query_pos=186
+  ANCHOR ref_pos=273 query_pos=188
   ANCHOR ref_pos=532 query_pos=304
   ANCHOR ref_pos=533 query_pos=305
   ANCHOR ref_pos=534 query_pos=306
@@ -833,13 +833,13 @@ CHAIN covid covid_raw8
   ANCHOR ref_pos=34255 query_pos=165
   ANCHOR ref_pos=34338 query_pos=198
   ANCHOR ref_pos=34339 query_pos=199
-  ANCHOR ref_pos=34459 query_pos=257
+  ANCHOR ref_pos=34457 query_pos=290
   ANCHOR ref_pos=34572 query_pos=302
   ANCHOR ref_pos=34730 query_pos=361
   ANCHOR ref_pos=34731 query_pos=362
   ANCHOR ref_pos=34732 query_pos=363
   ANCHOR ref_pos=34733 query_pos=364
-  ANCHOR ref_pos=34798 query_pos=384
+  ANCHOR ref_pos=34794 query_pos=406
   ANCHOR ref_pos=34850 query_pos=427
   ANCHOR ref_pos=34968 query_pos=442
   ANCHOR ref_pos=35137 query_pos=489
@@ -896,9 +896,9 @@ CHAIN covid covid_raw9
   ANCHOR ref_pos=1027 query_pos=283
   ANCHOR ref_pos=1028 query_pos=284
   ANCHOR ref_pos=1115 query_pos=292
-  ANCHOR ref_pos=1416 query_pos=296
-  ANCHOR ref_pos=1503 query_pos=308
-  ANCHOR ref_pos=1504 query_pos=309
+  ANCHOR ref_pos=1391 query_pos=321
+  ANCHOR ref_pos=1392 query_pos=322
+  ANCHOR ref_pos=1393 query_pos=323
   ANCHOR ref_pos=1635 query_pos=383
   ANCHOR ref_pos=1636 query_pos=384
   ANCHOR ref_pos=1801 query_pos=407
@@ -1085,7 +1085,7 @@ CHAIN covid covid_raw10
   ANCHOR ref_pos=57908 query_pos=233
   ANCHOR ref_pos=58048 query_pos=245
   ANCHOR ref_pos=58049 query_pos=246
-  ANCHOR ref_pos=58177 query_pos=271
+  ANCHOR ref_pos=58159 query_pos=276
   ANCHOR ref_pos=58274 query_pos=309
   ANCHOR ref_pos=58409 query_pos=396
   ANCHOR ref_pos=58473 query_pos=398
@@ -1758,7 +1758,7 @@ CHAIN covid covid_raw17
 CHAIN covid covid_raw17
   ANCHOR ref_pos=31028 query_pos=64
   ANCHOR ref_pos=31054 query_pos=81
-  ANCHOR ref_pos=31105 query_pos=146
+  ANCHOR ref_pos=31092 query_pos=165
   ANCHOR ref_pos=31132 query_pos=217
   ANCHOR ref_pos=31239 query_pos=225
   ANCHOR ref_pos=31240 query_pos=226
@@ -1808,8 +1808,8 @@ CHAIN covid covid_raw17
   ANCHOR ref_pos=13118 query_pos=280
   ANCHOR ref_pos=13119 query_pos=281
   ANCHOR ref_pos=13120 query_pos=282
-  ANCHOR ref_pos=13224 query_pos=296
-  ANCHOR ref_pos=13228 query_pos=303
+  ANCHOR ref_pos=13196 query_pos=374
+  ANCHOR ref_pos=13199 query_pos=410
   ANCHOR ref_pos=13296 query_pos=417
   ANCHOR ref_pos=13297 query_pos=418
   ANCHOR ref_pos=13332 query_pos=426
@@ -1862,7 +1862,7 @@ CHAIN covid covid_raw18
   ANCHOR ref_pos=11806 query_pos=220
   ANCHOR ref_pos=11911 query_pos=258
   ANCHOR ref_pos=11923 query_pos=270
-  ANCHOR ref_pos=12099 query_pos=271
+  ANCHOR ref_pos=12012 query_pos=273
   ANCHOR ref_pos=12200 query_pos=343
   ANCHOR ref_pos=12201 query_pos=344
   ANCHOR ref_pos=12264 query_pos=377
@@ -2456,7 +2456,7 @@ CHAIN covid covid_raw23
   ANCHOR ref_pos=1059 query_pos=218
   ANCHOR ref_pos=1108 query_pos=286
   ANCHOR ref_pos=1378 query_pos=307
-  ANCHOR ref_pos=1427 query_pos=312
+  ANCHOR ref_pos=1425 query_pos=319
   ANCHOR ref_pos=1497 query_pos=349
   ANCHOR ref_pos=1528 query_pos=382
   ANCHOR ref_pos=1628 query_pos=384
@@ -2479,8 +2479,8 @@ CHAIN covid covid_raw23
   ANCHOR ref_pos=12036 query_pos=284
   ANCHOR ref_pos=12143 query_pos=301
   ANCHOR ref_pos=12169 query_pos=320
-  ANCHOR ref_pos=12205 query_pos=370
-  ANCHOR ref_pos=12206 query_pos=371
+  ANCHOR ref_pos=12204 query_pos=387
+  ANCHOR ref_pos=12205 query_pos=388
   ANCHOR ref_pos=12212 query_pos=396
   ANCHOR ref_pos=12213 query_pos=397
   ANCHOR ref_pos=12214 query_pos=398
@@ -2643,7 +2643,7 @@ CHAIN covid covid_raw25
   ANCHOR ref_pos=29453 query_pos=347
   ANCHOR ref_pos=29454 query_pos=348
   ANCHOR ref_pos=29630 query_pos=359
-  ANCHOR ref_pos=29739 query_pos=436
+  ANCHOR ref_pos=29730 query_pos=437
   ANCHOR ref_pos=29793 query_pos=442
   ANCHOR ref_pos=29794 query_pos=443
   ANCHOR ref_pos=29795 query_pos=444
@@ -3250,8 +3250,8 @@ CHAIN covid covid_raw31
   ANCHOR ref_pos=11942 query_pos=271
   ANCHOR ref_pos=11943 query_pos=272
   ANCHOR ref_pos=11944 query_pos=273
-  ANCHOR ref_pos=12070 query_pos=276
-  ANCHOR ref_pos=12271 query_pos=295
+  ANCHOR ref_pos=11999 query_pos=284
+  ANCHOR ref_pos=12204 query_pos=308
   ANCHOR ref_pos=12324 query_pos=309
   ANCHOR ref_pos=12325 query_pos=310
   ANCHOR ref_pos=12433 query_pos=385
@@ -3737,8 +3737,8 @@ CHAIN covid covid_raw36
   ANCHOR ref_pos=1579 query_pos=337
   ANCHOR ref_pos=1602 query_pos=354
   ANCHOR ref_pos=1657 query_pos=362
-  ANCHOR ref_pos=1829 query_pos=382
-  ANCHOR ref_pos=2004 query_pos=403
+  ANCHOR ref_pos=1797 query_pos=423
+  ANCHOR ref_pos=1798 query_pos=424
   ANCHOR ref_pos=2109 query_pos=427
   ANCHOR ref_pos=2169 query_pos=485
   ANCHOR ref_pos=2236 query_pos=495
@@ -3801,7 +3801,7 @@ CHAIN covid covid_raw37
   ANCHOR ref_pos=26671 query_pos=0
   ANCHOR ref_pos=26789 query_pos=97
   ANCHOR ref_pos=26848 query_pos=137
-  ANCHOR ref_pos=26908 query_pos=164
+  ANCHOR ref_pos=26907 query_pos=172
   ANCHOR ref_pos=26962 query_pos=192
   ANCHOR ref_pos=27082 query_pos=214
   ANCHOR ref_pos=27142 query_pos=239
@@ -4099,7 +4099,7 @@ CHAIN covid covid_raw40
   ANCHOR ref_pos=21122 query_pos=97
   ANCHOR ref_pos=21163 query_pos=100
   ANCHOR ref_pos=21164 query_pos=101
-  ANCHOR ref_pos=21398 query_pos=114
+  ANCHOR ref_pos=21274 query_pos=164
   ANCHOR ref_pos=21478 query_pos=173
   ANCHOR ref_pos=21532 query_pos=182
   ANCHOR ref_pos=21558 query_pos=256
@@ -4214,7 +4214,7 @@ CHAIN covid covid_raw41
   ANCHOR ref_pos=28301 query_pos=131
   ANCHOR ref_pos=28614 query_pos=151
   ANCHOR ref_pos=28615 query_pos=165
-  ANCHOR ref_pos=28677 query_pos=192
+  ANCHOR ref_pos=28675 query_pos=198
   ANCHOR ref_pos=28793 query_pos=203
   ANCHOR ref_pos=28794 query_pos=204
   ANCHOR ref_pos=28854 query_pos=221
@@ -4524,7 +4524,7 @@ CHAIN covid covid_raw44
   ANCHOR ref_pos=37155 query_pos=119
   ANCHOR ref_pos=37156 query_pos=120
   ANCHOR ref_pos=37244 query_pos=169
-  ANCHOR ref_pos=37263 query_pos=170
+  ANCHOR ref_pos=37253 query_pos=178
   ANCHOR ref_pos=37332 query_pos=201
   ANCHOR ref_pos=37333 query_pos=202
   ANCHOR ref_pos=37427 query_pos=242
@@ -4713,8 +4713,8 @@ CHAIN covid covid_raw46
   ANCHOR ref_pos=44355 query_pos=118
   ANCHOR ref_pos=44393 query_pos=178
   ANCHOR ref_pos=44394 query_pos=179
-  ANCHOR ref_pos=44659 query_pos=194
-  ANCHOR ref_pos=44781 query_pos=232
+  ANCHOR ref_pos=44512 query_pos=229
+  ANCHOR ref_pos=44622 query_pos=256
   ANCHOR ref_pos=44881 query_pos=326
   ANCHOR ref_pos=45054 query_pos=333
   ANCHOR ref_pos=45119 query_pos=356
@@ -4765,7 +4765,7 @@ CHAIN covid covid_raw46
 
 CHAIN covid covid_raw47
   ANCHOR ref_pos=48057 query_pos=54
-  ANCHOR ref_pos=48124 query_pos=61
+  ANCHOR ref_pos=48085 query_pos=66
   ANCHOR ref_pos=48200 query_pos=116
   ANCHOR ref_pos=48302 query_pos=180
   ANCHOR ref_pos=48303 query_pos=181
@@ -5088,7 +5088,7 @@ CHAIN covid covid_raw50
 CHAIN covid covid_raw50
   ANCHOR ref_pos=51827 query_pos=35
   ANCHOR ref_pos=51851 query_pos=55
-  ANCHOR ref_pos=51921 query_pos=153
+  ANCHOR ref_pos=51898 query_pos=160
   ANCHOR ref_pos=51979 query_pos=256
   ANCHOR ref_pos=52030 query_pos=258
   ANCHOR ref_pos=52114 query_pos=334
@@ -5222,7 +5222,8 @@ CHAIN covid covid_raw51
 
 CHAIN covid covid_raw52
   ANCHOR ref_pos=46067 query_pos=70
-  ANCHOR ref_pos=46110 query_pos=142
+  ANCHOR ref_pos=46077 query_pos=157
+  ANCHOR ref_pos=46083 query_pos=165
   ANCHOR ref_pos=46139 query_pos=167
   ANCHOR ref_pos=46203 query_pos=257
   ANCHOR ref_pos=46204 query_pos=258
@@ -5716,7 +5717,7 @@ CHAIN covid covid_raw57
   ANCHOR ref_pos=30910 query_pos=277
   ANCHOR ref_pos=30913 query_pos=278
   ANCHOR ref_pos=30936 query_pos=280
-  ANCHOR ref_pos=30949 query_pos=300
+  ANCHOR ref_pos=30944 query_pos=304
   ANCHOR ref_pos=30953 query_pos=313
   ANCHOR ref_pos=30954 query_pos=314
   ANCHOR ref_pos=30955 query_pos=315
@@ -5998,7 +5999,7 @@ CHAIN covid covid_raw59
   ANCHOR ref_pos=11685 query_pos=221
   ANCHOR ref_pos=11686 query_pos=222
   ANCHOR ref_pos=11726 query_pos=250
-  ANCHOR ref_pos=11992 query_pos=323
+  ANCHOR ref_pos=11834 query_pos=325
   ANCHOR ref_pos=12034 query_pos=358
   ANCHOR ref_pos=12035 query_pos=359
   ANCHOR ref_pos=12105 query_pos=367
@@ -6043,9 +6044,9 @@ CHAIN covid covid_raw59
   ANCHOR ref_pos=3311 query_pos=305
   ANCHOR ref_pos=3338 query_pos=323
   ANCHOR ref_pos=3349 query_pos=338
-  ANCHOR ref_pos=3468 query_pos=349
+  ANCHOR ref_pos=3445 query_pos=365
   ANCHOR ref_pos=3568 query_pos=425
-  ANCHOR ref_pos=3644 query_pos=429
+  ANCHOR ref_pos=3602 query_pos=432
   ANCHOR ref_pos=3709 query_pos=445
   ANCHOR ref_pos=3710 query_pos=446
   ANCHOR ref_pos=3711 query_pos=447
@@ -6122,7 +6123,7 @@ CHAIN covid covid_raw60
   ANCHOR ref_pos=33742 query_pos=23
   ANCHOR ref_pos=33824 query_pos=104
   ANCHOR ref_pos=33825 query_pos=105
-  ANCHOR ref_pos=34003 query_pos=112
+  ANCHOR ref_pos=33992 query_pos=136
   ANCHOR ref_pos=34188 query_pos=196
   ANCHOR ref_pos=34189 query_pos=197
   ANCHOR ref_pos=34215 query_pos=211
@@ -6264,7 +6265,7 @@ CHAIN covid covid_raw61
   ANCHOR ref_pos=3685 query_pos=343
   ANCHOR ref_pos=3686 query_pos=344
   ANCHOR ref_pos=3687 query_pos=345
-  ANCHOR ref_pos=3731 query_pos=362
+  ANCHOR ref_pos=3729 query_pos=376
   ANCHOR ref_pos=3941 query_pos=446
   ANCHOR ref_pos=3942 query_pos=447
   ANCHOR ref_pos=3989 query_pos=479
@@ -6596,7 +6597,7 @@ CHAIN covid covid_raw65
   ANCHOR ref_pos=3331 query_pos=370
   ANCHOR ref_pos=3332 query_pos=371
   ANCHOR ref_pos=3405 query_pos=396
-  ANCHOR ref_pos=3432 query_pos=409
+  ANCHOR ref_pos=3425 query_pos=416
   ANCHOR ref_pos=3464 query_pos=425
   ANCHOR ref_pos=3465 query_pos=426
   ANCHOR ref_pos=3466 query_pos=427
@@ -6622,7 +6623,7 @@ CHAIN covid covid_raw65
   ANCHOR ref_pos=19866 query_pos=354
   ANCHOR ref_pos=20003 query_pos=359
   ANCHOR ref_pos=20004 query_pos=360
-  ANCHOR ref_pos=20115 query_pos=368
+  ANCHOR ref_pos=20021 query_pos=371
   ANCHOR ref_pos=20178 query_pos=416
   ANCHOR ref_pos=20179 query_pos=417
   ANCHOR ref_pos=20233 query_pos=425
@@ -6645,7 +6646,7 @@ CHAIN covid covid_raw65
   ANCHOR ref_pos=32828 query_pos=335
   ANCHOR ref_pos=32893 query_pos=359
   ANCHOR ref_pos=32894 query_pos=360
-  ANCHOR ref_pos=32927 query_pos=364
+  ANCHOR ref_pos=32926 query_pos=371
   ANCHOR ref_pos=33115 query_pos=391
   ANCHOR ref_pos=33116 query_pos=392
   ANCHOR ref_pos=33119 query_pos=401
@@ -6977,7 +6978,7 @@ CHAIN covid covid_raw69
   ANCHOR ref_pos=34809 query_pos=69
   ANCHOR ref_pos=34812 query_pos=95
   ANCHOR ref_pos=34813 query_pos=96
-  ANCHOR ref_pos=34900 query_pos=97
+  ANCHOR ref_pos=34840 query_pos=108
   ANCHOR ref_pos=34970 query_pos=158
   ANCHOR ref_pos=34971 query_pos=159
   ANCHOR ref_pos=35070 query_pos=215
@@ -7473,7 +7474,7 @@ CHAIN covid covid_raw73
   ANCHOR ref_pos=40733 query_pos=249
   ANCHOR ref_pos=40747 query_pos=273
   ANCHOR ref_pos=40748 query_pos=274
-  ANCHOR ref_pos=40985 query_pos=294
+  ANCHOR ref_pos=40917 query_pos=329
   ANCHOR ref_pos=41179 query_pos=342
   ANCHOR ref_pos=41180 query_pos=343
   ANCHOR ref_pos=41181 query_pos=344
@@ -7554,8 +7555,8 @@ CHAIN covid covid_raw74
   ANCHOR ref_pos=48988 query_pos=213
   ANCHOR ref_pos=48989 query_pos=214
   ANCHOR ref_pos=48990 query_pos=215
-  ANCHOR ref_pos=49454 query_pos=294
-  ANCHOR ref_pos=49513 query_pos=299
+  ANCHOR ref_pos=49249 query_pos=311
+  ANCHOR ref_pos=49250 query_pos=312
   ANCHOR ref_pos=49609 query_pos=314
   ANCHOR ref_pos=49610 query_pos=315
   ANCHOR ref_pos=49611 query_pos=316
@@ -7577,8 +7578,8 @@ CHAIN covid covid_raw74
   ANCHOR ref_pos=34078 query_pos=147
   ANCHOR ref_pos=34086 query_pos=148
   ANCHOR ref_pos=34087 query_pos=149
-  ANCHOR ref_pos=34100 query_pos=192
-  ANCHOR ref_pos=34103 query_pos=204
+  ANCHOR ref_pos=34097 query_pos=214
+  ANCHOR ref_pos=34098 query_pos=215
   ANCHOR ref_pos=34188 query_pos=315
   ANCHOR ref_pos=34189 query_pos=316
   ANCHOR ref_pos=34190 query_pos=317
@@ -7798,7 +7799,7 @@ CHAIN covid covid_raw77
   ANCHOR ref_pos=15405 query_pos=137
   ANCHOR ref_pos=15406 query_pos=138
   ANCHOR ref_pos=15407 query_pos=139
-  ANCHOR ref_pos=15560 query_pos=160
+  ANCHOR ref_pos=15547 query_pos=206
   ANCHOR ref_pos=15733 query_pos=246
   ANCHOR ref_pos=15750 query_pos=278
   ANCHOR ref_pos=15751 query_pos=279
@@ -7879,7 +7880,7 @@ CHAIN covid covid_raw78
   ANCHOR ref_pos=22837 query_pos=219
   ANCHOR ref_pos=22838 query_pos=220
   ANCHOR ref_pos=22957 query_pos=314
-  ANCHOR ref_pos=23007 query_pos=376
+  ANCHOR ref_pos=22971 query_pos=390
   ANCHOR ref_pos=23008 query_pos=460
   ANCHOR ref_pos=23009 query_pos=461
 
@@ -8115,10 +8116,10 @@ CHAIN covid covid_raw80
   ANCHOR ref_pos=737 query_pos=52
   ANCHOR ref_pos=738 query_pos=53
   ANCHOR ref_pos=814 query_pos=129
-  ANCHOR ref_pos=962 query_pos=130
-  ANCHOR ref_pos=1026 query_pos=181
-  ANCHOR ref_pos=1065 query_pos=189
-  ANCHOR ref_pos=1066 query_pos=190
+  ANCHOR ref_pos=899 query_pos=160
+  ANCHOR ref_pos=937 query_pos=188
+  ANCHOR ref_pos=938 query_pos=189
+  ANCHOR ref_pos=1029 query_pos=191
   ANCHOR ref_pos=1363 query_pos=206
   ANCHOR ref_pos=1391 query_pos=239
   ANCHOR ref_pos=1412 query_pos=283
@@ -8250,7 +8251,7 @@ CHAIN covid covid_raw82
   ANCHOR ref_pos=4218 query_pos=214
   ANCHOR ref_pos=4282 query_pos=295
   ANCHOR ref_pos=4283 query_pos=296
-  ANCHOR ref_pos=4391 query_pos=320
+  ANCHOR ref_pos=4379 query_pos=379
   ANCHOR ref_pos=4482 query_pos=380
   ANCHOR ref_pos=4483 query_pos=381
   ANCHOR ref_pos=4496 query_pos=454
@@ -8349,7 +8350,7 @@ CHAIN covid covid_raw83
   ANCHOR ref_pos=48117 query_pos=267
   ANCHOR ref_pos=48118 query_pos=268
   ANCHOR ref_pos=48119 query_pos=269
-  ANCHOR ref_pos=48182 query_pos=310
+  ANCHOR ref_pos=48174 query_pos=314
   ANCHOR ref_pos=48232 query_pos=331
   ANCHOR ref_pos=48291 query_pos=367
   ANCHOR ref_pos=48337 query_pos=422
@@ -8520,8 +8521,8 @@ CHAIN covid covid_raw85
 
 CHAIN covid covid_raw85
   ANCHOR ref_pos=18950 query_pos=16
-  ANCHOR ref_pos=19066 query_pos=52
-  ANCHOR ref_pos=19165 query_pos=66
+  ANCHOR ref_pos=19026 query_pos=66
+  ANCHOR ref_pos=19136 query_pos=169
   ANCHOR ref_pos=19282 query_pos=176
   ANCHOR ref_pos=19283 query_pos=177
   ANCHOR ref_pos=19322 query_pos=238
@@ -9410,7 +9411,7 @@ CHAIN covid covid_raw94
   ANCHOR ref_pos=6225 query_pos=224
   ANCHOR ref_pos=6226 query_pos=225
   ANCHOR ref_pos=6227 query_pos=226
-  ANCHOR ref_pos=6346 query_pos=241
+  ANCHOR ref_pos=6319 query_pos=248
   ANCHOR ref_pos=6435 query_pos=282
   ANCHOR ref_pos=6444 query_pos=286
   ANCHOR ref_pos=6579 query_pos=321
@@ -9468,7 +9469,7 @@ CHAIN covid covid_raw94
   ANCHOR ref_pos=33205 query_pos=223
   ANCHOR ref_pos=33206 query_pos=224
   ANCHOR ref_pos=33207 query_pos=225
-  ANCHOR ref_pos=33346 query_pos=240
+  ANCHOR ref_pos=33268 query_pos=252
   ANCHOR ref_pos=33394 query_pos=264
   ANCHOR ref_pos=33395 query_pos=265
   ANCHOR ref_pos=33513 query_pos=321
@@ -9555,7 +9556,7 @@ CHAIN covid covid_raw95
 
 CHAIN covid covid_raw95
   ANCHOR ref_pos=30554 query_pos=21
-  ANCHOR ref_pos=30662 query_pos=91
+  ANCHOR ref_pos=30661 query_pos=99
   ANCHOR ref_pos=30740 query_pos=146
   ANCHOR ref_pos=30755 query_pos=182
   ANCHOR ref_pos=30948 query_pos=310
@@ -9583,7 +9584,7 @@ CHAIN covid covid_raw95
   ANCHOR ref_pos=2508 query_pos=339
   ANCHOR ref_pos=2550 query_pos=382
   ANCHOR ref_pos=2551 query_pos=383
-  ANCHOR ref_pos=2685 query_pos=461
+  ANCHOR ref_pos=2682 query_pos=478
   ANCHOR ref_pos=2822 query_pos=503
   ANCHOR ref_pos=2823 query_pos=504
   ANCHOR ref_pos=2824 query_pos=505
@@ -9659,7 +9660,7 @@ CHAIN covid covid_raw96
   ANCHOR ref_pos=41668 query_pos=56
   ANCHOR ref_pos=41742 query_pos=68
   ANCHOR ref_pos=41759 query_pos=80
-  ANCHOR ref_pos=41984 query_pos=206
+  ANCHOR ref_pos=41926 query_pos=227
   ANCHOR ref_pos=42157 query_pos=253
   ANCHOR ref_pos=42158 query_pos=254
   ANCHOR ref_pos=42159 query_pos=255
@@ -9892,8 +9893,8 @@ CHAIN covid covid_raw98
   ANCHOR ref_pos=2460 query_pos=384
   ANCHOR ref_pos=2461 query_pos=385
   ANCHOR ref_pos=2508 query_pos=405
-  ANCHOR ref_pos=2666 query_pos=450
-  ANCHOR ref_pos=2807 query_pos=487
+  ANCHOR ref_pos=2574 query_pos=451
+  ANCHOR ref_pos=2774 query_pos=500
   ANCHOR ref_pos=2887 query_pos=515
   ANCHOR ref_pos=2916 query_pos=547
 
@@ -10367,10 +10368,10 @@ CHAIN human human_raw3
 
 CHAIN human human_raw3
   ANCHOR ref_pos=2094 query_pos=125
-  ANCHOR ref_pos=2199 query_pos=170
-  ANCHOR ref_pos=2233 query_pos=192
-  ANCHOR ref_pos=2277 query_pos=193
-  ANCHOR ref_pos=2278 query_pos=194
+  ANCHOR ref_pos=2198 query_pos=192
+  ANCHOR ref_pos=2199 query_pos=193
+  ANCHOR ref_pos=2200 query_pos=194
+  ANCHOR ref_pos=2271 query_pos=243
   ANCHOR ref_pos=2369 query_pos=267
   ANCHOR ref_pos=2376 query_pos=278
   ANCHOR ref_pos=2442 query_pos=297
@@ -10466,8 +10467,8 @@ CHAIN human human_raw4
   ANCHOR ref_pos=33079 query_pos=20
   ANCHOR ref_pos=33126 query_pos=58
   ANCHOR ref_pos=33307 query_pos=216
-  ANCHOR ref_pos=33364 query_pos=245
-  ANCHOR ref_pos=33447 query_pos=246
+  ANCHOR ref_pos=33349 query_pos=248
+  ANCHOR ref_pos=33350 query_pos=249
   ANCHOR ref_pos=33464 query_pos=256
   ANCHOR ref_pos=33465 query_pos=257
   ANCHOR ref_pos=33721 query_pos=273
@@ -10673,7 +10674,7 @@ CHAIN human human_raw6
 
 CHAIN human human_raw7
   ANCHOR ref_pos=28695 query_pos=27
-  ANCHOR ref_pos=28810 query_pos=128
+  ANCHOR ref_pos=28751 query_pos=134
   ANCHOR ref_pos=28853 query_pos=222
   ANCHOR ref_pos=28878 query_pos=223
   ANCHOR ref_pos=29028 query_pos=293
@@ -10804,7 +10805,7 @@ CHAIN human human_raw8
   ANCHOR ref_pos=33361 query_pos=266
   ANCHOR ref_pos=33491 query_pos=278
   ANCHOR ref_pos=33497 query_pos=283
-  ANCHOR ref_pos=33690 query_pos=288
+  ANCHOR ref_pos=33672 query_pos=289
   ANCHOR ref_pos=33705 query_pos=292
   ANCHOR ref_pos=33747 query_pos=345
   ANCHOR ref_pos=33791 query_pos=358
@@ -10885,7 +10886,7 @@ CHAIN human human_raw9
   ANCHOR ref_pos=30333 query_pos=77
   ANCHOR ref_pos=30350 query_pos=124
   ANCHOR ref_pos=30351 query_pos=125
-  ANCHOR ref_pos=30544 query_pos=191
+  ANCHOR ref_pos=30437 query_pos=207
   ANCHOR ref_pos=30583 query_pos=218
   ANCHOR ref_pos=30754 query_pos=219
   ANCHOR ref_pos=30755 query_pos=220
@@ -11249,7 +11250,7 @@ CHAIN human human_raw12
   ANCHOR ref_pos=11674 query_pos=174
   ANCHOR ref_pos=11675 query_pos=175
   ANCHOR ref_pos=11714 query_pos=213
-  ANCHOR ref_pos=11827 query_pos=228
+  ANCHOR ref_pos=11796 query_pos=265
   ANCHOR ref_pos=11936 query_pos=277
   ANCHOR ref_pos=11937 query_pos=305
   ANCHOR ref_pos=11938 query_pos=306
@@ -11504,7 +11505,7 @@ CHAIN human human_raw15
   ANCHOR ref_pos=29819 query_pos=73
   ANCHOR ref_pos=29955 query_pos=198
   ANCHOR ref_pos=30016 query_pos=203
-  ANCHOR ref_pos=30219 query_pos=222
+  ANCHOR ref_pos=30195 query_pos=242
   ANCHOR ref_pos=30349 query_pos=261
   ANCHOR ref_pos=30350 query_pos=262
   ANCHOR ref_pos=30384 query_pos=311
@@ -11918,7 +11919,7 @@ CHAIN human human_raw19
   ANCHOR ref_pos=1002 query_pos=212
   ANCHOR ref_pos=1003 query_pos=213
   ANCHOR ref_pos=1043 query_pos=223
-  ANCHOR ref_pos=1067 query_pos=242
+  ANCHOR ref_pos=1065 query_pos=299
   ANCHOR ref_pos=1149 query_pos=378
   ANCHOR ref_pos=1150 query_pos=379
   ANCHOR ref_pos=1151 query_pos=380
@@ -11974,7 +11975,7 @@ CHAIN human human_raw19
   ANCHOR ref_pos=37416 query_pos=33
   ANCHOR ref_pos=37478 query_pos=51
   ANCHOR ref_pos=37479 query_pos=52
-  ANCHOR ref_pos=37605 query_pos=90
+  ANCHOR ref_pos=37591 query_pos=93
   ANCHOR ref_pos=37680 query_pos=97
   ANCHOR ref_pos=37723 query_pos=152
   ANCHOR ref_pos=37724 query_pos=153
@@ -12068,7 +12069,7 @@ CHAIN human human_raw20
   ANCHOR ref_pos=34100 query_pos=534
   ANCHOR ref_pos=34191 query_pos=535
   ANCHOR ref_pos=34233 query_pos=541
-  ANCHOR ref_pos=34261 query_pos=557
+  ANCHOR ref_pos=34254 query_pos=561
   ANCHOR ref_pos=34287 query_pos=562
 
 CHAIN human human_raw20
@@ -12155,7 +12156,7 @@ CHAIN human human_raw21
   ANCHOR ref_pos=57295 query_pos=120
   ANCHOR ref_pos=57296 query_pos=121
   ANCHOR ref_pos=57297 query_pos=123
-  ANCHOR ref_pos=57484 query_pos=130
+  ANCHOR ref_pos=57345 query_pos=136
   ANCHOR ref_pos=57537 query_pos=156
   ANCHOR ref_pos=57574 query_pos=157
   ANCHOR ref_pos=57656 query_pos=176
@@ -12214,7 +12215,7 @@ CHAIN human human_raw22
 
 CHAIN human human_raw22
   ANCHOR ref_pos=29630 query_pos=5
-  ANCHOR ref_pos=29736 query_pos=42
+  ANCHOR ref_pos=29706 query_pos=72
   ANCHOR ref_pos=29774 query_pos=78
   ANCHOR ref_pos=29776 query_pos=79
   ANCHOR ref_pos=29792 query_pos=81
@@ -12236,8 +12237,8 @@ CHAIN human human_raw22
   ANCHOR ref_pos=30980 query_pos=418
   ANCHOR ref_pos=30981 query_pos=419
   ANCHOR ref_pos=30982 query_pos=420
-  ANCHOR ref_pos=31167 query_pos=421
-  ANCHOR ref_pos=31168 query_pos=422
+  ANCHOR ref_pos=31043 query_pos=440
+  ANCHOR ref_pos=31044 query_pos=441
   ANCHOR ref_pos=31298 query_pos=496
   ANCHOR ref_pos=31299 query_pos=497
 
@@ -12332,7 +12333,7 @@ CHAIN human human_raw23
 CHAIN human human_raw23
   ANCHOR ref_pos=49689 query_pos=34
   ANCHOR ref_pos=49690 query_pos=35
-  ANCHOR ref_pos=49851 query_pos=89
+  ANCHOR ref_pos=49764 query_pos=105
   ANCHOR ref_pos=49909 query_pos=144
   ANCHOR ref_pos=49910 query_pos=145
   ANCHOR ref_pos=49911 query_pos=146
@@ -12448,7 +12449,7 @@ CHAIN human human_raw24
   ANCHOR ref_pos=1061 query_pos=115
   ANCHOR ref_pos=1062 query_pos=116
   ANCHOR ref_pos=1065 query_pos=151
-  ANCHOR ref_pos=1172 query_pos=169
+  ANCHOR ref_pos=1134 query_pos=183
   ANCHOR ref_pos=1302 query_pos=191
   ANCHOR ref_pos=1303 query_pos=192
   ANCHOR ref_pos=1304 query_pos=193
@@ -12467,9 +12468,9 @@ CHAIN human human_raw24
   ANCHOR ref_pos=2157 query_pos=466
   ANCHOR ref_pos=2158 query_pos=467
   ANCHOR ref_pos=2159 query_pos=468
-  ANCHOR ref_pos=2201 query_pos=470
-  ANCHOR ref_pos=2232 query_pos=499
-  ANCHOR ref_pos=2233 query_pos=500
+  ANCHOR ref_pos=2198 query_pos=500
+  ANCHOR ref_pos=2199 query_pos=501
+  ANCHOR ref_pos=2211 query_pos=504
   ANCHOR ref_pos=2277 query_pos=517
   ANCHOR ref_pos=2278 query_pos=518
   ANCHOR ref_pos=2279 query_pos=519
@@ -12603,7 +12604,7 @@ CHAIN human human_raw25
   ANCHOR ref_pos=2030 query_pos=162
   ANCHOR ref_pos=2031 query_pos=163
   ANCHOR ref_pos=2065 query_pos=257
-  ANCHOR ref_pos=2159 query_pos=383
+  ANCHOR ref_pos=2150 query_pos=407
   ANCHOR ref_pos=2169 query_pos=433
   ANCHOR ref_pos=2170 query_pos=434
   ANCHOR ref_pos=2171 query_pos=435
@@ -12679,8 +12680,8 @@ CHAIN human human_raw26
   ANCHOR ref_pos=4204 query_pos=63
   ANCHOR ref_pos=4281 query_pos=168
   ANCHOR ref_pos=4282 query_pos=169
-  ANCHOR ref_pos=4356 query_pos=180
-  ANCHOR ref_pos=4357 query_pos=181
+  ANCHOR ref_pos=4349 query_pos=181
+  ANCHOR ref_pos=4350 query_pos=182
   ANCHOR ref_pos=4404 query_pos=208
   ANCHOR ref_pos=4469 query_pos=236
   ANCHOR ref_pos=4599 query_pos=245
@@ -12731,8 +12732,8 @@ CHAIN human human_raw26
   ANCHOR ref_pos=33972 query_pos=64
   ANCHOR ref_pos=34004 query_pos=96
   ANCHOR ref_pos=34017 query_pos=107
-  ANCHOR ref_pos=34100 query_pos=168
-  ANCHOR ref_pos=34101 query_pos=169
+  ANCHOR ref_pos=34068 query_pos=180
+  ANCHOR ref_pos=34069 query_pos=181
   ANCHOR ref_pos=34106 query_pos=196
   ANCHOR ref_pos=34107 query_pos=197
   ANCHOR ref_pos=34169 query_pos=221
@@ -12956,7 +12957,7 @@ CHAIN human human_raw29
   ANCHOR ref_pos=2524 query_pos=42
   ANCHOR ref_pos=2525 query_pos=43
   ANCHOR ref_pos=2526 query_pos=44
-  ANCHOR ref_pos=2777 query_pos=76
+  ANCHOR ref_pos=2722 query_pos=206
   ANCHOR ref_pos=3009 query_pos=229
   ANCHOR ref_pos=3070 query_pos=242
   ANCHOR ref_pos=3107 query_pos=270
@@ -13048,7 +13049,7 @@ CHAIN human human_raw30
   ANCHOR ref_pos=3821 query_pos=80
   ANCHOR ref_pos=3908 query_pos=199
   ANCHOR ref_pos=3970 query_pos=232
-  ANCHOR ref_pos=4101 query_pos=235
+  ANCHOR ref_pos=4085 query_pos=251
   ANCHOR ref_pos=4192 query_pos=296
   ANCHOR ref_pos=4356 query_pos=329
   ANCHOR ref_pos=4357 query_pos=330
@@ -13120,8 +13121,8 @@ CHAIN human human_raw31
   ANCHOR ref_pos=2592 query_pos=321
   ANCHOR ref_pos=2643 query_pos=401
   ANCHOR ref_pos=2644 query_pos=402
-  ANCHOR ref_pos=2825 query_pos=417
-  ANCHOR ref_pos=2847 query_pos=428
+  ANCHOR ref_pos=2790 query_pos=428
+  ANCHOR ref_pos=2828 query_pos=433
   ANCHOR ref_pos=2906 query_pos=461
   ANCHOR ref_pos=2916 query_pos=484
 
@@ -13306,7 +13307,7 @@ CHAIN human human_raw33
   ANCHOR ref_pos=54415 query_pos=74
   ANCHOR ref_pos=54416 query_pos=75
   ANCHOR ref_pos=54417 query_pos=76
-  ANCHOR ref_pos=54586 query_pos=83
+  ANCHOR ref_pos=54462 query_pos=100
   ANCHOR ref_pos=54657 query_pos=105
   ANCHOR ref_pos=54916 query_pos=373
   ANCHOR ref_pos=54917 query_pos=374
@@ -13569,7 +13570,7 @@ CHAIN human human_raw36
   ANCHOR ref_pos=30695 query_pos=8
   ANCHOR ref_pos=30780 query_pos=50
   ANCHOR ref_pos=30891 query_pos=61
-  ANCHOR ref_pos=30978 query_pos=104
+  ANCHOR ref_pos=30970 query_pos=109
   ANCHOR ref_pos=31045 query_pos=129
   ANCHOR ref_pos=31098 query_pos=132
   ANCHOR ref_pos=31171 query_pos=141
@@ -13617,7 +13618,7 @@ CHAIN human human_raw36
   ANCHOR ref_pos=5376 query_pos=376
   ANCHOR ref_pos=5429 query_pos=380
   ANCHOR ref_pos=5448 query_pos=421
-  ANCHOR ref_pos=5498 query_pos=422
+  ANCHOR ref_pos=5485 query_pos=456
   ANCHOR ref_pos=5660 query_pos=485
   ANCHOR ref_pos=5661 query_pos=486
   ANCHOR ref_pos=5703 query_pos=506
@@ -13739,7 +13740,7 @@ CHAIN human human_raw38
   ANCHOR ref_pos=37252 query_pos=144
   ANCHOR ref_pos=37253 query_pos=145
   ANCHOR ref_pos=37254 query_pos=146
-  ANCHOR ref_pos=37334 query_pos=176
+  ANCHOR ref_pos=37318 query_pos=195
   ANCHOR ref_pos=37433 query_pos=201
   ANCHOR ref_pos=37525 query_pos=242
   ANCHOR ref_pos=37526 query_pos=243
@@ -13905,12 +13906,12 @@ CHAIN human human_raw39
   ANCHOR ref_pos=1446 query_pos=281
   ANCHOR ref_pos=1582 query_pos=326
   ANCHOR ref_pos=1593 query_pos=328
-  ANCHOR ref_pos=1691 query_pos=338
+  ANCHOR ref_pos=1677 query_pos=355
   ANCHOR ref_pos=1803 query_pos=391
   ANCHOR ref_pos=1810 query_pos=396
   ANCHOR ref_pos=1811 query_pos=397
   ANCHOR ref_pos=1812 query_pos=398
-  ANCHOR ref_pos=1917 query_pos=405
+  ANCHOR ref_pos=1875 query_pos=423
   ANCHOR ref_pos=1971 query_pos=436
 
 CHAIN human human_raw39
@@ -13993,8 +13994,8 @@ CHAIN human human_raw40
   ANCHOR ref_pos=36886 query_pos=208
   ANCHOR ref_pos=36887 query_pos=209
   ANCHOR ref_pos=36902 query_pos=225
-  ANCHOR ref_pos=37069 query_pos=228
-  ANCHOR ref_pos=37229 query_pos=289
+  ANCHOR ref_pos=37145 query_pos=365
+  ANCHOR ref_pos=37146 query_pos=366
   ANCHOR ref_pos=37323 query_pos=368
   ANCHOR ref_pos=37429 query_pos=413
   ANCHOR ref_pos=37478 query_pos=426
@@ -14003,7 +14004,7 @@ CHAIN human human_raw40
   ANCHOR ref_pos=37591 query_pos=453
   ANCHOR ref_pos=37843 query_pos=456
   ANCHOR ref_pos=37844 query_pos=457
-  ANCHOR ref_pos=38081 query_pos=462
+  ANCHOR ref_pos=37946 query_pos=490
   ANCHOR ref_pos=38145 query_pos=491
   ANCHOR ref_pos=38146 query_pos=492
   ANCHOR ref_pos=38162 query_pos=508
@@ -15851,7 +15852,7 @@ CHAIN human human_raw60
   ANCHOR ref_pos=1766 query_pos=64
   ANCHOR ref_pos=1767 query_pos=65
   ANCHOR ref_pos=1875 query_pos=141
-  ANCHOR ref_pos=2037 query_pos=182
+  ANCHOR ref_pos=1923 query_pos=184
   ANCHOR ref_pos=2070 query_pos=194
   ANCHOR ref_pos=2150 query_pos=264
   ANCHOR ref_pos=2154 query_pos=342
@@ -16008,7 +16009,7 @@ CHAIN human human_raw62
   ANCHOR ref_pos=30319 query_pos=50
   ANCHOR ref_pos=30434 query_pos=146
   ANCHOR ref_pos=30435 query_pos=147
-  ANCHOR ref_pos=30532 query_pos=172
+  ANCHOR ref_pos=30492 query_pos=173
   ANCHOR ref_pos=30759 query_pos=188
   ANCHOR ref_pos=30760 query_pos=189
   ANCHOR ref_pos=30892 query_pos=236
@@ -16021,7 +16022,7 @@ CHAIN human human_raw62
   ANCHOR ref_pos=31045 query_pos=307
   ANCHOR ref_pos=31109 query_pos=391
   ANCHOR ref_pos=31110 query_pos=392
-  ANCHOR ref_pos=31205 query_pos=411
+  ANCHOR ref_pos=31173 query_pos=438
   ANCHOR ref_pos=31324 query_pos=522
 
 CHAIN human human_raw62
@@ -16118,7 +16119,7 @@ CHAIN human human_raw63
   ANCHOR ref_pos=29775 query_pos=117
   ANCHOR ref_pos=29776 query_pos=119
   ANCHOR ref_pos=29793 query_pos=125
-  ANCHOR ref_pos=30219 query_pos=127
+  ANCHOR ref_pos=30075 query_pos=130
   ANCHOR ref_pos=30284 query_pos=163
   ANCHOR ref_pos=30344 query_pos=173
   ANCHOR ref_pos=30345 query_pos=174
@@ -16220,7 +16221,7 @@ CHAIN human human_raw64
   ANCHOR ref_pos=2915 query_pos=157
   ANCHOR ref_pos=2916 query_pos=158
   ANCHOR ref_pos=3009 query_pos=204
-  ANCHOR ref_pos=3147 query_pos=258
+  ANCHOR ref_pos=3137 query_pos=266
   ANCHOR ref_pos=3326 query_pos=316
   ANCHOR ref_pos=3337 query_pos=345
   ANCHOR ref_pos=3384 query_pos=346
@@ -16757,7 +16758,7 @@ CHAIN human human_raw69
   ANCHOR ref_pos=28035 query_pos=227
   ANCHOR ref_pos=28036 query_pos=228
   ANCHOR ref_pos=28298 query_pos=277
-  ANCHOR ref_pos=28357 query_pos=291
+  ANCHOR ref_pos=28351 query_pos=299
   ANCHOR ref_pos=28486 query_pos=323
   ANCHOR ref_pos=28487 query_pos=324
   ANCHOR ref_pos=28556 query_pos=338
@@ -16918,14 +16919,14 @@ CHAIN human human_raw70
   ANCHOR ref_pos=30388 query_pos=237
   ANCHOR ref_pos=30425 query_pos=240
   ANCHOR ref_pos=30492 query_pos=241
-  ANCHOR ref_pos=30562 query_pos=249
+  ANCHOR ref_pos=30548 query_pos=256
   ANCHOR ref_pos=30584 query_pos=257
   ANCHOR ref_pos=30755 query_pos=267
   ANCHOR ref_pos=30757 query_pos=271
   ANCHOR ref_pos=30909 query_pos=276
   ANCHOR ref_pos=30910 query_pos=277
   ANCHOR ref_pos=30913 query_pos=278
-  ANCHOR ref_pos=31180 query_pos=313
+  ANCHOR ref_pos=31167 query_pos=363
   ANCHOR ref_pos=31548 query_pos=365
   ANCHOR ref_pos=31549 query_pos=366
   ANCHOR ref_pos=31550 query_pos=367
@@ -16971,7 +16972,7 @@ CHAIN human human_raw70
   ANCHOR ref_pos=1458 query_pos=295
   ANCHOR ref_pos=1459 query_pos=296
   ANCHOR ref_pos=1481 query_pos=362
-  ANCHOR ref_pos=1528 query_pos=380
+  ANCHOR ref_pos=1520 query_pos=400
   ANCHOR ref_pos=1622 query_pos=416
 
 
@@ -17000,14 +17001,14 @@ CHAIN human human_raw71
   ANCHOR ref_pos=31333 query_pos=360
   ANCHOR ref_pos=31358 query_pos=376
   ANCHOR ref_pos=31370 query_pos=411
-  ANCHOR ref_pos=31635 query_pos=450
+  ANCHOR ref_pos=31587 query_pos=455
   ANCHOR ref_pos=31711 query_pos=517
   ANCHOR ref_pos=31712 query_pos=518
 
 CHAIN human human_raw71
   ANCHOR ref_pos=1326 query_pos=14
   ANCHOR ref_pos=1457 query_pos=137
-  ANCHOR ref_pos=1481 query_pos=138
+  ANCHOR ref_pos=1480 query_pos=157
   ANCHOR ref_pos=1556 query_pos=184
   ANCHOR ref_pos=1568 query_pos=186
   ANCHOR ref_pos=1579 query_pos=187
@@ -17122,7 +17123,7 @@ CHAIN human human_raw72
   ANCHOR ref_pos=2212 query_pos=46
   ANCHOR ref_pos=2241 query_pos=52
   ANCHOR ref_pos=2269 query_pos=58
-  ANCHOR ref_pos=2437 query_pos=122
+  ANCHOR ref_pos=2434 query_pos=123
   ANCHOR ref_pos=2505 query_pos=184
   ANCHOR ref_pos=2506 query_pos=185
   ANCHOR ref_pos=2507 query_pos=186
@@ -17205,7 +17206,7 @@ CHAIN human human_raw73
   ANCHOR ref_pos=642 query_pos=169
   ANCHOR ref_pos=648 query_pos=209
   ANCHOR ref_pos=649 query_pos=210
-  ANCHOR ref_pos=836 query_pos=236
+  ANCHOR ref_pos=695 query_pos=253
   ANCHOR ref_pos=924 query_pos=269
   ANCHOR ref_pos=1026 query_pos=308
   ANCHOR ref_pos=1027 query_pos=309
@@ -17249,8 +17250,8 @@ CHAIN human human_raw73
   ANCHOR ref_pos=22864 query_pos=308
   ANCHOR ref_pos=22865 query_pos=309
   ANCHOR ref_pos=22929 query_pos=316
-  ANCHOR ref_pos=23072 query_pos=324
-  ANCHOR ref_pos=23073 query_pos=325
+  ANCHOR ref_pos=23048 query_pos=331
+  ANCHOR ref_pos=23049 query_pos=332
   ANCHOR ref_pos=23182 query_pos=334
   ANCHOR ref_pos=23193 query_pos=373
   ANCHOR ref_pos=23211 query_pos=407
@@ -17269,8 +17270,8 @@ CHAIN human human_raw73
   ANCHOR ref_pos=28798 query_pos=309
   ANCHOR ref_pos=28853 query_pos=315
   ANCHOR ref_pos=28878 query_pos=316
-  ANCHOR ref_pos=28955 query_pos=334
-  ANCHOR ref_pos=28956 query_pos=335
+  ANCHOR ref_pos=28912 query_pos=339
+  ANCHOR ref_pos=28913 query_pos=340
   ANCHOR ref_pos=29039 query_pos=343
   ANCHOR ref_pos=29192 query_pos=409
   ANCHOR ref_pos=29216 query_pos=427
@@ -17361,8 +17362,8 @@ CHAIN human human_raw74
   ANCHOR ref_pos=31113 query_pos=283
   ANCHOR ref_pos=31114 query_pos=284
   ANCHOR ref_pos=31180 query_pos=397
-  ANCHOR ref_pos=31330 query_pos=409
-  ANCHOR ref_pos=31332 query_pos=410
+  ANCHOR ref_pos=31329 query_pos=431
+  ANCHOR ref_pos=31330 query_pos=432
   ANCHOR ref_pos=31545 query_pos=440
   ANCHOR ref_pos=31546 query_pos=441
   ANCHOR ref_pos=31587 query_pos=489
@@ -17434,7 +17435,7 @@ CHAIN human human_raw75
   ANCHOR ref_pos=36312 query_pos=227
   ANCHOR ref_pos=36484 query_pos=334
   ANCHOR ref_pos=36551 query_pos=383
-  ANCHOR ref_pos=36699 query_pos=433
+  ANCHOR ref_pos=36645 query_pos=457
   ANCHOR ref_pos=36748 query_pos=473
   ANCHOR ref_pos=36749 query_pos=474
   ANCHOR ref_pos=36768 query_pos=483
@@ -17614,7 +17615,7 @@ CHAIN human human_raw77
   ANCHOR ref_pos=32553 query_pos=311
   ANCHOR ref_pos=32554 query_pos=312
   ANCHOR ref_pos=32699 query_pos=388
-  ANCHOR ref_pos=32835 query_pos=450
+  ANCHOR ref_pos=32815 query_pos=473
   ANCHOR ref_pos=32911 query_pos=474
   ANCHOR ref_pos=32994 query_pos=479
   ANCHOR ref_pos=32995 query_pos=480
@@ -17632,7 +17633,7 @@ CHAIN human human_raw77
   ANCHOR ref_pos=33505 query_pos=180
   ANCHOR ref_pos=33609 query_pos=186
   ANCHOR ref_pos=33610 query_pos=187
-  ANCHOR ref_pos=33690 query_pos=217
+  ANCHOR ref_pos=33669 query_pos=231
   ANCHOR ref_pos=33722 query_pos=239
   ANCHOR ref_pos=33911 query_pos=310
   ANCHOR ref_pos=33912 query_pos=311
@@ -17705,7 +17706,7 @@ CHAIN human human_raw78
   ANCHOR ref_pos=3069 query_pos=406
   ANCHOR ref_pos=3070 query_pos=407
   ANCHOR ref_pos=3187 query_pos=424
-  ANCHOR ref_pos=3279 query_pos=434
+  ANCHOR ref_pos=3275 query_pos=463
   ANCHOR ref_pos=3372 query_pos=471
   ANCHOR ref_pos=3435 query_pos=531
 
@@ -17787,7 +17788,7 @@ CHAIN human human_raw78
   ANCHOR ref_pos=2199 query_pos=329
   ANCHOR ref_pos=2201 query_pos=330
   ANCHOR ref_pos=2202 query_pos=331
-  ANCHOR ref_pos=2414 query_pos=347
+  ANCHOR ref_pos=2402 query_pos=348
   ANCHOR ref_pos=2434 query_pos=364
   ANCHOR ref_pos=2583 query_pos=434
   ANCHOR ref_pos=2626 query_pos=478
@@ -18002,7 +18003,7 @@ CHAIN human human_raw81
   ANCHOR ref_pos=2227 query_pos=218
   ANCHOR ref_pos=2228 query_pos=219
   ANCHOR ref_pos=2277 query_pos=235
-  ANCHOR ref_pos=2565 query_pos=283
+  ANCHOR ref_pos=2440 query_pos=289
   ANCHOR ref_pos=2641 query_pos=295
   ANCHOR ref_pos=2756 query_pos=298
   ANCHOR ref_pos=2826 query_pos=364
@@ -18073,7 +18074,7 @@ CHAIN human human_raw81
   ANCHOR ref_pos=24776 query_pos=149
   ANCHOR ref_pos=24819 query_pos=171
   ANCHOR ref_pos=24887 query_pos=174
-  ANCHOR ref_pos=25112 query_pos=179
+  ANCHOR ref_pos=25013 query_pos=194
   ANCHOR ref_pos=25168 query_pos=208
   ANCHOR ref_pos=25169 query_pos=209
   ANCHOR ref_pos=25170 query_pos=210
@@ -18359,7 +18360,7 @@ CHAIN human human_raw84
   ANCHOR ref_pos=7910 query_pos=251
   ANCHOR ref_pos=7911 query_pos=252
   ANCHOR ref_pos=7912 query_pos=253
-  ANCHOR ref_pos=8135 query_pos=259
+  ANCHOR ref_pos=8124 query_pos=311
   ANCHOR ref_pos=8217 query_pos=321
   ANCHOR ref_pos=8218 query_pos=322
   ANCHOR ref_pos=8303 query_pos=392
@@ -19129,8 +19130,8 @@ CHAIN human human_raw91
   ANCHOR ref_pos=931 query_pos=420
   ANCHOR ref_pos=969 query_pos=465
   ANCHOR ref_pos=970 query_pos=466
-  ANCHOR ref_pos=1028 query_pos=467
-  ANCHOR ref_pos=1029 query_pos=468
+  ANCHOR ref_pos=1026 query_pos=484
+  ANCHOR ref_pos=1027 query_pos=485
   ANCHOR ref_pos=1065 query_pos=501
   ANCHOR ref_pos=1066 query_pos=502
 
@@ -19186,7 +19187,7 @@ CHAIN human human_raw92
   ANCHOR ref_pos=937 query_pos=59
   ANCHOR ref_pos=938 query_pos=60
   ANCHOR ref_pos=1065 query_pos=61
-  ANCHOR ref_pos=1296 query_pos=140
+  ANCHOR ref_pos=1204 query_pos=160
   ANCHOR ref_pos=1370 query_pos=206
   ANCHOR ref_pos=1478 query_pos=224
   ANCHOR ref_pos=1479 query_pos=225
@@ -19399,7 +19400,7 @@ CHAIN human human_raw94
   ANCHOR ref_pos=2635 query_pos=400
   ANCHOR ref_pos=2777 query_pos=462
   ANCHOR ref_pos=2827 query_pos=470
-  ANCHOR ref_pos=2924 query_pos=480
+  ANCHOR ref_pos=2861 query_pos=486
   ANCHOR ref_pos=3006 query_pos=488
   ANCHOR ref_pos=3007 query_pos=489
 
@@ -19435,7 +19436,7 @@ CHAIN human human_raw94
   ANCHOR ref_pos=24739 query_pos=208
   ANCHOR ref_pos=24877 query_pos=214
   ANCHOR ref_pos=24878 query_pos=215
-  ANCHOR ref_pos=24950 query_pos=216
+  ANCHOR ref_pos=24941 query_pos=244
   ANCHOR ref_pos=25003 query_pos=266
   ANCHOR ref_pos=25004 query_pos=267
   ANCHOR ref_pos=25005 query_pos=268
@@ -19829,7 +19830,7 @@ CHAIN human human_raw98
   ANCHOR ref_pos=3400 query_pos=412
   ANCHOR ref_pos=3401 query_pos=413
   ANCHOR ref_pos=3402 query_pos=414
-  ANCHOR ref_pos=3477 query_pos=430
+  ANCHOR ref_pos=3465 query_pos=432
   ANCHOR ref_pos=3612 query_pos=473
   ANCHOR ref_pos=3660 query_pos=504
 

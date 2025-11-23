@@ -164,26 +164,26 @@ int main(int argc, char** argv) {
                 hash_table[hash_val].push_back(e);
             }
 
-            // // Remove outlier hashes (high frequency) using Tukey's method before writing
-            // std::vector<size_t> freqs;
-            // for (const auto& kv : hash_table) freqs.push_back(kv.second.size());
-            // if (!freqs.empty()) {
-            //     std::sort(freqs.begin(), freqs.end());
-            //     size_t q1 = freqs[freqs.size()/4];
-            //     size_t q3 = freqs[(3*freqs.size())/4];
-            //     size_t iqr = q3 - q1;
-            //     size_t cutoff = q3 + 1.5 * iqr;
-            //     size_t pruned = 0;
-            //     for (auto it = hash_table.begin(); it != hash_table.end(); ) {
-            //         if (it->second.size() > cutoff) {
-            //             it = hash_table.erase(it);
-            //             pruned++;
-            //         } else {
-            //             ++it;
-            //         }
-            //     }
-            //     std::cout << "Pruned " << pruned << " outlier hashes (cutoff=" << cutoff << ") before writing hash table." << std::endl;
-            // }
+            // Remove outlier hashes (high frequency) using Tukey's method before writing
+            std::vector<size_t> freqs;
+            for (const auto& kv : hash_table) freqs.push_back(kv.second.size());
+            if (!freqs.empty()) {
+                std::sort(freqs.begin(), freqs.end());
+                size_t q1 = freqs[freqs.size()/4];
+                size_t q3 = freqs[(3*freqs.size())/4];
+                size_t iqr = q3 - q1;
+                size_t cutoff = std::max(300UL, q3 + static_cast<size_t>(2.3 * iqr));
+                size_t pruned = 0;
+                for (auto it = hash_table.begin(); it != hash_table.end(); ) {
+                    if (it->second.size() > cutoff) {
+                        it = hash_table.erase(it);
+                        pruned++;
+                    } else {
+                        ++it;
+                    }
+                }
+                std::cout << "Pruned " << pruned << " outlier hashes (cutoff=" << cutoff << ") before writing hash table." << std::endl;
+            }
 
             // 7. Write out hash table
             std::string hash_table_path = out_path + std::to_string(tile) + ".txt";

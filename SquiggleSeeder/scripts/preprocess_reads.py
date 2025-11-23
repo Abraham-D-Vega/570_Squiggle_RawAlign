@@ -26,7 +26,7 @@ except ImportError:
     USE_ONT_API = False
 
 
-def extract_signal_from_fast5_ont_api(fast5_path, max_length=5000, read_index=0):
+def extract_signal_from_fast5_ont_api(fast5_path, max_length, read_index=0):
     """
     Extract raw ADC signal using ONT Fast5 API (better VBZ compression support).
     Returns raw signal truncated to max_length samples.
@@ -66,7 +66,7 @@ def extract_signal_from_fast5_ont_api(fast5_path, max_length=5000, read_index=0)
     return None
 
 
-def extract_signal_from_fast5_h5py(fast5_path, max_length=5000, read_index=0):
+def extract_signal_from_fast5_h5py(fast5_path, max_length, read_index=0):
     """
     Extract raw ADC signal using h5py (for VBZ-compressed FAST5 files).
     Returns raw signal truncated to max_length samples.
@@ -108,7 +108,7 @@ def extract_signal_from_fast5_h5py(fast5_path, max_length=5000, read_index=0):
     return None
 
 
-def extract_signal_from_fast5(fast5_path, max_length=5000, read_index=0):
+def extract_signal_from_fast5(fast5_path, max_length, read_index=0):
     """
     Extract raw ADC signal from a FAST5 file, truncated to max_length samples.
     
@@ -160,6 +160,8 @@ Examples:
                         help='Genome name (e.g., lambda, human, covid)')
     parser.add_argument('--num-files', type=int, default=100,
                         help='Number of read files to generate (default: 100)')
+    parser.add_argument('--read-size', type=int, default=10000,
+                        help='Number of samples per read (default: 10000)')
     
     args = parser.parse_args()
     
@@ -191,7 +193,7 @@ Examples:
     
     # Generate read files - extract multiple reads from multi-FAST5 files if needed
     # Only keep reads with at least 5000 samples
-    MIN_READ_LENGTH = 5000
+    MIN_READ_LENGTH = args.read_size
     generated_count = 0
     file_index = 0
     read_index = 0
@@ -201,7 +203,7 @@ Examples:
         fast5_path = fast5_files[file_index]
         
         # Extract raw signal from specific read index
-        signal = extract_signal_from_fast5(fast5_path, read_index=read_index)
+        signal = extract_signal_from_fast5(fast5_path, MIN_READ_LENGTH, read_index=read_index)
         
         if signal is not None:
             # Check if read is long enough
