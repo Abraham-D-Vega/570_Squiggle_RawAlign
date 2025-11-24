@@ -49,7 +49,7 @@ fi
 # Step 2: Preprocess genome read signals
 echo ""
 echo "Step 2: Preprocessing $GENOME read signals..."z
-python3 SquiggleSeeder/scripts/preprocess_reads.py "$GENOME" --num-files "$NUM_FILES" --read-sie "$READ_SIZE"
+python3 SquiggleSeeder/scripts/preprocess_reads.py "$GENOME" --num-files "$NUM_FILES" --read-size "$READ_SIZE"
 
 # Check if genome read files were created
 SAMPLE_GENOME_READ="datasets/$GENOME/${GENOME}_raw0.txt"
