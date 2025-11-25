@@ -35,7 +35,7 @@ constexpr int SMALL_BASE_THRESHOLD = 50'000'000;
 constexpr int MAX_ALIGN_COST_FOR_POSITIVE = 75'000; // Max cost to consider alignment "positive"
 
 // # bits in hash value (CHANGEABLE: 32 or 16)
-constexpr int HASH_BITS = 16;
+constexpr int HASH_BITS = 18;
 static_assert(HASH_BITS >= 16 && HASH_BITS <= 32);
 
 /*
@@ -48,6 +48,7 @@ static_assert(TILE_OVERLAP < TILE_SIZE);
 
 // Hashing functions
 constexpr uint64_t HASH32_MASK = (1ULL<<32)-1;
+constexpr uint64_t HASH_BITS_MASK = (1ULL<<HASH_BITS)-1;
 
 inline uint32_t hash64to32(uint64_t key){
     key = (~key + (key << 21)) & HASH32_MASK; // key = (key << 21) - key - 1;
@@ -56,7 +57,7 @@ inline uint32_t hash64to32(uint64_t key){
     key = key ^ key >> 14;
     key = ((key + (key << 2)) + (key << 4)) & HASH32_MASK; // key * 21
     key = key ^ key >> 28;
-    key = (key + (key << 31)) & ((1ULL<<HASH_BITS)-1);
+    key = (key + (key << 31)) & HASH_BITS_MASK;
     return static_cast<uint32_t>(key);
 }
 

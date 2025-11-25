@@ -315,6 +315,9 @@ int main(int argc, char **argv) {
         for (auto &t : threads) {
             t.join();
         }
+        std::cout << "\nCompleted processing "
+                  << ((pass == 0) ? genome : "human")
+                  << " reads.\n";
 
         // Now write outputs in the original deterministic order
         for (int i = 0; i < num_reads; ++i) {
@@ -380,12 +383,6 @@ int main(int argc, char **argv) {
                     }
                 }
             }
-
-            // Console summary per read (same order/content as before)
-            std::cout << "  " << res.read_id << ": "
-                      << res.num_seeds << " seeds, "
-                      << res.num_hits  << " hits, "
-                      << res.chains.size() << " chains\n";
         }
     }
 

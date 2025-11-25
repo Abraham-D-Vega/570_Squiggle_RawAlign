@@ -13,7 +13,7 @@
 // Simple usage helper
 static void usage(const char* prog) {
     std::cerr << "Usage: " << prog
-              << " <reference_fasta> <kmer_lookup_table> <output_hash_table>\n";
+              << " <reference_fasta> <kmer_lookup_table> <output_hash_table> <iqr_multiplier>\n";
 }
 
 // Read the reference genome
@@ -100,7 +100,7 @@ void dump_hash_table(const std::string& out_path, const std::unordered_map<uint3
 }
 
 int main(int argc, char** argv) {
-    if (argc != 4) {
+    if (argc != 5) {
         usage(argv[0]);
         return 1;
     }
@@ -108,6 +108,7 @@ int main(int argc, char** argv) {
     const std::string ref_path   = argv[1];
     const std::string table_path = argv[2];
     const std::string out_path   = argv[3];
+    const double iqr_multiplier  = std::stod(argv[4]);
 
     try {
         // 1. Load reference and k-mer model
@@ -163,6 +164,7 @@ int main(int argc, char** argv) {
                 // Location: use event start index as reference position
                 hash_table[hash_val].push_back(e);
             }
+            std::cout << "Computed total of " << hash_table.size() << " unique hashes." << std::endl;
 
             // Remove outlier hashes (high frequency) using Tukey's method before writing
             std::vector<size_t> freqs;
@@ -172,7 +174,7 @@ int main(int argc, char** argv) {
                 size_t q1 = freqs[freqs.size()/4];
                 size_t q3 = freqs[(3*freqs.size())/4];
                 size_t iqr = q3 - q1;
-                size_t cutoff = std::max(300UL, q3 + static_cast<size_t>(2.3 * iqr));
+                size_t cutoff = std::max(300UL, q3 + static_cast<size_t>(iqr_multiplier * iqr));
                 size_t pruned = 0;
                 for (auto it = hash_table.begin(); it != hash_table.end(); ) {
                     if (it->second.size() > cutoff) {

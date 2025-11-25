@@ -4,12 +4,52 @@
 
 set -e
 
+NUM_FILES=100
+IQR_MULTIPLIER=4.03   # default
+
 if [ $# -lt 1 ]; then
     echo "Usage: $0 <genome> [--align]"
     echo "  genome: genome name (e.g., lambda, ecoli, covid)"
-    echo "  --align: run alignment and show statistics (optional)"
+    echo "  below are optional arguments:"
+    echo "  --align: run alignment and show statistics"
+    echo "  --num_files <N>: number of read files to simulate (default: $NUM_FILES)"
+    echo "  --iqr_multiplier <value>: IQR multiplier for hash table pruning (default: $IQR_MULTIPLIER)"
     exit 1
 fi
+
+# Helper: check if all read files exist and have READ_SIZE+1 lines for a given species
+check_reads_complete() {
+    local species="$1"
+    local num_files="$2"
+    local read_size="$3"
+    local dir="datasets/$species"
+    local prefix
+    local expected_lines=$((read_size))
+
+    if [ "$species" = "human" ]; then
+        prefix="human_raw"
+    else
+        prefix="${species}_raw"
+    fi
+
+    for ((i=0; i<num_files; i++)); do
+        local f="${dir}/${prefix}${i}.txt"
+        if [ ! -f "$f" ]; then
+            # Missing at least one file
+            return 1
+        fi
+
+        # Check line count (must be READ_SIZE + 1)
+        local lines
+        lines=$(wc -l < "$f")
+        if [ "$lines" -ne "$expected_lines" ]; then
+            # Wrong length
+            return 1
+        fi
+    done
+
+    return 0  # all files exist and have correct size
+}
 
 GENOME=$1
 ALIGN_FLAG=""
@@ -22,6 +62,7 @@ echo "Seeding Simulation for $GENOME"
 echo "================================================"
 
 # Step 1: Compile hash table builder
+mkdir -p datasets/$GENOME/
 echo ""
 echo "Step 1: Compiling hash table builder..."
 g++ -std=c++17 -O3 -I SquiggleSeeder/src \
@@ -29,10 +70,27 @@ g++ -std=c++17 -O3 -I SquiggleSeeder/src \
     -o hash_table_builder.o
 echo "Compiled hash_table_builder.o"
 
+# Parse additional arguments
+while [[ $# -gt 0 ]]; do
+    case $1 in
+        --num_files)
+            NUM_FILES="$2"
+            shift 2
+            ;;
+        --iqr_multiplier)
+            IQR_MULTIPLIER="$2"
+            shift 2
+            ;;
+        *)
+            shift
+            ;;
+    esac
+done
+
 # Step 2: Generate hash table (always regenerate)
 echo ""
 echo "Step 2: Generating hash table..."
-./hash_table_builder.o "data/$GENOME/reference.fasta" "data/dna_kmer_model.txt" "datasets/$GENOME/hash_table"
+./hash_table_builder.o "data/$GENOME/reference.fasta" "data/dna_kmer_model.txt" "datasets/$GENOME/hash_table" "$IQR_MULTIPLIER"
 if [ ! -f "datasets/$GENOME/hash_table0.txt" ]; then
     echo "Error: Hash table generation failed"
     exit 1
@@ -48,39 +106,39 @@ if [ ! -f "datasets/$GENOME/ref.txt" ]; then
     exit 1
 fi
 
-NUM_FILES=100
-while [[ $# -gt 0 ]]; do
-    case $1 in
-        --num_files)
-            NUM_FILES="$2"
-            shift 2
-            ;;
-        *)
-            shift
-            ;;
-    esac
-done
-
+# Set READ_SIZE based on genome
 if [ "$GENOME" = "covid" ]; then
     READ_SIZE=5000
 else
     READ_SIZE=10000
 fi
 
-# Step 4: Preprocess genome read signals
+# Step 4: Preprocess genome read signals (only if any files missing or bad length)
 echo ""
-echo "Step 4: Preprocessing $GENOME read signals..."
-python3 SquiggleSeeder/scripts/preprocess_reads.py "$GENOME" --num-files "$NUM_FILES" --read-size "$READ_SIZE"
-SAMPLE_GENOME_READ="datasets/$GENOME/${GENOME}_raw0.txt"
-if [ ! -f "$SAMPLE_GENOME_READ" ]; then
-        echo "Error: Genome read preprocessing failed"
-        exit 1
+echo "Step 4: Checking/Preprocessing $GENOME read signals..."
+if check_reads_complete "$GENOME" "$NUM_FILES" "$READ_SIZE"; then
+    echo "All $GENOME read files already exist in datasets/$GENOME with correct length - skipping preprocessing."
+else
+    echo "Some $GENOME read files are missing or have incorrect length - running preprocessing..."
+    python3 SquiggleSeeder/scripts/preprocess_reads.py "$GENOME" --num-files "$NUM_FILES" --read-size "$READ_SIZE"
 fi
 
-# Step 5: Preprocess human read signals
+SAMPLE_GENOME_READ="datasets/$GENOME/${GENOME}_raw0.txt"
+if [ ! -f "$SAMPLE_GENOME_READ" ]; then
+    echo "Error: Genome read preprocessing failed"
+    exit 1
+fi
+
+# Step 5: Preprocess human read signals (only if any files missing or bad length)
 echo ""
-echo "Step 5: Preprocessing human read signals..."
-python3 SquiggleSeeder/scripts/preprocess_reads.py human --num-files "$NUM_FILES" --read-size "$READ_SIZE"
+echo "Step 5: Checking/Preprocessing human read signals..."
+if check_reads_complete "human" "$NUM_FILES" "$READ_SIZE"; then
+    echo "All human read files already exist in datasets/human with correct length - skipping preprocessing."
+else
+    echo "Some human read files are missing or have incorrect length - running preprocessing..."
+    python3 SquiggleSeeder/scripts/preprocess_reads.py human --num-files "$NUM_FILES" --read-size "$READ_SIZE"
+fi
+
 SAMPLE_HUMAN_READ="datasets/human/human_raw0.txt"
 if [ ! -f "$SAMPLE_HUMAN_READ" ]; then
     echo "Error: Human read preprocessing failed"

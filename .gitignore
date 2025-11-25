@@ -9,3 +9,4 @@ venv/*
 .python-version
 data/*/fast5/*
 datasets/*
+grid_results.txt
