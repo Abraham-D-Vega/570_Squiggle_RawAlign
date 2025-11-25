@@ -5,6 +5,11 @@
 #include <cmath>
 #include <cassert>
 
+struct Anchor {
+    uint32_t q;
+    uint32_t r;
+};
+
 // Constants derived from RawHash parameters (DO NOT CHANGE)
 
 // # consecutive bases grouped into an event
@@ -35,7 +40,7 @@ constexpr int SMALL_BASE_THRESHOLD = 50'000'000;
 constexpr int MAX_ALIGN_COST_FOR_POSITIVE = 75'000; // Max cost to consider alignment "positive"
 
 // # bits in hash value (CHANGEABLE: 32 or 16)
-constexpr int HASH_BITS = 18;
+constexpr int HASH_BITS = 32;
 static_assert(HASH_BITS >= 16 && HASH_BITS <= 32);
 
 /*
@@ -159,6 +164,30 @@ inline uint32_t generate_seed_hash(const std::vector<uint8_t>& codes, size_t sta
     }
     uint32_t h32 = hash64to32(seed_code);
     return h32;
+}
+
+/**
+ * Generate a hash from N consecutive event codes.
+ * 
+ * @param codes Quantized event codes
+ * @param start_idx Starting index in codes vector
+ * @param N Number of events per seed
+ * @return Hash value (16-bit or 32-bit depending on HASH_BITS)
+ */
+void generate_seed_hashes(const std::vector<uint8_t>& codes, int N, std::vector<uint32_t>& hashes) {
+    hashes.clear();
+    uint32_t num_seeds = static_cast<uint32_t>(codes.size()) - N + 1;
+    hashes.resize(num_seeds);
+    uint64_t mask = (1ULL << (BITS_PER_EVENT * N)) - 1;
+    uint64_t seed_code = 0;
+    for (int j = 0; j < codes.size(); ++j) {
+        seed_code <<= BITS_PER_EVENT;
+        seed_code |= static_cast<uint64_t>(codes[j]);
+        seed_code &= mask;
+        if (j >= N - 1) {
+            hashes[j - N + 1] = hash64to32(seed_code);
+        }
+    }
 }
 
 /**

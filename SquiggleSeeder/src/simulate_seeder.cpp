@@ -11,6 +11,7 @@
 #include <iomanip>
 #include <unordered_map>
 #include <thread>
+#include <chrono>
 
 // Read raw signal from file
 bool read_raw_signal(const std::string &filepath, std::vector<uint32_t> &signal) {
@@ -115,6 +116,16 @@ struct ReadResult {
     uint32_t align_start     = 0;
     uint32_t align_end       = 0;
     uint32_t alignment_length= 0;
+#ifdef PROFILE
+    double time_event_detect = 0.0;
+    double time_normalize    = 0.0;
+    double time_quantize     = 0.0;
+    double time_hash         = 0.0;
+    double time_anchors      = 0.0;
+    double time_sort         = 0.0;
+    double time_chain        = 0.0;
+    double time_align        = 0.0;
+#endif
 };
 
 void process_read(int pass,
@@ -144,6 +155,10 @@ void process_read(int pass,
     }
 
     // Detect events using oracle segmenter
+    #ifdef PROFILE
+    auto t_start = std::chrono::high_resolution_clock::now();
+    #endif
+
     Options opt;
     std::vector<Event> events = detect_events_from_raw(raw_signal, opt);
     if (events.empty()) {
@@ -156,40 +171,85 @@ void process_read(int pass,
     std::vector<float> event_avgs;
     event_avgs.reserve(events.size());
     for (const auto &e : events) event_avgs.push_back(e.avg);
+    #ifdef PROFILE
+    double t_event_detect = std::chrono::duration<double, std::milli>(
+        std::chrono::high_resolution_clock::now() - t_start).count();
+    result.time_event_detect = t_event_detect;
+    #endif
 
     // Normalize events
     std::vector<float> norm_events;
     normalize_events(event_avgs, norm_events);
+    #ifdef PROFILE
+    double t_normalize = std::chrono::duration<double, std::milli>(
+        std::chrono::high_resolution_clock::now() - t_start).count();
+    result.time_normalize = t_normalize - t_event_detect;
+    #endif
 
     // Quantize events
     std::vector<uint8_t> codes;
     quantize_events(norm_events, codes);
+    #ifdef PROFILE
+    double t_quantize = std::chrono::duration<double, std::milli>(
+        std::chrono::high_resolution_clock::now() - t_start).count();
+    result.time_quantize = t_quantize - t_normalize;
+    #endif
 
     // Seeds
     int num_seeds = static_cast<int>(codes.size()) - N + 1;
     if (num_seeds < 0) num_seeds = 0;
     int num_hits = 0;
 
-    std::vector<std::vector<uint32_t>> anchors(num_seeds);
+    std::vector<uint32_t> hashes;
+    generate_seed_hashes(codes, N, hashes);
+    #ifdef PROFILE
+    double t_hash = std::chrono::duration<double, std::milli>(
+        std::chrono::high_resolution_clock::now() - t_start).count();
+    result.time_hash = t_hash - t_quantize;
+    #endif
+
+    std::vector<Anchor> anchors(num_seeds);
     for (int j = 0; j < num_seeds; ++j) {
-        uint32_t hash = generate_seed_hash(codes, static_cast<size_t>(j), N);
-        auto it = hash_table.find(hash);
+        auto it = hash_table.find(hashes[j]);
         if (it != hash_table.end()) {
             num_hits++;
             const auto &locs = it->second;
-            anchors[j].insert(anchors[j].end(), locs.begin(), locs.end());
+            for (auto r_pos : locs) {
+                anchors.push_back(Anchor{static_cast<uint32_t>(j), r_pos});
+            }
         }
     }
+    #ifdef PROFILE
+    double t_anchors = std::chrono::duration<double, std::milli>(           
+        std::chrono::high_resolution_clock::now() - t_start).count();   
+    result.time_anchors = t_anchors - t_hash;
+    #endif
+
+    std::sort(anchors.begin(), anchors.end(),
+        [](const Anchor &a, const Anchor &b) {
+            if (a.r != b.r) return a.r < b.r;
+            return a.q < b.q;
+        });
+    #ifdef PROFILE
+    double t_sort = std::chrono::duration<double, std::milli>(           
+        std::chrono::high_resolution_clock::now() - t_start).count();   
+    result.time_sort = t_sort - t_anchors;
+    #endif
 
     // Chaining
     std::vector<std::vector<std::pair<uint32_t, uint32_t>>> chains;
     chain_seeds(anchors, chains);
-
     // Fill result
     result.processed = true;
     result.num_seeds = num_seeds;
     result.num_hits  = num_hits;
     result.chains    = std::move(chains);
+
+    #ifdef PROFILE
+    double t_chain = std::chrono::duration<double, std::milli>(           
+        std::chrono::high_resolution_clock::now() - t_start).count();   
+    result.time_chain = t_chain - t_sort;
+    #endif
 
     // Alignment (if requested)
     if (do_align) {
@@ -210,7 +270,12 @@ void process_read(int pass,
             result.read_size   = static_cast<uint32_t>(raw_signal.size());
             result.align_valid = false;
         }
-    }
+    }  
+    #ifdef PROFILE
+    double t_align = std::chrono::duration<double, std::milli>(
+        std::chrono::high_resolution_clock::now() - t_start).count();
+    result.time_align = t_align - t_chain;
+    #endif
 }
 
 int main(int argc, char **argv) {
@@ -309,12 +374,19 @@ int main(int argc, char **argv) {
                                  std::cref(ref_signal),
                                  do_align,
                                  std::ref(results[i]));
+            #ifdef PROFILE
+                threads[i].join();
+            #endif
+            #ifndef PROFILE
+                if (threads.size() >= 20) {
+                    for (auto &t : threads) {
+                        t.join();
+                    }
+                    threads.clear();
+                }
+            #endif
         }
 
-        // Join all threads
-        for (auto &t : threads) {
-            t.join();
-        }
         std::cout << "\nCompleted processing "
                   << ((pass == 0) ? genome : "human")
                   << " reads.\n";
@@ -384,6 +456,50 @@ int main(int argc, char **argv) {
                 }
             }
         }
+        #ifdef PROFILE
+        std::cout << "\nProfiling results for "
+                  << ((pass == 0) ? genome : "human") << " reads\n";
+        ReadResult avg_res;
+        int profiled_reads = 0;
+        for (const auto &res : results) {
+            if (!res.processed) continue;
+            profiled_reads++;
+            avg_res.time_event_detect += res.time_event_detect;
+            avg_res.time_normalize    += res.time_normalize;
+            avg_res.time_quantize     += res.time_quantize;
+            avg_res.time_hash         += res.time_hash;
+            avg_res.time_anchors      += res.time_anchors;
+            avg_res.time_sort         += res.time_sort;
+            avg_res.time_chain        += res.time_chain;
+            avg_res.time_align        += res.time_align;
+        }
+        avg_res.time_event_detect /= profiled_reads;
+        avg_res.time_normalize    /= profiled_reads;        
+        avg_res.time_quantize     /= profiled_reads;
+        avg_res.time_hash         /= profiled_reads;
+        avg_res.time_anchors      /= profiled_reads;
+        avg_res.time_sort         /= profiled_reads;
+        avg_res.time_chain        /= profiled_reads;
+        avg_res.time_align        /= profiled_reads;
+
+        std::cout << "  Average event detection time: " << avg_res.time_event_detect << " ms\n";
+        std::cout << "  Average normalization time:   " << avg_res.time_normalize    << " ms\n";
+        std::cout << "  Average quantization time:    " << avg_res.time_quantize     << " ms\n";
+        std::cout << "  Average hashing time:          " << avg_res.time_hash         << " ms\n";
+        std::cout << "  Average anchor finding time:   " << avg_res.time_anchors      << " ms\n";
+        std::cout << "  Average sorting time:          " << avg_res.time_sort         << " ms\n";
+        std::cout << "  Average chaining time:         " << avg_res.time_chain        << " ms\n";
+        std::cout << "  Average TOTAL seeding time:    "
+                  << (avg_res.time_event_detect + avg_res.time_normalize +
+                      avg_res.time_quantize + avg_res.time_hash +
+                      avg_res.time_anchors + avg_res.time_sort +
+                      avg_res.time_chain)
+                  << " ms\n\n";
+        if (do_align) {
+            std::cout << "  Average alignment time:       " << avg_res.time_align        << " ms\n";
+        }
+        std::cout << "\n";
+        #endif
     }
 
     out.close();

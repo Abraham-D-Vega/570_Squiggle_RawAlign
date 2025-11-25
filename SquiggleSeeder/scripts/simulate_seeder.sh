@@ -6,6 +6,7 @@ set -e
 
 NUM_FILES=100
 IQR_MULTIPLIER=4.03   # default
+PROFILE_FLAG=0
 
 if [ $# -lt 1 ]; then
     echo "Usage: $0 <genome> [--align]"
@@ -14,6 +15,7 @@ if [ $# -lt 1 ]; then
     echo "  --align: run alignment and show statistics"
     echo "  --num_files <N>: number of read files to simulate (default: $NUM_FILES)"
     echo "  --iqr_multiplier <value>: IQR multiplier for hash table pruning (default: $IQR_MULTIPLIER)"
+    echo "  --profile: compile with profiling enabled"
     exit 1
 fi
 
@@ -81,10 +83,15 @@ while [[ $# -gt 0 ]]; do
             IQR_MULTIPLIER="$2"
             shift 2
             ;;
+        --profile)
+            PROFILE_FLAG=1
+            shift
+            ;;
         *)
             shift
             ;;
     esac
+
 done
 
 # Step 2: Generate hash table (always regenerate)
@@ -146,11 +153,19 @@ if [ ! -f "$SAMPLE_HUMAN_READ" ]; then
 fi
 
 # Step 6: Compile C++ seeding program
+
 echo ""
 echo "Step 6: Compiling seeding program..."
-g++ -std=c++17 -O3 -I SquiggleSeeder/src \
-    SquiggleSeeder/src/simulate_seeder.cpp \
-    -o SquiggleSeeder/src/simulate_seeder.o
+if [ "$PROFILE_FLAG" -eq 1 ]; then
+    echo "Compiling with profiling enabled (-DPROFILE)"
+    g++ -std=c++17 -O3 -DPROFILE -I SquiggleSeeder/src \
+        SquiggleSeeder/src/simulate_seeder.cpp \
+        -o SquiggleSeeder/src/simulate_seeder.o
+else
+    g++ -std=c++17 -O3 -I SquiggleSeeder/src \
+        SquiggleSeeder/src/simulate_seeder.cpp \
+        -o SquiggleSeeder/src/simulate_seeder.o
+fi
 echo "Compiled simulate_seeder.o"
 
 # Step 7: Run seeding simulation
