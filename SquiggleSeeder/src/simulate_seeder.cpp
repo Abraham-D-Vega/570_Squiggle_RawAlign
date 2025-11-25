@@ -12,6 +12,52 @@
 #include <unordered_map>
 #include <thread>
 #include <chrono>
+#include <cstddef>
+
+// Internal helper
+template <typename RandomIt, typename Compare>
+void parallel_sort_impl(RandomIt first, RandomIt last,
+                        Compare comp,
+                        std::size_t max_threads)
+{
+    auto len = last - first;
+    const std::size_t SEQ_CUTOFF = 20000; // tune this threshold
+
+    // Small range or no threads left: just do normal sort
+    if (len <= 1 || max_threads <= 1 || len < SEQ_CUTOFF) {
+        std::sort(first, last, comp);
+        return;
+    }
+
+    RandomIt mid = first + len / 2;
+
+    // Split threads roughly in half for each side
+    std::size_t left_threads  = max_threads / 2;
+    std::size_t right_threads = max_threads - left_threads;
+
+    // Sort left half in a new thread
+    std::thread left_thread([first, mid, comp, left_threads]() {
+        parallel_sort_impl(first, mid, comp, left_threads);
+    });
+
+    // Sort right half in current thread
+    parallel_sort_impl(mid, last, comp, right_threads);
+
+    // Wait for left side
+    left_thread.join();
+
+    // Merge the two sorted halves
+    std::inplace_merge(first, mid, last, comp);
+}
+
+template <typename RandomIt, typename Compare>
+void parallel_sort(RandomIt first, RandomIt last,
+                   Compare comp,
+                   std::size_t max_threads = std::thread::hardware_concurrency())
+{
+    if (max_threads == 0) max_threads = 2; // fallback
+    parallel_sort_impl(first, last, comp, max_threads);
+}
 
 // Read raw signal from file
 bool read_raw_signal(const std::string &filepath, std::vector<uint32_t> &signal) {
@@ -225,11 +271,19 @@ void process_read(int pass,
     result.time_anchors = t_anchors - t_hash;
     #endif
 
-    std::sort(anchors.begin(), anchors.end(),
+    // std::sort(anchors.begin(), anchors.end(),
+    //     [](const Anchor &a, const Anchor &b) {
+    //         if (a.r != b.r) return a.r < b.r;
+    //         return a.q < b.q;
+    //     });
+    parallel_sort(
+        anchors.begin(), anchors.end(),
         [](const Anchor &a, const Anchor &b) {
             if (a.r != b.r) return a.r < b.r;
             return a.q < b.q;
-        });
+        },
+        10 // max threads you want to allow
+    );
     #ifdef PROFILE
     double t_sort = std::chrono::duration<double, std::milli>(           
         std::chrono::high_resolution_clock::now() - t_start).count();   
