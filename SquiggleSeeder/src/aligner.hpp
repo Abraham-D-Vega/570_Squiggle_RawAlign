@@ -144,7 +144,7 @@ inline ChainSDTWResult run_best_chain_sdtw(
     const std::vector<uint16_t>& raw_read,
     const std::vector<uint8_t>& ref_signal,
     const std::vector<std::vector<std::pair<uint32_t, uint32_t>>>& chains,
-    int window_size = 3000
+    int window_size = 2000
 ) {
     std::vector<uint8_t> norm_read;
     discrete_normalize(raw_read, norm_read);
@@ -154,7 +154,7 @@ inline ChainSDTWResult run_best_chain_sdtw(
         const auto& chain = chains[i];
         // int chain_center_ref = (int(chain.front().second) + int(chain.back().second)) / 2;
         // int ref_start = chain_center_ref - window_size/2;
-        int ref_start = int(chain.front().second) - 2 * int(chain.front().first);
+        int ref_start = int(chain.front().second) - int(chain.front().first) - 300;
         if (ref_start < 0) ref_start = 0;
         int ref_end = ref_start + window_size;
         if (ref_end > int(ref_signal.size())) {
