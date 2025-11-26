@@ -10,6 +10,9 @@ struct Anchor {
     uint32_t r;
 };
 
+constexpr uint32_t POST_SEED_ALIGN_SIZE = 10000; // # how many samples to align after seeding (5k or 10k)
+int MAX_ALIGN_COST_FOR_POSITIVE = POST_SEED_ALIGN_SIZE * 8; // Max cost to consider alignment "positive"
+
 // Constants derived from RawHash parameters (DO NOT CHANGE)
 
 // # consecutive bases grouped into an event
@@ -36,8 +39,6 @@ static_assert(LOW_BITS == 3);
 */
 constexpr int VIRAL_BASE_THRESHOLD = 1'000'000;
 constexpr int SMALL_BASE_THRESHOLD = 50'000'000;
-
-constexpr int MAX_ALIGN_COST_FOR_POSITIVE = 75'000; // Max cost to consider alignment "positive"
 
 // # bits in hash value (CHANGEABLE: 32 or 16)
 constexpr int HASH_BITS = 32;

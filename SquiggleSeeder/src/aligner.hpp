@@ -141,11 +141,12 @@ struct ChainSDTWResult {
 // Run sDTW for all chains on a normalized read, expanding each chain region to 5000 events
 // Returns the best performing chain (lowest cost), its cost, and reference start/end positions
 inline ChainSDTWResult run_best_chain_sdtw(
-    const std::vector<uint16_t>& raw_read,
+    std::vector<uint16_t>& raw_read,
     const std::vector<uint8_t>& ref_signal,
     const std::vector<std::vector<std::pair<uint32_t, uint32_t>>>& chains,
     int window_size = 2000
 ) {
+    raw_read.resize(POST_SEED_ALIGN_SIZE);
     std::vector<uint8_t> norm_read;
     discrete_normalize(raw_read, norm_read);
     ChainSDTWResult best_result;

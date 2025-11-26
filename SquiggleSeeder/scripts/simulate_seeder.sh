@@ -5,7 +5,7 @@
 set -e
 
 NUM_FILES=100
-IQR_MULTIPLIER=4.03   # default
+IQR_MULTIPLIER=13.0   # default
 PROFILE_FLAG=0
 
 if [ $# -lt 1 ]; then
