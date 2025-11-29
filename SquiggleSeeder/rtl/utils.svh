@@ -48,6 +48,20 @@
 `define HASH32_MASK 64'hFFFFFFFF
 `define HASH16_MASK 32'hFFFF
 
+//Chaining Definitions
+typedef struct packed {
+    logic [31:0] q;
+    logic [31:0] r;
+} Anchor; // 'my_packed_data_t' is the new type name
+
+`define MAX_NUM_SEEDS 1000
+`define MAX_NUM_CHAINS 5
+`define SEGMENT_SIZE 1000
+`define SEG_STRIDE  400000               // distance between segment starts
+`define WINDOW_SIZE 5000
+`define SEG_OVERLAP `WINDOW_SIZE;          // must be >= WINDOW_SIZE
+`define SEG_SIZE  `SEG_STRIDE + `SEG_OVERLAP // total width of each segment
+
 function logic [31:0] hash64to32(input logic [63:0] key_input);
     logic [63:0] key;
     key = key_input;
