@@ -55,22 +55,15 @@ typedef struct packed {
 } Anchor; // 'my_packed_data_t' is the new type name
 
 typedef struct {
-    logic [31:0] score   [`MAX_NUM_ANCHORS]; // TODO: this is a floating point num, idk what format we want it in yet
+    logic [31:0] score; // TODO: this is a floating point num, idk what format we want it in yet
     Anchor       anchors [`MAX_NUM_ANCHORS]; // TODO: anchor_r and anchor_q form the archor pairs, determine max number of slots needed to store these in
     logic        empty   [`MAX_NUM_ANCHORS]; // binary flag to say if there is an entry here (1) or there isn't (0)
-} SegmentChain;
+} Chain;
 
-typedef struct {
-    logic [31:0] score;
-    Anchor       anchors;
-} Segment;
 
-typedef Segment [`MAX_NUM_CHAINS] TopChains;
+typedef Chain [`MAX_NUM_CHAINS] TopChains;//TODO: do you want this as a type? 
 
-// typedef struct {
-//     logic [31:0] score   [`MAX_NUM_CHAINS]; // TODO: this is a floating point num, idk what format we want it in yet
-//     Anchor       anchors [`MAX_NUM_CHAINS]; 
-// } TopChains;
+
 
 `define MAX_NUM_SEEDS 1000
 `define MAX_NUM_CHAINS 5
