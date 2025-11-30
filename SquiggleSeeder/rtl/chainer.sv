@@ -13,14 +13,28 @@ module Chainer(
     logic [31:0] seg_end [`NUM_SEGMENTS];//End index of each reference segment in seeds
     logic [31:0] r_min; 
     logic [31:0] r_max;
+    Chain chains_per_segment [`NUM_SEGMENTS][`MAX_CHAINS]
     r_min = seeds[0].r;
     r_max = seeds[`MAX_NUM_SEEDS-1].r;
 
 
-    segment_characterizer(
+    segment_characterizer seg_char (
         seeds,
         seg_begin,
         seg_end
     );
     
+    // -----------------------------
+    // 3. Per-segment DP + local chain extraction
+    // -----------------------------
+
+    chain_extraction chain_extract(
+        seg_begin,
+        seg_end,
+        seeds,
+
+        chains_per_segment
+    );
+
+    //TODO: Add interface for step 4
 endmodule

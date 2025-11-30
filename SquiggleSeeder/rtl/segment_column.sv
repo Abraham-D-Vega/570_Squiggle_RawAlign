@@ -1,5 +1,5 @@
 // One column of the chainig array. Finds chains for one segment of the reference
-
+//TODO: Try and shrink down the sizes of all arrays to minimum values
 module segment_column(
     input Anchor seeds [`MAX_NUM_SEEDS-1: 0],
     input logic [31:0] s, //beginning of seeds in segment
@@ -31,9 +31,9 @@ generate
 endgenerate
 
 
-//Sort chains of the segment
+//Sort chains of the segment TODO: Make a submodule to handle this
 
-//Output all segments that do not overlap
+//Output all segments that do not overlap TODO: Make a submodule to handle this
 
 
 endmodule

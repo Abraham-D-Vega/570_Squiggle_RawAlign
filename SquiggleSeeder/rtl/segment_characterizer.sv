@@ -1,5 +1,5 @@
 //Takes in array of seeds and outputs start and end reference index of each section
-
+//TODO: Test
 
 module segment_characterizer(
     input Anchor seeds [`MAX_NUM_SEEDS-1: 0],
