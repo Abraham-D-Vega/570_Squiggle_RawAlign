@@ -55,8 +55,8 @@ void chain_seeds(
     // Start segments from the floor of r_min to the stride grid
     uint32_t start_r0 = (r_min / SEG_STRIDE) * SEG_STRIDE;
     for (uint32_t seg_start_r = start_r0;
-         seg_start_r <= r_max;
-         seg_start_r += SEG_STRIDE)
+        seg_start_r <= r_max;
+        seg_start_r += SEG_STRIDE)
     {
         uint32_t seg_lo = seg_start_r;
         uint32_t seg_hi = seg_start_r + SEG_SIZE; // half-open [lo, hi)

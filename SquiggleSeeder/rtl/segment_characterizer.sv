@@ -3,28 +3,35 @@
 
 module segment_characterizer(
     input Anchor seeds [`MAX_NUM_SEEDS-1: 0],
-    ouput logic [31:0]  seg_b  [`NUM_SEGMENTS],
-    output logic [31:0] seg_e  [`NUM_SEGMENTS]
+    output logic [31:0] seg_begin  [`NUM_SEGMENTS],
+    output logic [31:0] seg_end    [`NUM_SEGMENTS]
 )
     
     always_comb begin : segmentAssiment
-
         for(int j = 0; j < `NUM_SEGMENTS; j++)begin
-            seg_b[j]  = 32'hFFFFFFFF;
-            seg_e[j] = 32'h0;
+            logic [31:0] b = 32'hFFFFFFFF;
+            logic [31:0] e = 32'h0;
+            logic [31:0] seg_lo = j * `SEG_STRIDE;
+            logic [31:0] seg_hi = j * `SEG_STRIDE + `SEGMENT_SIZE;
+
+            seg_begin[j]  = 32'hFFFFFFFF;
+            seg_end[j] = 32'h0;
+
             for(int i = 0; i < `MAX_NUM_SEEDS; i++)begin
-                if(seeds[i] > j*`SEG_STRIDE && seeds[i] < (j*`SEG_STRIDE + `SEGMENT_SIZE)) begin
-                    if(seeds[j].r < b) begin
-                        seg_b[j] = i;
+                if(seeds[i].r > seg_lo && seeds[i].r < seg_hi) begin
+                    if(b == 32'hFFFFFFFF)begin
+                        b = i; //update first match 
                     end
-                    if(seeds[j].r > e)
-                        seg_e[j] = i;
-                    end
+                    e = i; //update to be latest match
                 end 
+            end
+
+            if(b != 32'hFFFFFFFF)begin //Update if valid beginning
+                seg_begin[j] = b;
+                seg_end[j] = e+1;
+            end
         end
+        //where a return statement could go?
     end
-
-
-
 
 endmodule
