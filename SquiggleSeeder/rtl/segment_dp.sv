@@ -27,7 +27,7 @@ module segment_dp(
     assign ri = seeds[i].r;
 
     always_comb begin
-        score_out = 1;
+        score_out = 32'd1;
         prev_out = '1;
         min_r_out = ri;
         max_r_out = ri;
@@ -37,7 +37,10 @@ module segment_dp(
         dr = '0;
         dev = '0;
         candidate = '0;
-
+        if(~seeds[i].valid) begin
+            score_out = '0;
+        end
+        else begin
         for(int j = s; j < i; j++)begin
             if(ri - seeds[j].r <= `WINDOW_SIZE ) begin
                 if(seeds[j].q < qi && seeds[j].r < ri) begin
@@ -49,7 +52,7 @@ module segment_dp(
                         if(dq != 0 && dr != 0) begin
                             dev = (dq > dr) ? (dq - dr) : (dr-dq);
                             if(dev <= `MAX_DEV ) begin
-                                candidate = score_in[j-s] + 1 - `LAMBDA * dev;
+                                candidate = score_in[j-s] + 1 - `LAMBDA * dev;//TODO Make atually work since not a float
                                 if(candidate > score_out) begin
                                     score_out = candidate;
                                     prev_out = (j-s);
@@ -61,6 +64,7 @@ module segment_dp(
                     end
                 end
             end
+        end
         end
     end
 

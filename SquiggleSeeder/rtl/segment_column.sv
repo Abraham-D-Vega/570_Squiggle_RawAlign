@@ -36,6 +36,11 @@ module segment_column(
             end
     endgenerate
 
+    Chain Segment_chains [`MAX_NUM_SEEDS];
+    assign Segment_chains.anchors = prev;
+    assign Segment_chains.score = score;
+
+
     // Sort chains of the segment by score
     
     // Create valid mask for chains (score > 0 means valid chain)

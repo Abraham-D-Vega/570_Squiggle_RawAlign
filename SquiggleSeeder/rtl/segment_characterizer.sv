@@ -18,12 +18,14 @@ module segment_characterizer(
             seg_end[j] = 32'h0;
 
             for(int i = 0; i < `MAX_NUM_SEEDS; i++)begin
+                if(seeds[i].valid) begin
                 if(seeds[i].r > seg_lo && seeds[i].r < seg_hi) begin
                     if(b == 32'hFFFFFFFF)begin
                         b = i; //update first match 
                     end
                     e = i; //update to be latest match
                 end 
+                end
             end
 
             if(b != 32'hFFFFFFFF)begin //Update if valid beginning

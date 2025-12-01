@@ -49,7 +49,7 @@
 `define HASH16_MASK 32'hFFFF
 
 //Chaining Definitions
-`define MAX_NUM_SEEDS 1000
+`define MAX_NUM_SEEDS 100
 `define MAX_NUM_CHAINS 5
 `define SEGMENT_SIZE 1000
 `define SEG_STRIDE  400000               // distance between segment starts
@@ -62,12 +62,13 @@
 typedef struct packed {
     logic [31:0] q;
     logic [31:0] r;
+    logic valid;
 } Anchor; // 'my_packed_data_t' is the new type name
 
-typedef struct {
+typedef struct packed{
     logic [31:0] score; // TODO: this is a floating point num, idk what format we want it in yet
-    Anchor       anchors [`MAX_NUM_SEEDS]; // TODO: anchor_r and anchor_q form the archor pairs, determine max number of slots needed to store these in
-    logic        empty   [`MAX_NUM_SEEDS]; // binary flag to say if there is an entry here (1) or there isn't (0)
+    logic  [$clog2(`MAX_NUM_SEEDS)-1:0] [`MAX_NUM_SEEDS-1:0] anchors ; // TODO: anchor_r and anchor_q form the archor pairs, determine max number of slots needed to store these in
+    logic    [`MAX_NUM_SEEDS-1:0]    valid; // binary flag to say if there is an entry here (1) or there isn't (0)
 } Chain;
 
 
