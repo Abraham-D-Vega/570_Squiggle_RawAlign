@@ -67,8 +67,7 @@ typedef struct packed {
 
 typedef struct packed{
     logic [31:0] score; // TODO: this is a floating point num, idk what format we want it in yet
-    logic  [$clog2(`MAX_NUM_SEEDS)-1:0] [`MAX_NUM_SEEDS-1:0] anchors ; // TODO: anchor_r and anchor_q form the archor pairs, determine max number of slots needed to store these in
-    logic    [`MAX_NUM_SEEDS-1:0]    valid; // binary flag to say if there is an entry here (1) or there isn't (0)
+    logic [`MAX_NUM_SEEDS-1:0] anchors ; // TODO: anchor_r and anchor_q form the archor pairs, determine max number of slots needed to store these in
 } Chain;
 
 

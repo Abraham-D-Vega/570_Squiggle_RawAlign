@@ -4,15 +4,13 @@
 `include "utils.svh"
 
 module segment_dp(
-    input logic [31:0] score_in [`MAX_NUM_SEEDS],//TODO: make sure that these indexes make sense
-    input logic [31:0] prev_in [`MAX_NUM_SEEDS],
+    input Chain [`MAX_NUM_SEEDS] chains_in,
     input logic [31:0] max_r_in [`MAX_NUM_SEEDS],
     input logic [31:0] min_r_in [`MAX_NUM_SEEDS],
     input Anchor seeds  [`MAX_NUM_SEEDS],
     input logic [31:0] s,
     input logic [31:0] ip,
-    output logic [31:0] score_out,
-    output logic [31:0] prev_out,
+    output Chain chain_out,
     output logic [31:0] max_r_out,
     output logic [31:0] min_r_out
 );
@@ -27,8 +25,8 @@ module segment_dp(
     assign ri = seeds[i].r;
 
     always_comb begin
-        score_out = 32'd1;
-        prev_out = '1;
+        chain_out.score = 32'd1;
+        chain_out = '0;
         min_r_out = ri;
         max_r_out = ri;
         new_max_r = ri;
@@ -38,14 +36,14 @@ module segment_dp(
         dev = '0;
         candidate = '0;
         if(~seeds[i].valid) begin
-            score_out = '0;
+            chain_out.score = '0;
         end
         else begin
         for(int j = s; j < i; j++)begin
             if(ri - seeds[j].r <= `WINDOW_SIZE ) begin
                 if(seeds[j].q < qi && seeds[j].r < ri) begin
                     new_min_r = (min_r_in[j-s] < ri) ? min_r_in[j-s] : ri;
-                    new_max_r = (min_r_in[j-s] > ri) ? min_r_in[j-s] : ri;
+                    new_max_r = (min_r_in[j-s] > ri) ? max_r_in[j-s] : ri;
                     if(new_max_r - new_min_r <= `WINDOW_SIZE)begin
                         dq = qi - seeds[j].q;
                         dr = ri -seeds[j].r;
@@ -53,9 +51,9 @@ module segment_dp(
                             dev = (dq > dr) ? (dq - dr) : (dr-dq);
                             if(dev <= `MAX_DEV ) begin
                                 candidate = score_in[j-s] + 1 - `LAMBDA * dev;//TODO Make atually work since not a float
-                                if(candidate > score_out) begin
-                                    score_out = candidate;
-                                    prev_out = (j-s);
+                                if(candidate > chain_out.score) begin
+                                    chain_out.score = candidate;
+                                    chain_out.anchors = chains_in[j-s] & (1'b1 << i);
                                     min_r_out = new_min_r;
                                     max_r_out = new_max_r;
                                 end
