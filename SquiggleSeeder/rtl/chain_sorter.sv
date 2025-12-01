@@ -68,7 +68,6 @@ module chain_sorter #(
 (
     input  Chain [NUM_INPUT_CHAINS-1:0]  chain_in,
     input  logic [NUM_INPUT_CHAINS-1:0]  valid,    // 1 if chain exists, 0 otherwise
-    input  logic [NUM_INPUT_CHAINS-1:0][`MAX_NUM_SEEDS-1:0] chainSeedMatrix,
     output Chain [NUM_OUTPUT_CHAINS-1:0] chain_out,
     output logic [NUM_OUTPUT_CHAINS-1:0] valid_out // Which output positions are valid
 );
@@ -81,6 +80,7 @@ module chain_sorter #(
         valid_mask = valid;
         chain_out = '0;
         valid_out = '0;
+
         for (int i = 0; i < NUM_OUTPUT_CHAINS ; i++) begin 
             found = 1'b0;
             best_score = '0;
@@ -99,16 +99,14 @@ module chain_sorter #(
             if (found) begin
                 // loop over all chains and invalidate the ones that share anchors using an XOR
                 for (int k = 0; k < NUM_INPUT_CHAINS; k++) begin
-                    if (valid_mask[k] && ((chainSeedMatrix[k] ^ chainSeedMatrix[best_idx]) != (chainSeedMatrix[k] | chainSeedMatrix[best_idx]))) begin
+                    if (valid_mask[k] && ((chain_in[k] ^ chain_in[best_idx]) != (chain_in[k] | chain_in[best_idx])) && (k != best_idx)) begin
                         valid_mask[k] = 1'b0;
                     end
                 end
 
                 chain_out[i].score = best_score;
                 chain_out[i].anchors = chain_in[best_idx].anchors;
-                chain_out[i].valid = chain_in[best_idx].valid;
                 valid_out[i] = 1'b1;
-
                 valid_mask[best_idx] = 1'b0; // Invalidate this chain
             end else begin
                 break;
