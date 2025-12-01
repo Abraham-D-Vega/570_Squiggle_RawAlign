@@ -60,3 +60,40 @@ module chain_sorter #(
     end
 
 endmodule
+
+input  valid
+input  chain_in
+input  matrix // total anchors by all chains
+output valid_out
+output chain_out
+
+always_comb begin
+    for (int i = 0; i < NUM_OUTPUT_CHAINS ; i++) begin 
+        found = 1'b0;
+        best_score = '0;
+        best_idx = '0;
+
+        for (int j = 0; j < NUM_INPUT_CHAINS; j++) begin
+            if (valid[j]) begin
+                if (chain_in[j].score > best_score) begin
+                    best_score = chain_in[j].score;
+                    best_idx = j;
+                    found = 1'b1;
+                end
+            end
+        end
+
+        if (found) begin
+            // TODO: loop over all chains and invalidate the ones that share anchors using an XOR
+            
+            chain_out[i].score = best_score;
+            chain_out[i].anchors = chain_in[best_idx].anchors;
+            chain_out[i].valid = chain_in[best_idx].valid;
+            valid_out[i] = 1'b1;
+
+            valid[best_idx] = 1'b0; // Invalidate this chain
+        end else begin
+            break;
+        end
+    end
+end
