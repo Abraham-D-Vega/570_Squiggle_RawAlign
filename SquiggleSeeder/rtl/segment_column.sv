@@ -22,6 +22,8 @@ generate
             .max_r_in(max_r),
             .min_r_in(min_r),
             .seeds(seeds),
+            .s(s),
+            .ip(i),
             .score_out(score[i]),
             .prev_out(score[i]),
             .max_r_out(max_r[i]),
@@ -32,6 +34,7 @@ endgenerate
 
 
 //Sort chains of the segment TODO: Make a submodule to handle this
+
 
 //Output all segments that do not overlap TODO: Make a submodule to handle this
 
