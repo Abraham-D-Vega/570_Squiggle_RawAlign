@@ -10,3 +10,4 @@ venv/*
 data/*/fast5/*
 datasets/*
 grid_results.txt
+SquiggleSeeder/rtl/obj_dir/*

@@ -1,11 +1,11 @@
 //Takes in array of seeds and outputs start and end reference index of each section
 //TODO: Test
-
+`include "utils.svh"
 module segment_characterizer(
     input Anchor seeds [`MAX_NUM_SEEDS-1: 0],
     output logic [31:0] seg_begin  [`NUM_SEGMENTS],
     output logic [31:0] seg_end    [`NUM_SEGMENTS]
-)
+);
     
     always_comb begin : segmentAssiment
         for(int j = 0; j < `NUM_SEGMENTS; j++)begin

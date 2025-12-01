@@ -2,6 +2,8 @@
 // 3. Per-segment DP + local chain extraction
 // -----------------------------
 //TODO: Implement submodules and then test
+`include "utils.svh"
+
 module chain_extraction(
     input logic [31:0] seg_begin [`NUM_SEGMENTS],
     input logic [31:0] seg_end [`NUM_SEGMENTS],
