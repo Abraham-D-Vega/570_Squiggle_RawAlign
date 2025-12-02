@@ -62,9 +62,9 @@ module chainer (
     );
 
     always_comb begin
-        chains = 22000'b0;//todo update when you change parameters
-        for(int i = 0; i < `MAX_NUM_CHAINS; i++) begin
-            for(int j = 0; j < `MAX_NUM_SEEDS; j++) begin
+        chains = {(`MAX_NUM_SEEDS*(12 +32)*`MAX_NUM_CHAINS){1'b0}};
+        for(int i = 0; i < `MAX_NUM_CHAINS; i++) begin //each of the five chains
+            int j = 0;
                 for(int k = 0; k < `MAX_NUM_SEEDS; k++) begin
                     if(valid_out[i]) begin
                         if(final_chains[i].anchors[k]) begin
@@ -73,7 +73,7 @@ module chainer (
                         end
                     end
                 end
-            end
+            
         end
     end
 
