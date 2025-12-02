@@ -15,11 +15,11 @@ module chain_extraction(
 // Each column reperesents a segment of the reference and is independant of all other columns
 genvar i;
 generate
-    for(i = 0; i < `NUM_SEGMENTS; i++)begin
+    for (i = 0; i < `NUM_SEGMENTS; i++) begin
         segment_column col (
             .seeds(seeds),
-            .b(seg_begin[i]),
-            .e(sef_end[i]),
+            .s(seg_begin[i]),
+            .e(seg_end[i]),
             .segment_chains(chains_per_segment[i])
         );
     end

@@ -22,13 +22,13 @@ module segment_column(
         for(i = 0; i < `MAX_NUM_SEEDS; i++) 
             begin : segment_instance
                 segment_dp segment_dp_inst(
-                    .chains_in(Segment_chains)
+                    .chains_in(Segment_chains),
                     .max_r_in(max_r),
                     .min_r_in(min_r),
                     .seeds(seeds),
                     .s(s),
                     .ip(i),
-                    .chain_out(Segment_chains[i])
+                    .chain_out(Segment_chains[i]),
                     .max_r_out(max_r[i]),
                     .min_r_out(min_r[i])
                 );
