@@ -49,6 +49,7 @@
 `define HASH16_MASK 32'hFFFF
 
 //Chaining Definitions
+// `define CHAIN_SIZE 44*(`MAX_NUM_CHAINS*`MAX_NUM_SEEDS)
 `define MAX_NUM_SEEDS 100
 `define MAX_NUM_CHAINS 5
 `define SEGMENT_SIZE 1000
@@ -60,7 +61,7 @@
 `define MAX_DEV `WINDOW_SIZE
 `define NUM_SEGMENTS 100 //TODO actually set this to a reasonable number
 typedef struct packed {
-    logic [31:0] q;
+    logic [10:0] q;
     logic [31:0] r;
     logic valid;
 } Anchor; // 'my_packed_data_t' is the new type name

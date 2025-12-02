@@ -5,10 +5,10 @@
 `include "utils.svh"
 
 module chain_extraction(
-    input logic [31:0] seg_begin [`NUM_SEGMENTS],
-    input logic [31:0] seg_end [`NUM_SEGMENTS],
-    input Anchor seeds [`MAX_NUM_SEEDS-1: 0],
-    output Chain chains_per_segment [`NUM_SEGMENTS][`MAX_NUM_CHAINS]
+    input logic [`NUM_SEGMENTS-1:0][31:0] seg_begin,
+    input logic [`NUM_SEGMENTS-1:0][31:0] seg_end,
+    input Anchor [`MAX_NUM_SEEDS-1: 0] seeds,
+    output Chain [`NUM_SEGMENTS-1:0][`MAX_NUM_CHAINS-1:0] chains_per_segment 
 );
 
 
@@ -20,7 +20,7 @@ generate
             .seeds(seeds),
             .s(seg_begin[i]),
             .e(seg_end[i]),
-            .segment_chains(chains_per_segment[i])
+            .chain_out(chains_per_segment[i])
         );
     end
 endgenerate

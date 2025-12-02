@@ -2,23 +2,22 @@
 
 `include "utils.svh"
 module Chainer(
-    input Anchor seeds [`MAX_NUM_SEEDS-1: 0],
-    output Anchor chains [`MAX_NUM_CHAINS-1:0][`MAX_NUM_SEEDS-1: 0]
+    input Anchor [`MAX_NUM_SEEDS-1:0] seeds,
+    output Anchor [`MAX_NUM_CHAINS-1:0][`MAX_NUM_SEEDS-1:0] chains 
 );
-
     // -----------------------------
     // 2. Build overlapping segments in reference space
     //    Example pattern: [0,110000), [100000,210000), ...
     // -----------------------------
-    // 
-    logic [31:0] seg_begin [`NUM_SEGMENTS];//Beginning index of each reference segment in seeds
-    logic [31:0] seg_end [`NUM_SEGMENTS];//End index of each reference segment in seeds
-    Chain chains_per_segment [`NUM_SEGMENTS][`MAX_NUM_CHAINS];
+
+    logic [31:0][`NUM_SEGMENTS-1:0] seg_begin; // Beginning index of each reference segment in seeds
+    logic [31:0][`NUM_SEGMENTS-1:0] seg_end; // End index of each reference segment in seeds
+    Chain [`NUM_SEGMENTS-1:0][`MAX_NUM_CHAINS-1:0] chains_per_segment;
     
     segment_characterizer seg_char (
-        seeds,
-        seg_begin,
-        seg_end
+        .seeds(seeds),
+        .seg_begin(seg_begin),
+        .seg_end(seg_end)
     );
     
     // -----------------------------
@@ -26,29 +25,27 @@ module Chainer(
     // -----------------------------
 
     chain_extraction chain_extract(
-        seg_begin,
-        seg_end,
-        seeds,
-        chains_per_segment
+        .seg_begin(seg_begin),
+        .seg_end(seg_end),
+        .seeds(seeds),
+        .chains_per_segment(chains_per_segment)
     );
-
-
 
     // ---------------------------
     // 4. Find top five non overlapping chains
     // ---------------------------
 
-    Chain [`NUM_SEGMENTS*`MAX_NUM_CHAINS-1:0]  chain_in;
+    Chain [`NUM_SEGMENTS*`MAX_NUM_CHAINS-1:0] chain_in;
     assign chain_in = chains_per_segment;
 
-    logic [31:0] valid_mask [`MAX_NUM_SEEDS];
+    logic [`NUM_SEGMENTS*`MAX_NUM_CHAINS-1:0] valid_mask;
     always_comb begin
         for (int j = 0; j < (`NUM_SEGMENTS*`MAX_NUM_CHAINS); j++) begin
-            valid_mask[j] = (chain_in[j].score > 32'h0) ? 32'h1 : 32'h0;
+            valid_mask[j] = (chain_in[j].score > 32'h0) ? 1'b1 : 1'b0;
         end
     end
     Chain [`MAX_NUM_CHAINS-1:0] final_chains;
-    logic [31:0] valid_out [`MAX_NUM_SEEDS];
+    logic [`MAX_NUM_CHAINS-1:0] valid_out;
 
     chain_sorter  #(
         .NUM_INPUT_CHAINS(`NUM_SEGMENTS*`MAX_NUM_CHAINS),
@@ -63,12 +60,12 @@ module Chainer(
     );
 
     always_comb begin
-        chains = '0;
+        chains = 22000'b0;//todo update when you change parameters
         for(int i = 0; i < `MAX_NUM_CHAINS; i++) begin
             for(int j = 0; j < `MAX_NUM_SEEDS; j++) begin
                 for(int k = 0; k < `MAX_NUM_SEEDS; k++) begin
                     if(valid_out[i]) begin
-                        if(final_chains.anchors[k]) begin
+                        if(final_chains[i].anchors[k]) begin
                             chains[i][j] = seeds[k];
                             j++;
                         end

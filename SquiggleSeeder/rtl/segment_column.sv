@@ -3,20 +3,20 @@
 `include "utils.svh"
 
 module segment_column(
-    input Anchor seeds [`MAX_NUM_SEEDS-1: 0],
+    input Anchor [`MAX_NUM_SEEDS-1: 0] seeds,
     input logic [31:0] s, //beginning of seeds in segment
     input logic [31:0] e, //end of seeds in segment
-    output Chain chain_out [`MAX_NUM_CHAINS]
+    output Chain [`MAX_NUM_CHAINS-1:0] chain_out 
 );
     logic [31:0] len;
-    assign len = e - s;
-    logic [31:0] score [`MAX_NUM_SEEDS];
-    logic [31:0] prev [`MAX_NUM_SEEDS];
-    logic [31:0] max_r [`MAX_NUM_SEEDS];
-    logic [31:0] min_r [`MAX_NUM_SEEDS];
-    Chain Segment_chains [`MAX_NUM_CHAINS];
+    logic [`MAX_NUM_SEEDS-1:0][31:0]  score ;
+    logic [`MAX_NUM_SEEDS-1:0] [31:0] prev;
+    logic [`MAX_NUM_SEEDS-1:0] [31:0]  max_r;
+    logic [`MAX_NUM_SEEDS-1:0] [31:0] min_r;
+    logic [`MAX_NUM_CHAINS-1:0] valid_out;
+    Chain [`MAX_NUM_SEEDS-1:0] Segment_chains;
     // Find all individual chains in the segment
-    Chain Segment_chains [`MAX_NUM_SEEDS];
+    assign len = e - s;
     genvar i;
     generate
         for(i = 0; i < `MAX_NUM_SEEDS; i++) 
@@ -39,10 +39,10 @@ module segment_column(
     // Sort chains of the segment by score
     
     // Create valid mask for chains (score > 0 means valid chain)
-    logic [31:0] valid_mask [`MAX_NUM_SEEDS];
+    logic  [`MAX_NUM_SEEDS-1:0] valid_mask;
     always_comb begin
         for (int j = 0; j < `MAX_NUM_SEEDS; j++) begin
-            valid_mask[j] = (score[j] > 32'h0) ? 32'h1 : 32'h0;
+            valid_mask[j] = (score[j] > 32'h0) ? 1'b1 : 1'b0;
         end
     end
 

@@ -5,9 +5,9 @@
 
 module segment_dp(
     input Chain [`MAX_NUM_SEEDS-1:0] chains_in,
-    input logic [31:0] max_r_in [`MAX_NUM_SEEDS],
-    input logic [31:0] min_r_in [`MAX_NUM_SEEDS],
-    input Anchor seeds  [`MAX_NUM_SEEDS],
+    input logic [`MAX_NUM_SEEDS-1:0] [31:0] max_r_in,
+    input logic [`MAX_NUM_SEEDS-1:0] [31:0] min_r_in,
+    input Anchor [`MAX_NUM_SEEDS-1:0] seeds,
     input logic [31:0] s,
     input logic [31:0] ip,
     output Chain chain_out,
@@ -15,7 +15,8 @@ module segment_dp(
     output logic [31:0] min_r_out
 );
 
-    logic [31:0] qi, ri, dq, dr, dev, candidate, new_min_r, new_max_r;
+    logic [10:0] qi, dq;
+    logic [31:0]  ri, dr, dev, candidate, new_min_r, new_max_r;
     logic [31:0] i;
     
     logic[`MAX_NUM_SEEDS-1:0] anchor_mask;

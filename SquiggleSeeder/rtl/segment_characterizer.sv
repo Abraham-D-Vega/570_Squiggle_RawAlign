@@ -2,9 +2,9 @@
 //TODO: Test
 `include "utils.svh"
 module segment_characterizer(
-    input Anchor seeds [`MAX_NUM_SEEDS-1: 0],
-    output logic [31:0] seg_begin  [`NUM_SEGMENTS],
-    output logic [31:0] seg_end    [`NUM_SEGMENTS]
+    input Anchor [`MAX_NUM_SEEDS-1:0] seeds,
+    output logic [`NUM_SEGMENTS-1:0][31:0] seg_begin,
+    output logic [`NUM_SEGMENTS-1:0][31:0] seg_end
 );
     
     always_comb begin : segmentAssiment
@@ -17,18 +17,18 @@ module segment_characterizer(
             seg_begin[j]  = 32'hFFFFFFFF;
             seg_end[j] = 32'h0;
 
-            for(int i = 0; i < `MAX_NUM_SEEDS; i++)begin
-                if(seeds[i].valid) begin
-                if(seeds[i].r > seg_lo && seeds[i].r < seg_hi) begin
-                    if(b == 32'hFFFFFFFF)begin
-                        b = i; //update first match 
-                    end
-                    e = i; //update to be latest match
-                end 
+            for (int i = 0; i < `MAX_NUM_SEEDS; i++) begin
+                if (seeds[i].valid) begin
+                    if (seeds[i].r > seg_lo && seeds[i].r < seg_hi) begin
+                        if (b == 32'hFFFFFFFF) begin
+                            b = i; //update first match 
+                        end
+                        e = i; //update to be latest match
+                    end 
                 end
             end
 
-            if(b != 32'hFFFFFFFF)begin //Update if valid beginning
+            if (b != 32'hFFFFFFFF) begin //Update if valid beginning
                 seg_begin[j] = b;
                 seg_end[j] = e+1;
             end
