@@ -29,7 +29,8 @@ module segment_dp(
     always_comb begin
         chain_out.score = 32'd100;
         anchor_mask = '0;
-        chain_out = '0;
+        chain_out.anchors = '0;
+        chain_out.anchors[i] = 1'b1;
         min_r_out = ri;
         max_r_out = ri;
         new_max_r = ri;
@@ -39,7 +40,9 @@ module segment_dp(
         dev = '0;
         candidate = '0;
         if(~seeds[i].valid) begin
-            chain_out.score = '0;
+            chain_out = '0;
+            min_r_out = '0;
+            max_r_out = '0;
         end
         else begin
         for(int j = s; j < i; j++)begin
@@ -54,10 +57,10 @@ module segment_dp(
                             dev = ({21'b0, dq} > dr) ? ({21'b0, dq} - dr) : (dr - {21'b0, dq});
                             if(dev <= `MAX_DEV ) begin
                                 candidate = chains_in[j-s].score + 100 - dev;
-                                if(candidate > 32'b0) begin
-                                    chain_out.score = candidate;
+                                if(candidate > chain_out.score) begin
+                                   chain_out.score = candidate;
                                     anchor_mask[i] = 1'b1;
-                                    chain_out.anchors = chains_in[j-s].anchors & anchor_mask;
+                                    chain_out.anchors = chains_in[j-s].anchors | anchor_mask;
                                     min_r_out = new_min_r;
                                     max_r_out = new_max_r;
                                 end

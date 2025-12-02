@@ -51,7 +51,7 @@
 
 //Chaining Definitions
 // `define CHAIN_SIZE 44*(`MAX_NUM_CHAINS*`MAX_NUM_SEEDS)
-`define MAX_NUM_SEEDS 100
+`define MAX_NUM_SEEDS 5
 `define MAX_NUM_CHAINS 5
 `define SEGMENT_SIZE 6000
 `define SEG_STRIDE  5000               // distance between segment starts
