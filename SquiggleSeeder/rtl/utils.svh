@@ -53,14 +53,14 @@
 // `define CHAIN_SIZE 44*(`MAX_NUM_CHAINS*`MAX_NUM_SEEDS)
 `define MAX_NUM_SEEDS 100
 `define MAX_NUM_CHAINS 5
-`define SEGMENT_SIZE 1000
-`define SEG_STRIDE  400000               // distance between segment starts
-`define WINDOW_SIZE 5000
+`define SEGMENT_SIZE 6000
+`define SEG_STRIDE  5000               // distance between segment starts
+`define WINDOW_SIZE 1000
 `define SEG_OVERLAP `WINDOW_SIZE       // must be >= WINDOW_SIZE
 `define SEG_SIZE  `SEG_STRIDE + `SEG_OVERLAP // total width of each segment
 `define LAMBDA 1//TODO: Adjust for scoring purposes
 `define MAX_DEV `WINDOW_SIZE
-`define NUM_SEGMENTS 100 //TODO actually set this to a reasonable number
+`define NUM_SEGMENTS 13 //TODO actually set this to a reasonable number
 typedef struct packed {
     logic [10:0] q;
     logic [31:0] r;

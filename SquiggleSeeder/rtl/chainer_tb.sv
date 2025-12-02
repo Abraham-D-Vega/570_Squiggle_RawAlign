@@ -35,7 +35,7 @@ module chainer_tb;
             code = $fgets(line, fd);
             if (code != 0) begin // Only if read succeeded
                 // Parse ref and query
-                if ($sscanf(line, "%d,%d", reff, query) == 2) begin
+                if ($sscanf(line, "%d,%d", query, reff) == 2) begin
                     seeds[i] = Anchor'{query[10:0], reff[31:0], 1'b1};
                     i++;
                 end
@@ -52,7 +52,7 @@ module chainer_tb;
     // Test sequence
     initial begin
         // Read input seeds
-        read_seeds_from_file("seeds.txt");
+        read_seeds_from_file("../anchors/covid_0.txt");
 
         // Wait for a short setup
         #10;
