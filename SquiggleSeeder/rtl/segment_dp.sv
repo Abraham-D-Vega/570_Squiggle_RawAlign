@@ -50,10 +50,10 @@ module segment_dp(
                         dq = qi - seeds[j].q;
                         dr = ri -seeds[j].r;
                         if(dq != 0 && dr != 0) begin
-                            dev = (dq > dr) ? (dq - dr) : (dr-dq);
+                            dev = ({21'b0, dq} > dr) ? ({21'b0, dq} - dr) : (dr - {21'b0, dq});
                             if(dev <= `MAX_DEV ) begin
                                 candidate = chains_in[j-s].score + 100 - dev;
-                                if(candidate > chain_out.score) begin
+                                if(candidate > 32'b0) begin
                                     chain_out.score = candidate;
                                     anchor_mask[i] = 1'b1;
                                     chain_out.anchors = chains_in[j-s].anchors & anchor_mask;

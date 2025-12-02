@@ -17,14 +17,27 @@ module segment_column(
     Chain [`MAX_NUM_SEEDS-1:0] Segment_chains;
     // Find all individual chains in the segment
     assign len = e - s;
+    
     genvar i;
     generate
-        for(i = 0; i < `MAX_NUM_SEEDS; i++) 
+        segment_dp segment_dp_inst(
+            .chains_in({ {(`MAX_NUM_SEEDS){132'b0}}}),
+            .max_r_in({ {(`MAX_NUM_SEEDS){32'b0}} }),
+            .min_r_in({ {(`MAX_NUM_SEEDS){32'b0}}}),
+            .seeds(seeds),
+            .s(s),
+            .ip(0),
+            .chain_out(Segment_chains[0]),
+            .max_r_out(max_r[0]),
+            .min_r_out(min_r[0])
+        );
+        
+        for(i = 1; i < `MAX_NUM_SEEDS; i++) 
             begin : segment_instance
                 segment_dp segment_dp_inst(
-                    .chains_in(Segment_chains),
-                    .max_r_in(max_r),
-                    .min_r_in(min_r),
+                    .chains_in({ {(`MAX_NUM_SEEDS-i){132'b0}}, Segment_chains[i-1:0] }),
+                    .max_r_in({ {(`MAX_NUM_SEEDS-i){32'b0}}, max_r[i-1:0] }),
+                    .min_r_in({ {(`MAX_NUM_SEEDS-i){32'b0}}, min_r[i-1:0] }),
                     .seeds(seeds),
                     .s(s),
                     .ip(i),
@@ -35,7 +48,6 @@ module segment_column(
             end
     endgenerate
 
-
     // Sort chains of the segment by score
     
     // Create valid mask for chains (score > 0 means valid chain)
@@ -45,9 +57,6 @@ module segment_column(
             valid_mask[j] = (score[j] > 32'h0) ? 1'b1 : 1'b0;
         end
     end
-
-
-
 
     // Instantiate chain sorter
     chain_sorter #(
