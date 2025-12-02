@@ -42,7 +42,7 @@ module chain_sorter #(
             if (found) begin
                 // loop over all chains and invalidate the ones that share anchors using an XOR
                 for (int k = 0; k < NUM_INPUT_CHAINS; k++) begin
-                    if (valid_mask[k] && ((chain_in[k] ^ chain_in[best_idx]) != (chain_in[k] | chain_in[best_idx])) && (k != best_idx)) begin
+                    if (valid_mask[k] && ((chain_in[k].anchors ^ chain_in[best_idx].anchors) != (chain_in[k].anchors | chain_in[best_idx].anchors)) && (k != best_idx)) begin
                         valid_mask[k] = 1'b0;
                     end
                 end

@@ -35,20 +35,20 @@ module chain_sorter_tb;
         chain_in[0].score = 100;
         valid[0] = 1'b1;
         
-        chain_in[1].score = 500;
-        valid[1] = 1'b1;
+        chain_in[10].score = 500;
+        valid[10] = 1'b1;
         
-        chain_in[2].score = 300;
-        valid[2] = 1'b1;
+        chain_in[20].score = 300;
+        valid[20] = 1'b1;
         
-        chain_in[3].score = 400;
-        valid[3] = 1'b1;
+        chain_in[30].score = 400;
+        valid[30] = 1'b1;
         
-        chain_in[4].score = 200;
-        valid[4] = 1'b1;
+        chain_in[40].score = 200;
+        valid[40] = 1'b1;
         
-        chain_in[5].score = 999;
-        valid[5] = 1'b1;
+        chain_in[50].score = 999;
+        valid[50] = 1'b1;
     endtask
 
     // Test sequence
