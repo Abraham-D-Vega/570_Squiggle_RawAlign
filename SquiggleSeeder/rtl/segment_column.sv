@@ -22,7 +22,7 @@ module segment_column(
     genvar i;
     generate
         segment_dp segment_dp_inst(
-            .chains_in({ {(`MAX_NUM_SEEDS){132'b0}}}),
+            .chains_in({ {(`MAX_NUM_SEEDS*(`MAX_NUM_SEEDS+32)){1'b0}}}),
             .max_r_in({ {(`MAX_NUM_SEEDS){32'b0}} }),
             .min_r_in({ {(`MAX_NUM_SEEDS){32'b0}}}),
             .seeds(seeds),
@@ -36,7 +36,7 @@ module segment_column(
         for(i = 1; i < `MAX_NUM_SEEDS; i++) 
             begin : segment_instance
                 segment_dp segment_dp_inst(
-                    .chains_in({ {(`MAX_NUM_SEEDS-i){132'b0}}, Segment_chains[i-1:0] }),
+                    .chains_in({ {((`MAX_NUM_SEEDS-i)*(`MAX_NUM_SEEDS+32)){1'b0}}, Segment_chains[i-1:0] }),
                     .max_r_in({ {(`MAX_NUM_SEEDS-i){32'b0}}, max_r[i-1:0] }),
                     .min_r_in({ {(`MAX_NUM_SEEDS-i){32'b0}}, min_r[i-1:0] }),
                     .seeds(seeds),
@@ -55,7 +55,7 @@ module segment_column(
     logic  [`MAX_NUM_SEEDS-1:0] valid_mask;
     always_comb begin
         for (int j = 0; j < `MAX_NUM_SEEDS; j++) begin
-            valid_mask[j] = (score[j] > 32'h0) ? 1'b1 : 1'b0;
+            valid_mask[j] = (Segment_chains[j].score > 32'h0) ? 1'b1 : 1'b0;
         end
     end
 
