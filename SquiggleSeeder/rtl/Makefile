@@ -2,9 +2,9 @@
 # 	verilator --cc $@.sv utils.svh 
 # ----------- CONFIGURABLES -----------
 VERILATOR      ?= verilator
-TOP_MODULE     ?= segment_characterizer_tb # chainer_tb
-SRC_FILES      =  segment_characterizer.sv # chainer.sv
-TB_FILES       =  segment_characterizer_tb.sv # chainer_tb.sv
+TOP_MODULE     ?= chain_sorter_tb # chainer_tb
+SRC_FILES      =  chain_sorter.sv # chainer.sv
+TB_FILES       =  chain_sorter_tb.sv # chainer_tb.sv
 INCLUDES       = -I.
 SEEDS_TXT      = covid_0.txt
 
