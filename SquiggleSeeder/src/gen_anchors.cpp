@@ -152,7 +152,7 @@ void dump_chains(const std::vector<Anchor> &anchors, const std::string &output_f
     out.close();
 }
 
-void process_read(int read_index,
+void gen_anchors(int read_index,
                   const std::string &read_type,
                   const std::unordered_map<uint32_t, std::vector<uint32_t>> &hash_table,
                   int N,
@@ -234,7 +234,7 @@ int main(int argc, char **argv) {
     std::string genome      = argv[1];
     std::string read_type   = argv[2];
     int num_reads           = std::stoi(argv[3]);
-    std::string output_file_prefix = "SquiggleSeeder/anchors_tmp/" + read_type;
+    std::string output_file_prefix = "SquiggleSeeder/anchors/" + read_type;
 
     // Load hash table
     std::string hash_table_path = "datasets/" + genome + "/hash_table0.txt";
@@ -273,7 +273,7 @@ int main(int argc, char **argv) {
     }
     for(int i = 0; i < num_reads; i++) {
         std::vector<Anchor> anchors;
-        process_read(i, read_type, hash_table, N, ref_signal, anchors);
+        gen_anchors(i, read_type, hash_table, N, ref_signal, anchors);
         dump_chains(anchors, output_file_prefix + "_" + std::to_string(i) + ".txt");
     }
 }

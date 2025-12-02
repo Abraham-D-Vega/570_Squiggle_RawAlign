@@ -1,6 +1,6 @@
 #!/bin/bash
-# run_gen_anchors.sh
-# Compile and run gen_anchors.cpp
+# run_gen_preds.sh
+# Compile and run gen_preds.cpp
 
 set -e
 
@@ -13,10 +13,8 @@ if [[ "$1" == "-h" || "$1" == "--help" || $# -lt 3 ]]; then
     exit 0
 fi
 
-SRC="SquiggleSeeder/src/gen_anchors.cpp"
-EXE="SquiggleSeeder/src/gen_anchors.o"
-
-mkdir -p SquiggleSeeder/anchors/
+SRC="SquiggleSeeder/src/gen_preds.cpp"
+EXE="SquiggleSeeder/src/gen_preds.o"
 
 # Compile
 echo "Compiling $SRC..."
