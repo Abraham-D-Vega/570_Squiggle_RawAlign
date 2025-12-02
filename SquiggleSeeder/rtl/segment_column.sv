@@ -1,5 +1,6 @@
 // One column of the chainig array. Finds chains for one segment of the reference
 //TODO: Try and shrink down the sizes of all arrays to minimum values
+`timescale 1ns/1ps
 `include "utils.svh"
 
 module segment_column(

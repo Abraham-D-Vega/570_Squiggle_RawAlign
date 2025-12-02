@@ -2,6 +2,7 @@
 // 3. Per-segment DP + local chain extraction
 // -----------------------------
 //TODO: Implement submodules and then test
+`timescale 1ns/1ps
 `include "utils.svh"
 
 module chain_extraction(

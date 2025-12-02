@@ -1,7 +1,8 @@
 //Chain Anchors and provide input to Aligner
-
+`timescale 1ns/1ps
 `include "utils.svh"
-module Chainer(
+
+module chainer (
     input Anchor [`MAX_NUM_SEEDS-1:0] seeds,
     output Anchor [`MAX_NUM_CHAINS-1:0][`MAX_NUM_SEEDS-1:0] chains 
 );

@@ -1,7 +1,7 @@
 // chain_sorter.sv
 // Sorts chains by score and selects top MAX_CHAINS chains
 // Uses iterative selection to find top-K without full sort
-
+`timescale 1ns/1ps
 `include "utils.svh"
 
 module chain_sorter #(

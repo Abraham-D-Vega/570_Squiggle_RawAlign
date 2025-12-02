@@ -2,6 +2,7 @@
 `define __UTILS_SVH__
 
 // `timescale 1ns/1ns
+`timescale 1ns/1ps
 `define FALSE 1'h0
 `define TRUE  1'h1
 
