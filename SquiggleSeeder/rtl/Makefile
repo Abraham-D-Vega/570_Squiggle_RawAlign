@@ -2,11 +2,11 @@
 # 	verilator --cc $@.sv utils.svh 
 # ----------- CONFIGURABLES -----------
 VERILATOR      ?= verilator
-TOP_MODULE     ?= chainer_tb
-SRC_FILES      = chainer.sv
-TB_FILES       = chainer_tb.sv
+TOP_MODULE     ?= segment_characterizer_tb # chainer_tb
+SRC_FILES      =  segment_characterizer.sv # chainer.sv
+TB_FILES       =  segment_characterizer_tb.sv # chainer_tb.sv
 INCLUDES       = -I.
-SEEDS_TXT      = seeds.txt
+SEEDS_TXT      = covid_0.txt
 
 # ----------- OUTPUTS -----------------
 OBJ_DIR        = obj_dir
@@ -18,7 +18,7 @@ all: sim
 
 # Compile and build simulation executable
 $(EXE): $(SRC_FILES) $(TB_FILES) utils.svh
-	$(VERILATOR) --cc --exe --sv --timing \
+	$(VERILATOR) --cc --binary --sv --timing \
 	  $(INCLUDES) \
 	  $(TB_FILES) $(SRC_FILES) \
 	  -top-module $(TOP_MODULE) \

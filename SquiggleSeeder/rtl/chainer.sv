@@ -37,17 +37,18 @@ module chainer (
     // ---------------------------
 
     Chain [`NUM_SEGMENTS*`MAX_NUM_CHAINS-1:0] chain_in;
+    Chain [`MAX_NUM_CHAINS-1:0] final_chains;
+    logic [`MAX_NUM_CHAINS-1:0] valid_out;
+    logic [`NUM_SEGMENTS*`MAX_NUM_CHAINS-1:0] valid_mask;
+    
     assign chain_in = chains_per_segment;
 
-    logic [`NUM_SEGMENTS*`MAX_NUM_CHAINS-1:0] valid_mask;
     always_comb begin
         for (int j = 0; j < (`NUM_SEGMENTS*`MAX_NUM_CHAINS); j++) begin
             valid_mask[j] = (chain_in[j].score > 32'h0) ? 1'b1 : 1'b0;
         end
     end
-    Chain [`MAX_NUM_CHAINS-1:0] final_chains;
-    logic [`MAX_NUM_CHAINS-1:0] valid_out;
-
+    
     chain_sorter  #(
         .NUM_INPUT_CHAINS(`NUM_SEGMENTS*`MAX_NUM_CHAINS),
         .NUM_OUTPUT_CHAINS(`MAX_NUM_CHAINS)

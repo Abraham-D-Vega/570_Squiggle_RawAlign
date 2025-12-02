@@ -77,7 +77,7 @@ typedef struct packed{
 
 
 
-
+// Depricated
 
 
 // function logic [31:0] hash64to32(input logic [63:0] key_input);

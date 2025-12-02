@@ -1,7 +1,7 @@
 //Takes in array of seeds and outputs start and end reference index of each section
-//TODO: Test
 `timescale 1ns/1ps
 `include "utils.svh"
+
 module segment_characterizer(
     input Anchor [`MAX_NUM_SEEDS-1:0] seeds,
     output logic [`NUM_SEGMENTS-1:0][31:0] seg_begin,
