@@ -4,7 +4,7 @@
 `include "utils.svh"
 
 module segment_dp(
-    input Chain [`MAX_NUM_SEEDS] chains_in,
+    input Chain [`MAX_NUM_SEEDS-1:0] chains_in,
     input logic [31:0] max_r_in [`MAX_NUM_SEEDS],
     input logic [31:0] min_r_in [`MAX_NUM_SEEDS],
     input Anchor seeds  [`MAX_NUM_SEEDS],
@@ -18,14 +18,15 @@ module segment_dp(
     logic [31:0] qi, ri, dq, dr, dev, candidate, new_min_r, new_max_r;
     logic [31:0] i;
     
-    
+    logic[`MAX_NUM_SEEDS-1:0] anchor_mask;
     
     assign i = s + ip;
     assign qi = seeds[i].q;
     assign ri = seeds[i].r;
 
     always_comb begin
-        chain_out.score = 32'd1;
+        chain_out.score = 32'd100;
+        anchor_mask = '0;
         chain_out = '0;
         min_r_out = ri;
         max_r_out = ri;
@@ -50,10 +51,11 @@ module segment_dp(
                         if(dq != 0 && dr != 0) begin
                             dev = (dq > dr) ? (dq - dr) : (dr-dq);
                             if(dev <= `MAX_DEV ) begin
-                                candidate = score_in[j-s] + 1 - `LAMBDA * dev;//TODO Make atually work since not a float
+                                candidate = chains_in[j-s].score + 100 - dev;
                                 if(candidate > chain_out.score) begin
                                     chain_out.score = candidate;
-                                    chain_out.anchors = chains_in[j-s] & (1'b1 << i);
+                                    anchor_mask[i] = 1'b1;
+                                    chain_out.anchors = chains_in[j-s].anchors & anchor_mask;
                                     min_r_out = new_min_r;
                                     max_r_out = new_max_r;
                                 end

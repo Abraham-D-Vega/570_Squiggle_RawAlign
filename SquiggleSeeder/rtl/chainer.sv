@@ -32,9 +32,42 @@ module Chainer(
         seg_begin,
         seg_end,
         seeds,
-
         chains_per_segment
     );
 
     //TODO: Add interface for step 4
+    Chain [`NUM_SEGMENTS*`MAX_CHAINS-1:0]  chain_in;
+    assign chain_in = chains_per_segment;
+
+    logic [31:0] valid_mask [`MAX_NUM_SEEDS];
+    always_comb begin
+        for (int j = 0; j < (`NUM_SEGMENTS*`MAX_CHAINS); j++) begin
+            valid_mask[j] = (chain_in[j].score > 32'h0) ? 32'h1 : 32'h0;
+        end
+    end
+    Chain [`MAX_CHAINS-1:0] final_chains;
+    logic [31:0] valid_out [`MAX_NUM_SEEDS];
+
+    chain_sorter(
+        .chain_in(chain_in),
+        .valid(valid_mask),
+        .chain_out(final_chains),
+        .valid_out(valid_out)
+    );
+
+    always_comb {
+        chains = '0;
+        for(int i = 0; i < `MAX_CHAINS; i++) begin
+            for(int j = 0; j < `NUM_SEEDS; j++) begin
+                for(int k = 0; k < `NUM_SEEDS; k++) begin
+                    if(valid_out[i]) begin
+                        if(final_chains.anchors[k]) begin
+                            chains[i][j] = seeds[k];
+                            j++;
+                        end
+                    end
+                end
+            end
+        end
+    }
 endmodule

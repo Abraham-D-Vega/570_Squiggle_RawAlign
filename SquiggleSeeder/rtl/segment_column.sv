@@ -6,7 +6,7 @@ module segment_column(
     input Anchor seeds [`MAX_NUM_SEEDS-1: 0],
     input logic [31:0] s, //beginning of seeds in segment
     input logic [31:0] e, //end of seeds in segment
-    output Chain segment_chains [`MAX_NUM_CHAINS]
+    output Chain chain_out [`MAX_NUM_CHAINS]
 );
     logic [31:0] len;
     assign len = e - s;
@@ -14,7 +14,7 @@ module segment_column(
     logic [31:0] prev [`MAX_NUM_SEEDS];
     logic [31:0] max_r [`MAX_NUM_SEEDS];
     logic [31:0] min_r [`MAX_NUM_SEEDS];
-    
+    Chain Segment_chains [`MAX_NUM_CHAINS];
     // Find all individual chains in the segment
     Chain Segment_chains [`MAX_NUM_SEEDS];
     genvar i;
