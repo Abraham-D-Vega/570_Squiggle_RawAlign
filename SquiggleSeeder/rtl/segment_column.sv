@@ -9,15 +9,11 @@ module segment_column(
     input logic [31:0] e, //end of seeds in segment
     output Chain [`MAX_NUM_CHAINS-1:0] chain_out 
 );
-    logic [31:0] len;
-    logic [`MAX_NUM_SEEDS-1:0][31:0]  score ;
-    logic [`MAX_NUM_SEEDS-1:0] [31:0] prev;
     logic [`MAX_NUM_SEEDS-1:0] [31:0]  max_r;
     logic [`MAX_NUM_SEEDS-1:0] [31:0] min_r;
     logic [`MAX_NUM_CHAINS-1:0] valid_out;
     Chain [`MAX_NUM_SEEDS-1:0] Segment_chains;
     // Find all individual chains in the segment
-    assign len = e - s;
     
     genvar i;
     generate

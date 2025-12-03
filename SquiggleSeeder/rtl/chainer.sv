@@ -11,8 +11,8 @@ module chainer (
     //    Example pattern: [0,110000), [100000,210000), ...
     // -----------------------------
 
-    logic [31:0][`NUM_SEGMENTS-1:0] seg_begin; // Beginning index of each reference segment in seeds
-    logic [31:0][`NUM_SEGMENTS-1:0] seg_end; // End index of each reference segment in seeds
+    logic [`NUM_SEGMENTS-1:0][31:0] seg_begin; // Beginning index of each reference segment in seeds
+    logic [`NUM_SEGMENTS-1:0] [31:0]seg_end; // End index of each reference segment in seeds
     Chain [`NUM_SEGMENTS-1:0][`MAX_NUM_CHAINS-1:0] chains_per_segment;
     
     segment_characterizer seg_char (

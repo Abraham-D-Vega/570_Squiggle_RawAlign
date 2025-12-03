@@ -60,18 +60,35 @@ module chainer_tb;
         // Optionally, print what you fed
         $display("Seeds input:");
         for (int k = 0; k < `MAX_NUM_SEEDS; k++) begin
+            if(seeds[k] != '0) begin
             $display("Seed[%0d]: ref=%0d, query=%0d", k, seeds[k].r, seeds[k].q);
+            end
         end
 
         // Wait and observe DUT output
         #100;
 
+        $display("\nSegment Characterization");
+        for(int i = 0; i < `NUM_SEGMENTS; i++) begin
+            $display("seg_begin[%0d]=%0d  seg_end[%0d]=%0d", i, dut.seg_begin[i], i, dut.seg_end[i]);
+        end
+
+        $display("\n Chains Per Segment:");
+        for(int i = 0; i < `NUM_SEGMENTS; i++) begin
+            $display("\nSegment[%0d]:", i);
+            for(int j = 0; j < `MAX_NUM_CHAINS; j++) begin
+                $display("chains_per_segment[%0d][%0d] score=%0d anchors=%0b", i, j, dut.chains_per_segment[i][j].score, dut.chains_per_segment[i][j].anchors);
+            end
+        end
+
         // (Optional) Print output chains
         for (int i = 0; i < `MAX_NUM_CHAINS; i++) begin
-            $display("Chain[%0d]:", i);
+            $display("\nChain[%0d]:", i);
             for (int j = 0; j < `MAX_NUM_SEEDS; j++) begin
+                if(chains[i][j].r != '0 && chains[i][j].q != '0) begin
                 $display("  Chain[%0d][%0d]: ref=%0d, query=%0d",
                     i, j, chains[i][j].r, chains[i][j].q);
+                end
             end
         end
 
