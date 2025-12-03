@@ -1,5 +1,4 @@
 //Take in previous scores, prev, max_r, and min_r, and output score, prev, max_r, and min_r 
-//TODO: Test / make this code less cursed
 //Each of these is equivalent to one iteration of the ip for loop in software model
 `timescale 1ns/1ps
 `include "utils.svh"

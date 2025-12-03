@@ -18,7 +18,7 @@ all: sim
 
 # Compile and build simulation executable
 $(EXE): $(SRC_FILES) $(TB_FILES) utils.svh
-	$(VERILATOR) --cc --binary --sv --timing \
+	$(VERILATOR) --cc --binary --sv --timing -Wno-WIDTHCONCAT \
 	  $(INCLUDES) \
 	  $(TB_FILES) $(SRC_FILES) \
 	  -top-module $(TOP_MODULE) \

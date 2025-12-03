@@ -51,16 +51,15 @@
 
 //Chaining Definitions
 // `define CHAIN_SIZE 44*(`MAX_NUM_CHAINS*`MAX_NUM_SEEDS)
-`define MAX_NUM_SEEDS 10
+`define MAX_NUM_SEEDS 3000
 `define MAX_NUM_CHAINS 5
 `define SEGMENT_SIZE 6000
-`define SEG_STRIDE  5000               // distance between segment starts
-`define WINDOW_SIZE 1000
+`define SEG_STRIDE  400000               // distance between segment starts
+`define WINDOW_SIZE 2000
 `define SEG_OVERLAP `WINDOW_SIZE       // must be >= WINDOW_SIZE
 `define SEG_SIZE  `SEG_STRIDE + `SEG_OVERLAP // total width of each segment
-`define LAMBDA 1//TODO: Adjust for scoring purposes
 `define MAX_DEV `WINDOW_SIZE
-`define NUM_SEGMENTS 13 //TODO actually set this to a reasonable number
+`define NUM_SEGMENTS 1 //TODO actually set this to a reasonable number
 typedef struct packed {
     logic [10:0] q;
     logic [31:0] r;
@@ -68,7 +67,7 @@ typedef struct packed {
 } Anchor; // 'my_packed_data_t' is the new type name
 
 typedef struct packed{
-    logic [31:0] score; // TODO: this is a floating point num, idk what format we want it in yet
+    logic [31:0] score; 
     logic [`MAX_NUM_SEEDS-1:0] anchors ; // TODO: anchor_r and anchor_q form the archor pairs, determine max number of slots needed to store these in
 } Chain;
 

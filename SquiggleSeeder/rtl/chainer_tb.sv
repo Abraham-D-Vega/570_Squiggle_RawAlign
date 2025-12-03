@@ -52,7 +52,7 @@ module chainer_tb;
     // Test sequence
     initial begin
         // Read input seeds
-        read_seeds_from_file("covid_0.txt");
+        read_seeds_from_file("../anchors/covid_0.txt");
 
         // Wait for a short setup
         #10;
