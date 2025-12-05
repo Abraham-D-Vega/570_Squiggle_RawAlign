@@ -20,7 +20,7 @@ module chainer (
         .seg_begin(seg_begin),
         .seg_end(seg_end),
 
-        // TODO new
+        // TODO implement this into the seg_characterizer (not sure how yet)
         .start(start)
     );
 
@@ -63,4 +63,5 @@ module chainer (
         .chain_starts(chain_starts),
         .chain_ends(chain_ends)
     );
+
 endmodule

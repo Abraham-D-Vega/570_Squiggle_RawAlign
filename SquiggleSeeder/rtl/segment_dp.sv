@@ -44,24 +44,26 @@ module segment_dp(
             max_r_out = '0;
         end
         else begin
-        for(int j = s; j < i; j++)begin
-            if(ri - seeds[j].r <= `WINDOW_SIZE ) begin
-                if(seeds[j].q < qi && seeds[j].r < ri) begin
-                    new_min_r = (min_r_in[j-s] < ri) ? min_r_in[j-s] : ri;
-                    new_max_r = (min_r_in[j-s] > ri) ? max_r_in[j-s] : ri;
-                    if(new_max_r - new_min_r <= `WINDOW_SIZE)begin
-                        dq = qi - seeds[j].q;
-                        dr = ri -seeds[j].r;
-                        if(dq != 0 && dr != 0) begin
-                            dev = ({21'b0, dq} > dr) ? ({21'b0, dq} - dr) : (dr - {21'b0, dq});
-                            if(dev <= `MAX_DEV ) begin
-                                candidate = ((chains_in[j-s].score + 100) > dev) ? chains_in[j-s].score + 100 - dev : 0;
-                                if(candidate > chain_out.score) begin
-                                   chain_out.score = candidate;
-                                    anchor_mask[i] = 1'b1;
-                                    chain_out.anchors = chains_in[j-s].anchors | anchor_mask;
-                                    min_r_out = new_min_r;
-                                    max_r_out = new_max_r;
+        for(int j = s; j < `MAX_NUM_SEEDS; j++) begin
+            if(j >= s && j < i) begin
+                if(ri - seeds[j].r <= `WINDOW_SIZE ) begin
+                    if(seeds[j].q < qi && seeds[j].r < ri) begin
+                        new_min_r = (min_r_in[j-s] < ri) ? min_r_in[j-s] : ri;
+                        new_max_r = (min_r_in[j-s] > ri) ? max_r_in[j-s] : ri;
+                        if(new_max_r - new_min_r <= `WINDOW_SIZE)begin
+                            dq = qi - seeds[j].q;
+                            dr = ri -seeds[j].r;
+                            if(dq != 0 && dr != 0) begin
+                                dev = ({21'b0, dq} > dr) ? ({21'b0, dq} - dr) : (dr - {21'b0, dq});
+                                if(dev <= `MAX_DEV ) begin
+                                    candidate = ((chains_in[j-s].score + 100) > dev) ? chains_in[j-s].score + 100 - dev : 0;
+                                    if(candidate > chain_out.score) begin
+                                       chain_out.score = candidate;
+                                        anchor_mask[i] = 1'b1;
+                                        chain_out.anchors = chains_in[j-s].anchors | anchor_mask;
+                                        min_r_out = new_min_r;
+                                        max_r_out = new_max_r;
+                                    end
                                 end
                             end
                         end
