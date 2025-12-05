@@ -7,12 +7,9 @@
 #include <algorithm>
 #include <cstdint>
 #include <utility>
-#include <limits>
 #include <cmath>
-#include <iostream>
 #include <thread>
 #include <atomic>
-#include <unordered_set>
 
 void chain_seeds(
     const std::vector<Anchor>& seeds,
@@ -23,29 +20,29 @@ void chain_seeds(
 )
 {
     chains.clear();
-    if (seeds.empty()) return;   
+    if (seeds.empty()) return;
 
     const std::size_t n = seeds.size();
+    if (n == 0) return;
+
+    // seeds are assumed sorted by (r, q) before calling this function
 
     // -----------------------------
     // 2. Build overlapping segments in reference space
-    //    Example pattern: [0,110000), [100000,210000), ...
+    //    Example pattern: [0, 400000+WINDOW_SIZE), [400000, 800000+WINDOW_SIZE), ...
     // -----------------------------
-    if (n == 0) return;
-
     uint32_t r_min = seeds.front().r;
     uint32_t r_max = seeds.back().r;
 
     unsigned hw_threads = std::max(std::thread::hardware_concurrency(), 4u);
 
-    // You can tune these:
-    const uint32_t SEG_STRIDE   = 400'000;               // distance between segment starts
-    const uint32_t SEG_OVERLAP  = WINDOW_SIZE;          // must be >= WINDOW_SIZE
+    const uint32_t SEG_STRIDE   = 400'000;                 // distance between segment starts
+    const uint32_t SEG_OVERLAP  = WINDOW_SIZE;             // must be >= WINDOW_SIZE
     const uint32_t SEG_SIZE     = SEG_STRIDE + SEG_OVERLAP; // total width of each segment
 
     struct Segment {
-        uint32_t r_lo;
-        uint32_t r_hi;
+        uint32_t    r_lo;
+        uint32_t    r_hi;
         std::size_t begin; // index into seeds
         std::size_t end;   // index into seeds
     };
@@ -55,15 +52,14 @@ void chain_seeds(
     // Start segments from the floor of r_min to the stride grid
     uint32_t start_r0 = (r_min / SEG_STRIDE) * SEG_STRIDE;
     for (uint32_t seg_start_r = start_r0;
-        seg_start_r <= r_max;
-        seg_start_r += SEG_STRIDE)
+         seg_start_r <= r_max;
+         seg_start_r += SEG_STRIDE)
     {
         uint32_t seg_lo = seg_start_r;
         uint32_t seg_hi = seg_start_r + SEG_SIZE; // half-open [lo, hi)
 
         // Find [begin, end) of seeds with r in [seg_lo, seg_hi)
         auto cmp_lo = [](const Anchor &a, uint32_t val) { return a.r < val; };
-        auto cmp_hi = [](uint32_t val, const Anchor &a) { return val < a.r; };
 
         auto it_begin = std::lower_bound(seeds.begin(), seeds.end(), seg_lo, cmp_lo);
         auto it_end   = std::lower_bound(seeds.begin(), seeds.end(), seg_hi, cmp_lo);
@@ -79,11 +75,13 @@ void chain_seeds(
     if (segments.empty()) return;
 
     // -----------------------------
-    // 3. Per-segment DP + local chain extraction
+    // 3. Per-segment DP + local chain extraction (ONE chain per segment)
+    //    We only keep (start, end) anchors, no full backtrack.
     // -----------------------------
     struct SegmentChain {
-        float score;  // chain score (score at endpoint)
-        std::vector<std::pair<uint32_t,uint32_t>> anchors; // (q,r) pairs
+        float    score;
+        uint32_t q_start, r_start;
+        uint32_t q_end,   r_end;
     };
 
     std::vector<std::vector<SegmentChain>> segment_chains(segments.size());
@@ -92,10 +90,11 @@ void chain_seeds(
     std::atomic<std::size_t> next_seg(0);
 
     const std::size_t num_threads =
-        std::max<std::size_t>(1, std::min<std::size_t>(segments.size(),
-                                                       hw_threads));
+        std::max<std::size_t>(1, std::min<std::size_t>(segments.size(), hw_threads));
 
     auto worker = [&]() {
+        const uint32_t MAX_DEV = WINDOW_SIZE;
+
         while (true) {
             std::size_t si = next_seg.fetch_add(1, std::memory_order_relaxed);
             if (si >= segments.size()) break;
@@ -108,10 +107,8 @@ void chain_seeds(
 
             // Local DP arrays for this segment
             std::vector<float>    score(len);
-            std::vector<int32_t>  prev(len);
-            std::vector<uint32_t> min_r(len), max_r(len);
+            std::vector<uint32_t> start_idx(len); // local start index of chain ending at ip
 
-            const uint32_t MAX_DEV = WINDOW_SIZE;
             std::size_t j_start = 0; // local index [0..len)
 
             // DP over local indices ip = 0..len-1, mapping to global i = s + ip
@@ -129,11 +126,9 @@ void chain_seeds(
                         break;
                 }
 
-                // Baseline: start a new chain at i
-                float    best_score = 1.0f;
-                int32_t  best_prev  = -1;
-                uint32_t best_min_r = ri;
-                uint32_t best_max_r = ri;
+                // Baseline: start a new chain at i (start=end=i)
+                float    best_score    = 1.0f;
+                uint32_t best_start_ip = static_cast<uint32_t>(ip);
 
                 // Inner loop: try extending from j -> i
                 for (std::size_t jp = j_start; jp < ip; ++jp) {
@@ -141,13 +136,14 @@ void chain_seeds(
                     uint32_t qj = seeds[j].q;
                     uint32_t rj = seeds[j].r;
 
-                    // Enforce monotone q and r
+                    // Enforce monotone q and r (r monotone already from sorting, q check remains)
                     if (!(qj < qi && rj < ri)) continue;
 
-                    // New span in r if we extend chain ending at j with i
-                    uint32_t new_min_r = std::min(min_r[jp], ri);
-                    uint32_t new_max_r = std::max(max_r[jp], ri);
-                    if (new_max_r - new_min_r > WINDOW_SIZE) continue;
+                    // Compute span in reference from start of chain ending at jp to i
+                    std::size_t global_start = s + start_idx[jp];
+                    uint32_t r_start = seeds[global_start].r;
+                    uint32_t span_r  = ri - r_start;
+                    if (span_r > WINDOW_SIZE) continue;
 
                     uint32_t dq = qi - qj;
                     uint32_t dr = ri - rj;
@@ -158,70 +154,48 @@ void chain_seeds(
 
                     float candidate = score[jp] + 1.0f - LAMBDA * static_cast<float>(dev);
                     if (candidate > best_score) {
-                        best_score = candidate;
-                        best_prev  = static_cast<int32_t>(jp); // local index
-                        best_min_r = new_min_r;
-                        best_max_r = new_max_r;
+                        best_score    = candidate;
+                        best_start_ip = static_cast<uint32_t>(start_idx[jp]);
                     }
                 }
 
-                score[ip] = best_score;
-                prev[ip]  = best_prev;
-                min_r[ip] = best_min_r;
-                max_r[ip] = best_max_r;
+                score[ip]    = best_score;
+                start_idx[ip] = best_start_ip;
             }
 
-            // Local chain selection within this segment (similar to your global one)
-            std::vector<int> order(len);
-            for (std::size_t ip = 0; ip < len; ++ip) order[ip] = static_cast<int>(ip);
+            // ---- ONE chain per segment: pick the single best endpoint ----
+            int   best_ip        = -1;
+            float best_seg_score = 0.0f;
 
-            const std::size_t rawK = max_chains * 20; // oversample for overlaps
-            const std::size_t L    = std::min<std::size_t>(rawK, len);
-
-            std::partial_sort(order.begin(),
-                              order.begin() + L,
-                              order.end(),
-                              [&](int a, int b) { return score[a] > score[b]; });
-
-            std::vector<uint8_t> used(len, 0);
-            std::size_t chains_found = 0;
-            auto &out_vec = segment_chains[si];
-
-            for (std::size_t idx = 0; idx < L && chains_found < max_chains; ++idx) {
-                int ip = order[idx];
-                if (score[ip] <= 0.0f) break; // no more good chains in this segment
-
-                // Check local overlap in this segment
-                bool overlaps = false;
-                int cur = ip;
-                while (cur != -1) {
-                    if (used[cur]) {
-                        overlaps = true;
-                        break;
-                    }
-                    cur = prev[cur];
-                }
-                if (overlaps) continue;
-
-                // Backtrack to build chain in global coordinates
-                std::vector<std::pair<uint32_t,uint32_t>> chain;
-                cur = ip;
-                while (cur != -1) {
-                    std::size_t gi = s + static_cast<std::size_t>(cur);
-                    chain.emplace_back(seeds[gi].q, seeds[gi].r);
-                    used[cur] = 1;
-                    cur = prev[cur];
-                }
-                std::reverse(chain.begin(), chain.end());
-
-                if (!chain.empty()) {
-                    SegmentChain sc;
-                    sc.score   = score[ip];
-                    sc.anchors = std::move(chain);
-                    out_vec.push_back(std::move(sc));
-                    ++chains_found;
+            for (std::size_t ip = 0; ip < len; ++ip) {
+                if (ip == 0 || score[ip] > best_seg_score) {
+                    best_seg_score = score[ip];
+                    best_ip        = static_cast<int>(ip);
                 }
             }
+
+            if (best_ip == -1 || best_seg_score <= 0.0f) {
+                continue; // No useful chain in this segment
+            }
+
+            // Extract just start and end anchors (no backtracking)
+            std::size_t end_local   = static_cast<std::size_t>(best_ip);
+            std::size_t start_local = static_cast<std::size_t>(start_idx[end_local]);
+
+            std::size_t g_start = s + start_local;
+            std::size_t g_end   = s + end_local;
+
+            const Anchor &a_start = seeds[g_start];
+            const Anchor &a_end   = seeds[g_end];
+
+            SegmentChain sc;
+            sc.score   = best_seg_score;
+            sc.q_start = a_start.q;
+            sc.r_start = a_start.r;
+            sc.q_end   = a_end.q;
+            sc.r_end   = a_end.r;
+
+            segment_chains[si].push_back(sc); // exactly 0 or 1 per segment
         }
     };
 
@@ -234,53 +208,36 @@ void chain_seeds(
 
     // -----------------------------
     // 4. Merge all segment chains & pick global best max_chains
-    //    Ensure we don't reuse the same (q,r) anchor across chains.
+    //    Each chain is represented only by its (start, end) anchors.
     // -----------------------------
     std::vector<SegmentChain> all_chains;
+    all_chains.reserve(segments.size());
     for (auto &vec : segment_chains) {
-        for (auto &c : vec) {
-            all_chains.push_back(std::move(c));
+        if (!vec.empty()) {
+            all_chains.push_back(vec[0]); // 0 or 1 per segment
         }
     }
 
     if (all_chains.empty()) return;
 
+    // Sort by score descending
     std::sort(all_chains.begin(), all_chains.end(),
               [](const SegmentChain &a, const SegmentChain &b) {
                   return a.score > b.score;
               });
 
-    std::unordered_set<uint64_t> used_anchors;
-    used_anchors.reserve(all_chains.size() * 16);
-
-    auto encode_anchor = [](uint32_t q, uint32_t r) -> uint64_t {
-        return (static_cast<uint64_t>(q) << 32) | static_cast<uint64_t>(r);
-    };
-
     std::size_t taken = 0;
     for (const auto &sc : all_chains) {
         if (taken >= max_chains) break;
 
-        bool overlaps = false;
-        for (const auto &p : sc.anchors) {
-            uint64_t key = encode_anchor(p.first, p.second);
-            if (used_anchors.find(key) != used_anchors.end()) {
-                overlaps = true;
-                break;
-            }
-        }
-        if (overlaps) continue;
+        std::vector<std::pair<uint32_t, uint32_t>> chain;
+        chain.reserve(2);
+        chain.emplace_back(sc.q_start, sc.r_start);
+        chain.emplace_back(sc.q_end,   sc.r_end);
 
-        // Accept this chain
-        chains.push_back(sc.anchors);
+        chains.push_back(std::move(chain));
         ++taken;
-
-        for (const auto &p : sc.anchors) {
-            uint64_t key = encode_anchor(p.first, p.second);
-            used_anchors.insert(key);
-        }
     }
 }
 
 #endif // CHAINSEEDS_HPP
-

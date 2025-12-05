@@ -11,7 +11,7 @@ struct Anchor {
 };
 
 constexpr uint32_t POST_SEED_ALIGN_SIZE = 10000; // # how many samples to align after seeding (5k or 10k)
-int MAX_ALIGN_COST_FOR_POSITIVE = POST_SEED_ALIGN_SIZE * 8; // Max cost to consider alignment "positive"
+int MAX_ALIGN_COST_FOR_POSITIVE = 80000; // Max cost to consider alignment "positive"
 
 // Constants derived from RawHash parameters (DO NOT CHANGE)
 

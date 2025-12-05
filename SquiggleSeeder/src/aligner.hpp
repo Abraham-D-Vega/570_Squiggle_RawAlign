@@ -146,7 +146,6 @@ inline ChainSDTWResult run_best_chain_sdtw(
     const std::vector<std::vector<std::pair<uint32_t, uint32_t>>>& chains,
     int window_size = 2000
 ) {
-    raw_read.resize(POST_SEED_ALIGN_SIZE);
     std::vector<uint8_t> norm_read;
     discrete_normalize(raw_read, norm_read);
     ChainSDTWResult best_result;
