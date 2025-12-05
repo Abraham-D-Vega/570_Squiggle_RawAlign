@@ -174,6 +174,65 @@ struct ReadResult {
 #endif
 };
 
+// Fast radix sort specialized for Anchor (sort by r, then q).
+// Assumes: r fits in 24 bits, q fits in 11 bits.
+static void radix_sort_anchors(std::vector<Anchor> &anchors) {
+    const std::size_t n = anchors.size();
+    if (n <= 1) return;
+
+    // Pack (r, q) into a single 35-bit key: [ r (24 bits) | q (11 bits) ]
+    std::vector<uint64_t> keys(n);
+    constexpr uint64_t Q_MASK = (1u << 11) - 1u; // lower 11 bits
+
+    for (std::size_t i = 0; i < n; ++i) {
+        uint64_t r = static_cast<uint64_t>(anchors[i].r); // must fit in 24 bits
+        uint64_t q = static_cast<uint64_t>(anchors[i].q); // must fit in 11 bits
+        keys[i] = (r << 11) | (q & Q_MASK);
+    }
+
+    // LSD radix sort over 8-bit digits (5 passes → 40 bits)
+    std::vector<uint64_t> tmp(n);
+    constexpr int NUM_PASSES = 5;   // 5 * 8 = 40 bits (covers 35-bit key)
+    constexpr int RADIX      = 256; // 2^8
+
+    for (int pass = 0; pass < NUM_PASSES; ++pass) {
+        unsigned shift = pass * 8;
+        std::size_t count[RADIX] = {0};
+
+        // Count occurrences of each byte value
+        for (std::size_t i = 0; i < n; ++i) {
+            uint8_t byte = static_cast<uint8_t>((keys[i] >> shift) & 0xFFu);
+            ++count[byte];
+        }
+
+        // Prefix sums -> starting indices
+        std::size_t sum = 0;
+        for (int b = 0; b < RADIX; ++b) {
+            std::size_t c = count[b];
+            count[b] = sum;
+            sum += c;
+        }
+
+        // Stable scatter into tmp
+        for (std::size_t i = 0; i < n; ++i) {
+            uint8_t byte = static_cast<uint8_t>((keys[i] >> shift) & 0xFFu);
+            tmp[count[byte]++] = keys[i];
+        }
+
+        // Swap buffers
+        keys.swap(tmp);
+    }
+
+    // Unpack sorted keys back into anchors
+    for (std::size_t i = 0; i < n; ++i) {
+        uint64_t k = keys[i];
+        uint32_t q = static_cast<uint32_t>(k & Q_MASK);
+        uint32_t r = static_cast<uint32_t>(k >> 11);
+        anchors[i].q = q;
+        anchors[i].r = r;
+    }
+}
+
 void process_read(int pass,
                   int read_index,
                   const std::string &genome,
@@ -254,7 +313,8 @@ void process_read(int pass,
     result.time_hash = t_hash - t_quantize;
     #endif
 
-    std::vector<Anchor> anchors(num_seeds);
+    std::vector<Anchor> anchors;
+    anchors.reserve(num_seeds);
     for (int j = 0; j < num_seeds; ++j) {
         auto it = hash_table.find(hashes[j]);
         if (it != hash_table.end()) {
@@ -276,14 +336,15 @@ void process_read(int pass,
     //         if (a.r != b.r) return a.r < b.r;
     //         return a.q < b.q;
     //     });
-    parallel_sort(
-        anchors.begin(), anchors.end(),
-        [](const Anchor &a, const Anchor &b) {
-            if (a.r != b.r) return a.r < b.r;
-            return a.q < b.q;
-        },
-        10 // max threads you want to allow
-    );
+    // parallel_sort(
+    //     anchors.begin(), anchors.end(),
+    //     [](const Anchor &a, const Anchor &b) {
+    //         if (a.r != b.r) return a.r < b.r;
+    //         return a.q < b.q;
+    //     },
+    //     10 // max threads you want to allow
+    // );
+    radix_sort_anchors(anchors);
     #ifdef PROFILE
     double t_sort = std::chrono::duration<double, std::milli>(           
         std::chrono::high_resolution_clock::now() - t_start).count();   

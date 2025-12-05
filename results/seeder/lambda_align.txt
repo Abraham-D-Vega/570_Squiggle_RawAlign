@@ -4,21 +4,21 @@
 #
 # Format: read_type read_id read_size cost ref_start ref_end alignment_length
 #
-    lambda     lambda_raw0      10000     141367      11020      12988       1968
-    lambda     lambda_raw1      10000     100038      40888      42649       1761
+    lambda     lambda_raw0      10000     144052      41730      43656       1926
+    lambda     lambda_raw1      10000     103618      10134      11924       1790
     lambda     lambda_raw2      10000      45947      60960      61938        978
     lambda     lambda_raw3      10000      88523      40191      41660       1469
     lambda     lambda_raw4      10000      41158      42215      43199        984
     lambda     lambda_raw5      10000      47352      46423      47541       1118
-    lambda     lambda_raw6      10000      94681      64556      66494       1938
+    lambda     lambda_raw6      10000      94938      12245      14055       1810
     lambda     lambda_raw7      10000      85669      45468      47380       1912
     lambda     lambda_raw8      10000      39992      68552      69484        932
     lambda     lambda_raw9      10000      52676        700       1801       1101
     lambda    lambda_raw10      10000      36791      38042      39170       1128
     lambda    lambda_raw11      10000      42737      24100      25150       1050
-    lambda    lambda_raw12      10000      86208      67968      68996       1028
+    lambda    lambda_raw12      10000      86694       2991       4149       1158
     lambda    lambda_raw13      10000      39114       6929       8033       1104
-    lambda    lambda_raw14      10000     119247      38655      40400       1745
+    lambda    lambda_raw14      10000     121391       7288       9207       1919
     lambda    lambda_raw15      10000      36132        789       1811       1022
     lambda    lambda_raw16      10000      36611      62890      64025       1135
     lambda    lambda_raw17      10000      45283      60799      61872       1073
@@ -26,7 +26,7 @@
     lambda    lambda_raw19      10000      46494      40871      41795        924
     lambda    lambda_raw20      10000      35095      78370      79332        962
     lambda    lambda_raw21      10000      47273      53347      54377       1030
-    lambda    lambda_raw22      10000      89474      85917      87577       1660
+    lambda    lambda_raw22      10000      95803      16103      17709       1606
     lambda    lambda_raw23      10000      42812      61543      62582       1039
     lambda    lambda_raw24      10000      45860      74210      75149        939
     lambda    lambda_raw25      10000      50318      26744      27778       1034
@@ -34,13 +34,13 @@
     lambda    lambda_raw27      10000      50205      65046      66017        971
     lambda    lambda_raw28      10000      46420      23273      24323       1050
     lambda    lambda_raw29      10000      49405      64970      65958        988
-    lambda    lambda_raw30      10000      44441      69041      70239       1198
+    lambda    lambda_raw30      10000      44888      69221      70239       1018
     lambda    lambda_raw31      10000      45441      64314      65360       1046
-    lambda    lambda_raw32      10000      86792      19784      21494       1710
+    lambda    lambda_raw32      10000      86814      41186      42839       1653
     lambda    lambda_raw33      10000      47158      86820      87901       1081
     lambda    lambda_raw34      10000      36932       3920       4952       1032
     lambda    lambda_raw35      10000      47917      10300      11291        991
-    lambda    lambda_raw36      10000      58745      52713      53838       1125
+    lambda    lambda_raw36      10000      89970       3001       4747       1746
     lambda    lambda_raw37      10000      47223      49769      50990       1221
     lambda    lambda_raw38      10000      41549      34301      35262        961
     lambda    lambda_raw39      10000      32365      73334      74486       1152
@@ -52,7 +52,7 @@
     lambda    lambda_raw45      10000      41308      12068      13155       1087
     lambda    lambda_raw46      10000      38128      95795      96815       1020
     lambda    lambda_raw47      10000      51712      26825      27997       1172
-    lambda    lambda_raw48      10000      44113      55325      56374       1049
+    lambda    lambda_raw48      10000      90146      10492      12351       1859
     lambda    lambda_raw49      10000      45723      75155      76000        845
     lambda    lambda_raw50      10000     144301      11077      12997       1920
     lambda    lambda_raw51      10000      48586      33911      34972       1061
@@ -66,19 +66,19 @@
     lambda    lambda_raw59      10000      47372      14295      15386       1091
     lambda    lambda_raw60      10000      45010      51544      52549       1005
     lambda    lambda_raw61      10000      47528      29829      30970       1141
-    lambda    lambda_raw62      10000      47372       9447      10337        890
+    lambda    lambda_raw62      10000      47503       9447      10337        890
     lambda    lambda_raw63      10000      41539      94109      95172       1063
     lambda    lambda_raw64      10000      59391      27838      28964       1126
     lambda    lambda_raw65      10000      41747       9451      10434        983
-    lambda    lambda_raw66      10000      63910      89160      89979        819
-    lambda    lambda_raw67      10000      92080      40986      42721       1735
+    lambda    lambda_raw66      10000      88761      40844      42108       1264
+    lambda    lambda_raw67      10000      96483      61611      63248       1637
     lambda    lambda_raw68      10000      43910      46576      47745       1169
     lambda    lambda_raw69      10000      44868      68205      69258       1053
     lambda    lambda_raw70      10000      33229      43223      44188        965
-    lambda    lambda_raw71      10000      91632      10515      12178       1663
+    lambda    lambda_raw71      10000      92529       8763      10664       1901
     lambda    lambda_raw72      10000      43321      51973      52992       1019
     lambda    lambda_raw73      10000      50715       9196      10263       1067
-    lambda    lambda_raw74      10000      52189      49195      50347       1152
+    lambda    lambda_raw74      10000      52208      49195      50347       1152
     lambda    lambda_raw75      10000      52595        978       2065       1087
     lambda    lambda_raw76      10000      62403      30025      30808        783
     lambda    lambda_raw77      10000      50519      22398      23521       1123
@@ -95,123 +95,123 @@
     lambda    lambda_raw88      10000      49424      77945      78995       1050
     lambda    lambda_raw89      10000      42349      71668      72653        985
     lambda    lambda_raw90      10000      44012      41167      42163        996
-    lambda    lambda_raw91      10000      77136      81743      82831       1088
+    lambda    lambda_raw91      10000      78375      10172      11276       1104
     lambda    lambda_raw92      10000      44230      62084      63154       1070
     lambda    lambda_raw93      10000      42287      95259      96308       1049
     lambda    lambda_raw94      10000      50297      71741      72723        982
-    lambda    lambda_raw95      10000     103998      95031      96878       1847
+    lambda    lambda_raw95      10000     106393      54427      56248       1821
     lambda    lambda_raw96      10000      43956      60473      61489       1016
     lambda    lambda_raw97      10000      35773      50787      51948       1161
     lambda    lambda_raw98      10000      38778      72661      73759       1098
     lambda    lambda_raw99      10000      47365      23281      24204        923
-     human      human_raw0      10000      81449      95033      96547       1514
+     human      human_raw0      10000      82824      39777      41236       1459
      human      human_raw1      10000      78011      41163      42416       1253
-     human      human_raw2      10000      82222      20044      21579       1535
-     human      human_raw3      10000      88693      10693      12354       1661
-     human      human_raw4      10000      85011      20035      21499       1464
-     human      human_raw5      10000      86192       5861       7701       1840
+     human      human_raw2      10000      84126      39844      41413       1569
+     human      human_raw3      10000      91277      42939      44520       1581
+     human      human_raw4      10000      86726      10300      11811       1511
+     human      human_raw5      10000      87938      24281      25888       1607
      human      human_raw6      10000      87881      80732      82232       1500
-     human      human_raw7      10000      88140      23232      24932       1700
-     human      human_raw8      10000      81146      58826      60348       1522
-     human      human_raw9      10000      85270      12683      14354       1671
+     human      human_raw7      10000      92132      66428      68148       1720
+     human      human_raw8      10000      82676      40216      41909       1693
+     human      human_raw9      10000      85694       6233       7938       1705
      human     human_raw10      10000      89841      11498      13294       1796
-     human     human_raw11      10000      89766      85493      87081       1588
-     human     human_raw12      10000      81296      20254      21923       1669
+     human     human_raw11      10000      89898      10750      12373       1623
+     human     human_raw12      10000      81561      40805      42426       1621
      human     human_raw13      10000      83044      11767      13305       1538
-     human     human_raw14      10000      88220      20311      22069       1758
-     human     human_raw15      10000      85433      20207      21810       1603
-     human     human_raw16      10000      82790      11265      12754       1489
-     human     human_raw17      10000      83304      40894      42501       1607
-     human     human_raw18      10000      90592      24258      25717       1459
-     human     human_raw19      10000      83955      40470      41881       1411
+     human     human_raw14      10000      88582       3913       5698       1785
+     human     human_raw15      10000      87820      34230      35899       1669
+     human     human_raw16      10000      86551      39968      41661       1693
+     human     human_raw17      10000      85311      39330      40946       1616
+     human     human_raw18      10000      91364      40756      42307       1551
+     human     human_raw19      10000      84947       9380      11028       1648
      human     human_raw20      10000      85112      40791      42549       1758
-     human     human_raw21      10000      85376      13342      15075       1733
-     human     human_raw22      10000      84749      37316      38983       1667
-     human     human_raw23      10000      83470      19059      20615       1556
+     human     human_raw21      10000      88093      39792      41559       1767
+     human     human_raw22      10000      85277      40324      41780       1456
+     human     human_raw23      10000      85325      40182      41785       1603
      human     human_raw24      10000      82020       8751      10462       1711
-     human     human_raw25      10000      94329      40300      42175       1875
-     human     human_raw26      10000      84114         35       1515       1480
+     human     human_raw25      10000      94709      12260      14073       1813
+     human     human_raw26      10000      84849      42855      44278       1423
      human     human_raw27      10000      81073      41357      43126       1769
-     human     human_raw28      10000      82745         35       1893       1858
-     human     human_raw29      10000      81065       9845      11467       1622
+     human     human_raw28      10000      83796      39836      41403       1567
+     human     human_raw29      10000      84384      39385      41021       1636
      human     human_raw30      10000      81347      11273      12868       1595
      human     human_raw31      10000      81951      11002      12936       1934
      human     human_raw32      10000      81147      13909      15461       1552
-     human     human_raw33      10000      84821       2975       4643       1668
+     human     human_raw33      10000      86967      59172      60770       1598
      human     human_raw34      10000      86042      10778      12487       1709
      human     human_raw35      10000      88142      11098      12538       1440
-     human     human_raw36      10000      87517      49645      51276       1631
+     human     human_raw36      10000      88035       2553       4197       1644
      human     human_raw37      10000     112643      10999      12282       1283
-     human     human_raw38      10000      81940      40688      42166       1478
-     human     human_raw39      10000      82252       8891      10442       1551
-     human     human_raw40      10000      80459      19814      21729       1915
-     human     human_raw41      10000      89801      81712      83225       1513
-     human     human_raw42      10000      80745      73428      74629       1201
-     human     human_raw43      10000      86652      41405      43135       1730
-     human     human_raw44      10000      83008      41406      42796       1390
-     human     human_raw45      10000      86052       9875      11585       1710
-     human     human_raw46      10000      87361      41529      43286       1757
-     human     human_raw47      10000      82559      10020      11715       1695
-     human     human_raw48      10000      90540      20593      22284       1691
-     human     human_raw49      10000      90305       3824       5477       1653
-     human     human_raw50      10000      87605      19987      21673       1686
-     human     human_raw51      10000      87573          4       1626       1622
+     human     human_raw38      10000      82525      11546      13079       1533
+     human     human_raw39      10000      84101      12612      14221       1609
+     human     human_raw40      10000      82931       9622      11236       1614
+     human     human_raw41      10000      90299      41704      43134       1430
+     human     human_raw42      10000      82827      10862      12223       1361
+     human     human_raw43      10000      91105      66641      68206       1565
+     human     human_raw44      10000      85555      10556      12013       1457
+     human     human_raw45      10000      88534      65140      66767       1627
+     human     human_raw46      10000      88215      10427      12046       1619
+     human     human_raw47      10000      84126      58766      60515       1749
+     human     human_raw48      10000      92578      39369      41018       1649
+     human     human_raw49      10000      91443      39416      41055       1639
+     human     human_raw50      10000      90780      41608      43388       1780
+     human     human_raw51      10000      89454      90966      92642       1676
      human     human_raw52      10000      79149      41709      42915       1206
-     human     human_raw53      10000      84135      14717      16215       1498
+     human     human_raw53      10000      85546      43494      45047       1553
      human     human_raw54      10000      86787      11475      13311       1836
      human     human_raw55      10000      89956      11546      13406       1860
-     human     human_raw56      10000      84280      20206      21898       1692
+     human     human_raw56      10000      85677      41561      43096       1535
      human     human_raw57      10000      87254      10946      12742       1796
-     human     human_raw58      10000      90946       2482       4223       1741
-     human     human_raw59      10000      84143      19855      21540       1685
-     human     human_raw60      10000      91841      40018      41885       1867
-     human     human_raw61      10000      84745      22165      23781       1616
+     human     human_raw58      10000      91444      12689      14443       1754
+     human     human_raw59      10000      84489       9634      11182       1548
+     human     human_raw60      10000      92979      42623      44475       1852
+     human     human_raw61      10000      85921      40326      42029       1703
      human     human_raw62      10000      81690      41095      42656       1561
      human     human_raw63      10000      93031      10184      12019       1835
-     human     human_raw64      10000      80865      41245      42563       1318
+     human     human_raw64      10000      84895         14       1428       1414
      human     human_raw65      10000      84144      41296      42958       1662
-     human     human_raw66      10000      86043          4       1521       1517
-     human     human_raw67      10000      82365      10717      12165       1448
-     human     human_raw68      10000      86550      11497      13086       1589
+     human     human_raw66      10000      89395      66871      68359       1488
+     human     human_raw67      10000      82471      40384      41893       1509
+     human     human_raw68      10000      87016      40839      42222       1383
      human     human_raw69      10000      89774      12683      14306       1623
-     human     human_raw70      10000      82999      41186      42820       1634
-     human     human_raw71      10000      84782       2739       4039       1300
-     human     human_raw72      10000      84917      17453      18955       1502
-     human     human_raw73      10000      87774       2732       4528       1796
-     human     human_raw74      10000      88246      59246      61013       1767
-     human     human_raw75      10000      88874      85476      87147       1671
-     human     human_raw76      10000      81966      11582      13293       1711
-     human     human_raw77      10000      86251      40215      41997       1782
-     human     human_raw78      10000      85146      19753      21406       1653
+     human     human_raw70      10000      84047      58442      60021       1579
+     human     human_raw71      10000      87647      40412      42021       1609
+     human     human_raw72      10000      86937      27535      29063       1528
+     human     human_raw73      10000      88858      10543      12239       1696
+     human     human_raw74      10000      88460      40203      41690       1487
+     human     human_raw75      10000      90129       8777      10549       1772
+     human     human_raw76      10000      87947      66101      67875       1774
+     human     human_raw77      10000      86572       6126       7890       1764
+     human     human_raw78      10000      89014       9615      11480       1865
      human     human_raw79      10000      86781      40006      41837       1831
-     human     human_raw80      10000      81754      11617      13305       1688
-     human     human_raw81      10000      85538       8653      10473       1820
+     human     human_raw80      10000      82894      25701      27492       1791
+     human     human_raw81      10000      86517      14973      16440       1467
      human     human_raw82      10000      83569       3871       5505       1634
-     human     human_raw83      10000      83151      40301      41996       1695
-     human     human_raw84      10000      83316      41601      43075       1474
-     human     human_raw85      10000      86404      36896      38722       1826
-     human     human_raw86      10000      86810      40099      41666       1567
-     human     human_raw87      10000      76486      58507      59604       1097
+     human     human_raw83      10000      85433      64739      66389       1650
+     human     human_raw84      10000      85908      20972      22480       1508
+     human     human_raw85      10000      87009      10185      12012       1827
+     human     human_raw86      10000      86871      11689      13310       1621
+     human     human_raw87      10000      78351      39836      40979       1143
      human     human_raw88      10000      94084      38787      40527       1740
-     human     human_raw89      10000      84141      10700      12336       1636
-     human     human_raw90      10000      84662      40880      42609       1729
-     human     human_raw91      10000      85143       8998      10667       1669
+     human     human_raw89      10000      86725       8691      10411       1720
+     human     human_raw90      10000      86008      37419      39187       1768
+     human     human_raw91      10000      85690      58774      60481       1707
      human     human_raw92      10000      82286      10695      12340       1645
      human     human_raw93      10000      84841      11466      12918       1452
-     human     human_raw94      10000      87499      11496      13368       1872
-     human     human_raw95      10000      83382      81400      83035       1635
+     human     human_raw94      10000      88046          3       1601       1598
+     human     human_raw95      10000      84031      12804      14479       1675
      human     human_raw96      10000      91852      18775      20651       1876
-     human     human_raw97      10000      87472      41191      42830       1639
-     human     human_raw98      10000      83669       2764       4534       1770
-     human     human_raw99      10000      93609      40785      42346       1561
+     human     human_raw97      10000      88442      10543      12202       1659
+     human     human_raw98      10000      85210      11726      13305       1579
+     human     human_raw99      10000      96793      17802      19538       1736
 
 #
 # ================================================
 # Alignment Cost Statistics
 # ================================================
-# lambda reads:   Mean:    53364  StdDev:    21242
-# Human reads:    Mean:    85619  StdDev:     4441
+# lambda reads:   Mean:    54635  StdDev:    22600
+# Human reads:    Mean:    86822  StdDev:     4406
 #
-# Separation: 2.10 standard deviations
-# ✓ Good separation - discriminative
+# Separation: 1.98 standard deviations
+# ⚠ Moderate separation - somewhat discriminative
 # ================================================
