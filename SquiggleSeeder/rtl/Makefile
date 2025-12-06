@@ -3,7 +3,7 @@
 # ----------- CONFIGURABLES -----------
 VERILATOR      ?= verilator
 TOP_MODULE     ?=   chainer_tb
-SRC_FILES      =    chainer.sv
+SRC_FILES      =    chainer_new.sv
 TB_FILES       =    chainer_tb.sv
 INCLUDES       = -I.
 SEEDS_TXT      = covid_0.txt

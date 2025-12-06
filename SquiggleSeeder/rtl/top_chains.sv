@@ -1,16 +1,19 @@
+`timescale 1ns/1ps
+`include "utils.svh"
+
 module top_chains(
-    input logic [`MAX_NUM_SEGMENTS-1:0][31:0] scores_in,
-    input Anchor [`MAX_NUM_SEGMENTS-1:0] starts_in,
-    input Anchor [`MAX_NUM_SEGMENTS-1:0] ends_in,
+    input logic [`NUM_SEGMENTS-1:0][31:0] scores_in,
+    input Anchor [`NUM_SEGMENTS-1:0] starts_in,
+    input Anchor [`NUM_SEGMENTS-1:0] ends_in,
 
     output Anchor [`MAX_NUM_CHAINS-1:0] chain_starts,
     output Anchor [`MAX_NUM_CHAINS-1:0] chain_ends
 ); 
-    logic [`MAX_NUM_CHAINS-1:0] top_scores;
+    logic [`MAX_NUM_CHAINS-1:0][31:0] top_scores;
 
     always_comb begin
         top_scores = '0;
-        for(int i = 0; i < `MAX_NUM_SEGMENTS; i++) begin
+        for(int i = 0; i < `NUM_SEGMENTS; i++) begin
             if(top_scores[0] < scores_in[i]) begin
                 top_scores[0] = scores_in[i];
             end

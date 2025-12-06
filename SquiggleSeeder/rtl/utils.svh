@@ -51,6 +51,7 @@
 
 //Chaining Definitions
 // `define CHAIN_SIZE 44*(`MAX_NUM_CHAINS*`MAX_NUM_SEEDS)
+`define CHARACTERIZATION_DELAY 50
 `define MAX_NUM_SEEDS 10
 `define MAX_NUM_CHAINS 5
 `define SEGMENT_SIZE `SEG_STRIDE + `SEG_OVERLAP // total width of each segment

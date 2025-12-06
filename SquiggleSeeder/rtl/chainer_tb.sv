@@ -9,12 +9,16 @@ module chainer_tb;
 
     // DUT signals
     Anchor[`MAX_NUM_SEEDS-1:0] seeds;
-    Anchor[`MAX_NUM_CHAINS-1:0][`MAX_NUM_SEEDS-1:0] chains;
-
+    logic clk, rst;
+    Anchor [`MAX_NUM_CHAINS-1:0] chain_starts;
+    Anchor [`MAX_NUM_CHAINS-1:0] chain_ends;
     // Instantiate the DUT
-    chainer dut(
+    chainer_new dut(
+        .clk(clk),
+        .rst(rst),
         .seeds(seeds),
-        .chains(chains)
+        .chain_starts(chain_starts),
+        .chain_ends(chain_ends)
     );
 
     // Task to read seeds from file
@@ -75,23 +79,19 @@ module chainer_tb;
 
         $display("\n Chains Per Segment:");
         for(int i = 0; i < `NUM_SEGMENTS; i++) begin
-            $display("\nSegment[%0d]:", i);
-            for(int j = 0; j < `MAX_NUM_CHAINS; j++) begin
-                $display("chains_per_segment[%0d][%0d] score=%0d anchors=%0b", i, j, dut.chains_per_segment[i][j].score, dut.chains_per_segment[i][j].anchors);
-            end
+            $display("\nbest_start[%0d]:= %0d  best_end[%0d]:= %0d best_scores[%0d]:= %0d ", i, dut.best_starts[i], i, dut.best_starts[i], i, dut.best_scores[i]);
         end
 
         // (Optional) Print output chains
         for (int i = 0; i < `MAX_NUM_CHAINS; i++) begin
             $display("\nChain[%0d]:", i);
-            for (int j = 0; j < `MAX_NUM_SEEDS; j++) begin
-                if(chains[i][j].r != '0 && chains[i][j].q != '0) begin
-                $display("  Chain[%0d][%0d]: ref=%0d, query=%0d",
-                    i, j, chains[i][j].r, chains[i][j].q);
+                if(chain_starts[i].r != '0 && chain_starts[i].q != '0) begin
+                $display("  Chain_start[%0d]: ref=%0d, query=%0d",
+                    i, chain_starts[i].r, chain_starts[i].q);
+                $display("  Chain_ends[%0d]: ref=%0d, query=%0d",
+                    i, chain_ends[i].r, chain_ends[i].q);
                 end
-            end
         end
-
         // Finish simulation
         $finish;
     end

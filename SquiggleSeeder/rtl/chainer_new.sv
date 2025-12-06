@@ -2,7 +2,7 @@
 `timescale 1ns/1ps
 `include "utils.svh"
 
-module chainer (
+module chainer_new (
     input logic rst,
     input logic clk,
     input Anchor  [`MAX_NUM_SEEDS-1:0]  seeds,
@@ -11,10 +11,10 @@ module chainer (
 );
     logic [`NUM_SEGMENTS-1:0][31:0] seg_begin; // Beginning index of each reference segment in seeds
     logic [`NUM_SEGMENTS-1:0][31:0] seg_end; // End index of each reference segment in seeds
-    logic [`MAX_NUM_SEGMENTS-1:0][31:0] best_scores;
-    Anchor [`MAX_NUM_SEGMENTS-1:0] best_starts;
-    Anchor [`MAX_NUM_SEGMENTS-1:0] best_ends;
-    logic [`MAX_NUM_SEGMENTS-1:0] done;
+    logic [`NUM_SEGMENTS-1:0][31:0] best_scores;
+    Anchor [`NUM_SEGMENTS-1:0] best_starts;
+    Anchor [`NUM_SEGMENTS-1:0] best_ends;
+    logic [`NUM_SEGMENTS-1:0] done;
     logic start; // signal from seg_characterizer saying when to start the PE looping
     
     segment_characterizer seg_char (
@@ -26,10 +26,10 @@ module chainer (
         .start(start)
     );
 
-    // Generate MAX_NUM_SEGMENTS PE_Top's
+    // Generate NUM_SEGMENTS PE_Top's
     genvar i;
     generate
-        for(i = 0; i < `MAX_NUM_SEGMENTS-1; i++) begin : pe_top_instances
+        for(i = 0; i < `NUM_SEGMENTS-1; i++) begin : pe_top_instances
             pe_top pe_top_inst(
                 .clk(clk),
                 .seg_start(seg_begin[i]),
@@ -44,7 +44,10 @@ module chainer (
         end
     endgenerate
 
-    // Check when all done bits are set and pick top 5 best chains and set chains output
+    logic [`NUM_SEGMENTS-1:0][31:0] best_scores_in;
+    Anchor [`NUM_SEGMENTS-1:0] best_starts_in;
+    Anchor [`NUM_SEGMENTS-1:0] best_ends_in;  
+      // Check when all done bits are set and pick top 5 best chains and set chains output
     always_comb begin
         best_scores_in = '0;
         best_starts_in = '0;
@@ -59,7 +62,7 @@ module chainer (
 
     // Pick top `MAX_NUM_CHAINS chains with hioghest scores
     top_chains picker (
-        .socres_in(best_scores_in),
+        .scores_in(best_scores_in),
         .starts_in(best_starts_in),
         .ends_in(best_ends_in),
         .chain_starts(chain_starts),
