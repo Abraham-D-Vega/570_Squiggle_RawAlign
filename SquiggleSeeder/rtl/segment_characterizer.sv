@@ -4,12 +4,16 @@
 
 module segment_characterizer(
     input Anchor [`MAX_NUM_SEEDS-1:0] seeds,
+    input  logic rst,
+    input  logic clk,
     output logic [`NUM_SEGMENTS-1:0][31:0] seg_begin,
-    output logic [`NUM_SEGMENTS-1:0][31:0] seg_end
+    output logic [`NUM_SEGMENTS-1:0][31:0] seg_end,
+    output logic start
 );
+    logic [`CNT_SIZE-1:0] cnt;
     
     always_comb begin : segmentAssiment
-        for(int j = 0; j < `NUM_SEGMENTS; j++)begin
+        for(int j = 0; j < `NUM_SEGMENTS; j++) begin
             logic [31:0] b = 32'hFFFFFFFF;
             logic [31:0] e = 32'h0;
             logic [31:0] seg_lo = j * `SEG_STRIDE;
@@ -37,4 +41,17 @@ module segment_characterizer(
         //where a return statement could go?
     end
 
+    always_ff @(posedge clk) begin
+        if (rst) begin  
+            cnt <= '0;
+        end else if (cnt != ..) begin
+            cnt <= cnt + 1;
+        end else if (cnt == ...) begin
+            start <= 1'b1;
+            cnt <= cnt + 1;
+        end else begin
+            start <= 1'b0;
+            cnt <= cnt;
+        end
+    end
 endmodule

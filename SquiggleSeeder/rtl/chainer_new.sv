@@ -3,6 +3,8 @@
 `include "utils.svh"
 
 module chainer (
+    input logic rst,
+    input logic clk,
     input Anchor  [`MAX_NUM_SEEDS-1:0]  seeds,
     output Anchor [`MAX_NUM_CHAINS-1:0] chain_starts,
     output Anchor [`MAX_NUM_CHAINS-1:0] chain_ends
@@ -17,10 +19,10 @@ module chainer (
     
     segment_characterizer seg_char (
         .seeds(seeds),
+        .clk(clk),
+        .rst(rst),
         .seg_begin(seg_begin),
         .seg_end(seg_end),
-
-        // TODO implement this into the seg_characterizer (not sure how yet)
         .start(start)
     );
 

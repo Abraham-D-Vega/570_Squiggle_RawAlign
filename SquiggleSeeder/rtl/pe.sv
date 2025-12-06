@@ -1,6 +1,7 @@
 // 1999 subsequent PEs
 `include "utils.svh"
 `timescale 1ns/1ps
+
 module pe (
     input logic clk,
     input logic valid_in, 
@@ -17,7 +18,6 @@ module pe (
     reg [31:0] score_r;
     Anchor start_r, end_r;
     reg valid_r;
-
 
     always_comb begin
         valid_out = valid_r;
