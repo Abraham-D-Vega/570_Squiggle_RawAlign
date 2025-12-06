@@ -14,51 +14,6 @@
 #include <chrono>
 #include <cstddef>
 
-// Internal helper
-template <typename RandomIt, typename Compare>
-void parallel_sort_impl(RandomIt first, RandomIt last,
-                        Compare comp,
-                        std::size_t max_threads)
-{
-    auto len = last - first;
-    const std::size_t SEQ_CUTOFF = 20000; // tune this threshold
-
-    // Small range or no threads left: just do normal sort
-    if (len <= 1 || max_threads <= 1 || len < SEQ_CUTOFF) {
-        std::sort(first, last, comp);
-        return;
-    }
-
-    RandomIt mid = first + len / 2;
-
-    // Split threads roughly in half for each side
-    std::size_t left_threads  = max_threads / 2;
-    std::size_t right_threads = max_threads - left_threads;
-
-    // Sort left half in a new thread
-    std::thread left_thread([first, mid, comp, left_threads]() {
-        parallel_sort_impl(first, mid, comp, left_threads);
-    });
-
-    // Sort right half in current thread
-    parallel_sort_impl(mid, last, comp, right_threads);
-
-    // Wait for left side
-    left_thread.join();
-
-    // Merge the two sorted halves
-    std::inplace_merge(first, mid, last, comp);
-}
-
-template <typename RandomIt, typename Compare>
-void parallel_sort(RandomIt first, RandomIt last,
-                   Compare comp,
-                   std::size_t max_threads = std::thread::hardware_concurrency())
-{
-    if (max_threads == 0) max_threads = 2; // fallback
-    parallel_sort_impl(first, last, comp, max_threads);
-}
-
 // Read raw signal from file
 bool read_raw_signal(const std::string &filepath, std::vector<uint32_t> &signal) {
     std::ifstream in(filepath);
@@ -174,6 +129,62 @@ struct ReadResult {
 #endif
 };
 
+// Fast radix sort specialized for Anchor (sort by r, then q).
+// Assumes: r fits in 24 bits, q fits in 11 bits.
+static void radix_sort_anchors(std::vector<Anchor> &anchors) {
+    const std::size_t n = anchors.size();
+    if (n <= 1) return;
+
+    std::vector<uint64_t> keys(n);
+    constexpr uint64_t Q_MASK = (1u << 11) - 1u;
+
+    for (std::size_t i = 0; i < n; ++i) {
+        uint64_t r = anchors[i].r;
+        uint64_t q = anchors[i].q & Q_MASK;
+        keys[i] = (r << 11) | q;
+    }
+
+    std::vector<uint64_t> tmp(n);
+
+    auto pass = [&](unsigned shift, unsigned bits) {
+        const std::size_t RADIX = 1u << bits;
+        static thread_local std::vector<std::size_t> count;
+        count.assign(RADIX, 0);
+
+        // count
+        for (std::size_t i = 0; i < n; ++i) {
+            std::size_t bucket = (keys[i] >> shift) & (RADIX - 1u);
+            ++count[bucket];
+        }
+        // prefix sums
+        std::size_t sum = 0;
+        for (std::size_t i = 0; i < RADIX; ++i) {
+            auto c = count[i];
+            count[i] = sum;
+            sum += c;
+        }
+        // scatter
+        for (std::size_t i = 0; i < n; ++i) {
+            std::size_t bucket = (keys[i] >> shift) & (RADIX - 1u);
+            tmp[count[bucket]++] = keys[i];
+        }
+        keys.swap(tmp);
+    };
+
+    // LSD: q (11 bits), then r low 12 bits, then r high 12 bits
+    pass(0, 11);    // bits 0-10
+    pass(11, 12);   // bits 11-22
+    pass(23, 12);   // bits 23-34
+
+    for (std::size_t i = 0; i < n; ++i) {
+        uint64_t k = keys[i];
+        uint32_t q = static_cast<uint32_t>(k & Q_MASK);
+        uint32_t r = static_cast<uint32_t>(k >> 11);
+        anchors[i].q = q;
+        anchors[i].r = r;
+    }
+}
+
 void process_read(int pass,
                   int read_index,
                   const std::string &genome,
@@ -254,7 +265,8 @@ void process_read(int pass,
     result.time_hash = t_hash - t_quantize;
     #endif
 
-    std::vector<Anchor> anchors(num_seeds);
+    std::vector<Anchor> anchors;
+    anchors.reserve(num_seeds);
     for (int j = 0; j < num_seeds; ++j) {
         auto it = hash_table.find(hashes[j]);
         if (it != hash_table.end()) {
@@ -271,19 +283,8 @@ void process_read(int pass,
     result.time_anchors = t_anchors - t_hash;
     #endif
 
-    // std::sort(anchors.begin(), anchors.end(),
-    //     [](const Anchor &a, const Anchor &b) {
-    //         if (a.r != b.r) return a.r < b.r;
-    //         return a.q < b.q;
-    //     });
-    parallel_sort(
-        anchors.begin(), anchors.end(),
-        [](const Anchor &a, const Anchor &b) {
-            if (a.r != b.r) return a.r < b.r;
-            return a.q < b.q;
-        },
-        10 // max threads you want to allow
-    );
+    radix_sort_anchors(anchors);
+    
     #ifdef PROFILE
     double t_sort = std::chrono::duration<double, std::milli>(           
         std::chrono::high_resolution_clock::now() - t_start).count();   
