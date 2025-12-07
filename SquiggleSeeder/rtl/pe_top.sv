@@ -13,9 +13,9 @@ module pe_top (
     output Anchor best_end,
     output logic done // bit to say when this Segment has been fully processed and the best values are finalized
 );
-    Anchor c_start_in, curr_anchor, best_start_r, best_end_r;
+    Anchor c_start_in, curr_anchor, best_start_r, best_end_r, n_best_end, n_best_start;
     logic  valid_in, valid_r;
-    logic [31:0] best_score_r, seg_end_r, index;
+    logic [31:0] best_score_r, seg_end_r, index, n_best_score;
 
     // Previous structures for PE back to start_pe
     logic  [`WINDOW_SIZE-1:0][31:0] prev_scores;
@@ -50,6 +50,7 @@ module pe_top (
                 .c_start(prev_starts[i]),
                 .c_end(prev_ends[i]),
                 .curr_anchor(curr_anchor),
+                .start(start),
                 .valid_out(valid_out[i+1]),
                 .c_start_out(prev_starts[i+1]),
                 .c_end_out(prev_ends[i+1]),
@@ -71,22 +72,24 @@ module pe_top (
                 valid_in = 1'b0;
             end
         end
-    end
 
-    always_comb begin
-        if (valid_out[`WINDOW_SIZE-1] && (prev_scores[`WINDOW_SIZE-1] > best_score_r)) begin
-            best_score = prev_scores[`WINDOW_SIZE-1];
-            best_start = prev_starts[`WINDOW_SIZE-1];
-            best_end = prev_ends[`WINDOW_SIZE-1];
-        end else begin
-            best_score = best_score_r;
-            best_start = best_start_r;
-            best_end = best_end_r;
+        best_score = best_score_r;
+        best_start = best_start_r;
+        best_end = best_end_r;
+        n_best_end = best_end_r;
+        n_best_start = best_start_r;
+        n_best_score = best_score_r;
+       // $display("what the sigma valid_out = ", valid_out[`WINDOW_SIZE-1]);
+        if(valid_out[`WINDOW_SIZE-1] == 1'b1) begin
+            n_best_end = prev_ends[`WINDOW_SIZE-1];
+            n_best_start = prev_starts[`WINDOW_SIZE-1];
+            n_best_score = prev_scores[`WINDOW_SIZE-1];
         end
+        done = ~valid_out[`WINDOW_SIZE-1] & (best_score_r != 0);
     end
 
     // Reset index on start and store end of segement index
-    always_ff @(posedge clk) begin
+    always @(posedge clk) begin
         if (start) begin
             index     <= seg_start;
             seg_end_r <= seg_end;
@@ -98,22 +101,28 @@ module pe_top (
             index     <= '0;
             seg_end_r <= '0;
             valid_r   <= 1'b0;
-            best_score_r <= best_score;
-            best_start_r <= best_start;
-            best_end_r   <= best_end;
+            best_score_r <= n_best_score;
+            best_start_r <= n_best_start;
+            best_end_r   <= n_best_end;
         end else begin
             index     <= index + 1;
             seg_end_r <= seg_end_r;
             valid_r   <= valid_r;
-            best_score_r <= best_score;
-            best_start_r <= best_start;
-            best_end_r   <= best_end;
+            best_score_r <= n_best_score;
+            best_start_r <= n_best_start;
+            best_end_r   <= n_best_end;
         end
         
-        if (valid_out[`WINDOW_SIZE-1] == 1'b0) begin
-            done = 1'b1;
-        end else begin
-            done = 1'b0;
-        end
+        
     end
+    // 
+    // always @(posedge clk) begin
+    //     best_start_r <= '0;
+    //     best_end_r  <= '0;
+    //     best_score_r <= '0;
+    //     seg_end_r <= '0;
+    //     index <= '0;
+    //     valid_r <= '0;
+
+    // end 
 endmodule

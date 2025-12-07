@@ -9,7 +9,7 @@ module pe (
     input Anchor c_start,
     input Anchor c_end,
     input Anchor curr_anchor,
-
+    input logic start,
     output logic valid_out,
     output Anchor c_start_out,
     output Anchor c_end_out,
@@ -24,14 +24,23 @@ module pe (
         c_start_out = start_r;
         c_end_out = end_r;
         score_out = '0;
+        if(valid_r)begin
         if(start_r.r <= curr_anchor.r && start_r.q <= curr_anchor.q) begin //monotonically increasing
             if(curr_anchor.r - start_r.r < `WINDOW_SIZE) begin
                 score_out = score_r;
             end 
         end
+        end
     end
 
     always @(posedge clk ) begin
+        if(start) begin
+            valid_r <= 1'b0;
+            score_r <= '0;
+            start_r <= '0;
+            end_r <= '0;
+        end    
+        else begin
         if(valid_in) begin
             valid_r <= 1'b1;
             score_r <= score;
@@ -43,6 +52,7 @@ module pe (
             score_r <= '0;
             start_r <= '0;
             end_r <= '0;
+        end
         end
     end
 endmodule

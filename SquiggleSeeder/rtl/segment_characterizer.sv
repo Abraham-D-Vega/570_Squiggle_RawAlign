@@ -44,7 +44,7 @@ module segment_characterizer(
     always_ff @(posedge clk) begin
         if (rst) begin  
             cnt <= '0;
-        end else if (cnt != `CHARACTERIZATION_DELAY) begin
+        end else if (cnt < `CHARACTERIZATION_DELAY) begin
             cnt <= cnt + 1;
         end else if (cnt == `CHARACTERIZATION_DELAY) begin
             start <= 1'b1;

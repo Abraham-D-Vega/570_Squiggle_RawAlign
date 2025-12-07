@@ -25,6 +25,7 @@ module pe_start(
         start_out = c_start_in;
         end_out = c_start_in;
         valid_out = valid_in;
+        curr_anchor = c_start_in;
         dev = '0;
         candidate = '0;
         for(int i = 0; i < `WINDOW_SIZE-1; i++) begin

@@ -53,14 +53,30 @@ module chainer_tb;
         $fclose(fd);
     endtask
 
+    
+    always begin
+        clk = ~clk;
+        #5;
+    end
+
+    always @(posedge clk ) begin
+        $display("dut.pe_top_inst[0].seg_start %0d  seg_end %0d start %0d c_start_in %0d valid_in %0d", dut.pe_top_inst.clk, dut.pe_top_inst.seg_end, dut.pe_top_inst.start, dut.pe_top_inst.c_start_in, dut.pe_top_inst.valid_in);
+        $display("dut.start%0d", dut.start);
+        for(int i = 0; i < `NUM_SEGMENTS; i++) begin
+      //      $display("seg_begin[%0d]=%0d  seg_end[%0d]=%0d", i, dut.seg_begin[i], i, dut.seg_end[i]);
+        end
+    end
     // Test sequence
     initial begin
         // Read input seeds
+        clk = '0;
+        rst = '1;
         read_seeds_from_file("../anchors/covid_0.txt");
-
+        
         // Wait for a short setup
         #10;
 
+        rst = '0;
         // Optionally, print what you fed
         $display("Seeds input:");
         for (int k = 0; k < `MAX_NUM_SEEDS; k++) begin
@@ -69,8 +85,9 @@ module chainer_tb;
             end
         end
 
+
         // Wait and observe DUT output
-        #100;
+        #100000;
 
         $display("\nSegment Characterization");
         for(int i = 0; i < `NUM_SEGMENTS; i++) begin

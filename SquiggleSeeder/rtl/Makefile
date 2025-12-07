@@ -17,14 +17,37 @@ EXE            = $(OBJ_DIR)/V$(TOP_MODULE)
 all: sim
 
 # Compile and build simulation executable
+pe_start: pe_start.sv pe_start_tb.sv utils.svh
+	$(VERILATOR) --cc --binary --sv  --timing -Wno-WIDTHCONCAT\
+	  $(INCLUDES) \
+	  pe_start.sv pe_start_tb.sv \
+	  -top-module pe_start_tb \
+	  -CFLAGS "-g" \
+	  --build
+
+pe: pe.sv pe_tb.sv utils.svh
+	$(VERILATOR) --cc --binary --sv  --timing -Wno-WIDTHCONCAT\
+	  $(INCLUDES) \
+	  pe.sv pe_tb.sv \
+	  -top-module pe_tb \
+	  -CFLAGS "-g" \
+	  --build
+
 $(EXE): $(SRC_FILES) $(TB_FILES) utils.svh
-	$(VERILATOR) --cc --binary --sv --timing -Wno-WIDTHCONCAT\
+	$(VERILATOR) --cc --binary --sv  --timing -Wno-WIDTHCONCAT\
 	  $(INCLUDES) \
 	  $(TB_FILES) $(SRC_FILES) \
 	  -top-module $(TOP_MODULE) \
 	  -CFLAGS "-g" \
 	  --build
 
+sim_pe_start: pe_start
+	@echo "Running simulation..."
+	./obj_dir/Vpe_start_tb
+
+sim_pe: pe
+	@echo "Running simulation..."
+	./obj_dir/Vpe_tb
 # Run the simulation (make sure seeds.txt is present)
 sim: $(EXE) $(SEEDS_TXT)
 	@echo "Running simulation..."
