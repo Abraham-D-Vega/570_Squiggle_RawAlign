@@ -13,6 +13,7 @@ module pe (
     output logic valid_out,
     output Anchor c_start_out,
     output Anchor c_end_out,
+    output logic [31:0] score_back,
     output logic [31:0] score_out // will be 0 if it is out of range of the canidate seed (ie PE0)
 );
     reg [31:0] score_r;
@@ -24,10 +25,12 @@ module pe (
         c_start_out = start_r;
         c_end_out = end_r;
         score_out = '0;
+        score_back = '0;
         if(valid_r)begin
-        if(start_r.r <= curr_anchor.r && start_r.q <= curr_anchor.q) begin //monotonically increasing
+            score_out = score_r;
+        if(start_r.r < curr_anchor.r && start_r.q < curr_anchor.q) begin //monotonically increasing
             if(curr_anchor.r - start_r.r < `WINDOW_SIZE) begin
-                score_out = score_r;
+                score_back = score_r;
             end 
         end
         end

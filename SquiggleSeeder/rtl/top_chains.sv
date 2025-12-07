@@ -13,13 +13,19 @@ module top_chains(
 
     always_comb begin
         top_scores = '0;
+        chain_ends = '0;
+        chain_starts = '0;
         for(int i = 0; i < `NUM_SEGMENTS; i++) begin
             if(top_scores[0] < scores_in[i]) begin
                 top_scores[0] = scores_in[i];
+                chain_starts[0] = starts_in[i];
+                chain_ends[0] = ends_in[i];
             end
             for(int j = 1; j < `MAX_NUM_CHAINS; j++) begin
                 if(top_scores[j] < scores_in[i] && scores_in[i] < top_scores[j-1]) begin
                     top_scores[j] = scores_in[i];
+                    chain_starts[j] = starts_in[i];
+                    chain_ends[j] = ends_in[i];
                 end
             end
         end

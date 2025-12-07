@@ -21,7 +21,7 @@ module pe_top (
     logic  [`WINDOW_SIZE-1:0][31:0] prev_scores;
     Anchor [`WINDOW_SIZE-1:0]       prev_starts;
     Anchor [`WINDOW_SIZE-1:0]       prev_ends;
-
+    logic [`WINDOW_SIZE-2:0][31:0]        scores_back;
     // PE passing variables
     logic [`WINDOW_SIZE-1:0] valid_out;    
 
@@ -29,7 +29,7 @@ module pe_top (
     pe_start pe_start_inst (
         .c_start_in(c_start_in),  
         .valid_in(valid_in), 
-        .prev_scores(prev_scores[`WINDOW_SIZE-1:1]), 
+        .prev_scores(scores_back), 
         .prev_starts(prev_starts[`WINDOW_SIZE-1:1]), 
         .prev_ends(prev_ends[`WINDOW_SIZE-1:1]), 
         .curr_anchor(curr_anchor),
@@ -54,7 +54,8 @@ module pe_top (
                 .valid_out(valid_out[i+1]),
                 .c_start_out(prev_starts[i+1]),
                 .c_end_out(prev_ends[i+1]),
-                .score_out(prev_scores[i+1])
+                .score_out(prev_scores[i+1]),
+                .score_back(scores_back[i])
             );
         end
     endgenerate
@@ -80,7 +81,7 @@ module pe_top (
         n_best_start = best_start_r;
         n_best_score = best_score_r;
        // $display("what the sigma valid_out = ", valid_out[`WINDOW_SIZE-1]);
-        if(valid_out[`WINDOW_SIZE-1] == 1'b1) begin
+        if(valid_out[`WINDOW_SIZE-1] == 1'b1 && (prev_scores[`WINDOW_SIZE-1] > best_score_r)) begin
             n_best_end = prev_ends[`WINDOW_SIZE-1];
             n_best_start = prev_starts[`WINDOW_SIZE-1];
             n_best_score = prev_scores[`WINDOW_SIZE-1];
