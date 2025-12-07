@@ -28,8 +28,8 @@ module pe (
         score_back = '0;
         if(valid_r)begin
             score_out = score_r;
-        if(start_r.r < curr_anchor.r && start_r.q < curr_anchor.q) begin //monotonically increasing
-            if(curr_anchor.r - start_r.r < `WINDOW_SIZE) begin
+        if((start_r.r < curr_anchor.r) && (start_r.q < curr_anchor.q)) begin //monotonically increasing
+            if(curr_anchor.r - start_r.r <= `WINDOW_SIZE) begin
                 score_back = score_r;
             end 
         end

@@ -29,13 +29,16 @@ module pe_start(
         dev = '0;
         candidate = '0;
         for(int i = 0; i < `WINDOW_SIZE-1; i++) begin
-            dq = c_start_in.q - prev_ends[i].q;
-            dr = c_start_in.r - prev_ends[i].r;
+            dq = (c_start_in.q > prev_ends[i].q) ?  c_start_in.q - prev_ends[i].q : '0;
+            dr = (c_start_in.r > prev_ends[i].r) ? c_start_in.r - prev_ends[i].r : '0;
             if(dq != 0 && dr != 0) begin
                 dev = ({21'b0, dq} > dr) ? ({21'b0, dq} - dr) : (dr - {21'b0, dq});
                  if(dev <= `MAX_DEV ) begin
                     candidate = ((prev_scores[i] + 100) > dev) ? prev_scores[i] + 100 - dev : 0;
                     if(candidate > score_out) begin
+                        if(curr_anchor.q ==11'd117) begin
+                            $display( "candidate = %0d prev_anchor.r = %0d", candidate, prev_ends[i].r);
+                        end
                         score_out = candidate;
                         start_out = prev_starts[i];
                     end
