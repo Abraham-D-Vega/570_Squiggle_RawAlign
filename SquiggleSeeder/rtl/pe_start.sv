@@ -28,7 +28,7 @@ module pe_start(
         curr_anchor = c_start_in;
         dev = '0;
         candidate = '0;
-        for(int i = 0; i < `WINDOW_SIZE-1; i++) begin
+        for(int i = 0; i < `NUM_PEs-1; i++) begin
             dq = (c_start_in.q > prev_ends[i].q) ?  c_start_in.q - prev_ends[i].q : '0;
             dr = (c_start_in.r > prev_ends[i].r) ? c_start_in.r - prev_ends[i].r : '0;
             if(dq != 0 && dr != 0) begin
