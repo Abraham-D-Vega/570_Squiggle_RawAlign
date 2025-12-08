@@ -32,14 +32,14 @@ module chainer_new (
        for(i = 0; i < `NUM_SEGMENTS-1; i++) begin : pe_top_instances
             pe_top pe_top_inst(
                 .clk(clk),
-                .seg_start(seg_begin[0]),
-                .seg_end(seg_end[0]),
+                .seg_start(seg_begin[i]),
+                .seg_end(seg_end[i]),
                 .seeds(seeds),
                 .start(start),
-                .best_score(best_scores[0]),
-                .best_start(best_starts[0]),
-                .best_end(best_ends[0]),
-                .done(done[0])
+                .best_score(best_scores[i]),
+                .best_start(best_starts[i]),
+                .best_end(best_ends[i]),
+                .done(done[i])
             );
        end
     endgenerate

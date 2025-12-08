@@ -60,8 +60,8 @@ module chainer_tb;
     end
 
     always @(posedge clk ) begin
-        $display("dut.pe_top_inst[0].seg_start %0d  seg_end %0d start %0d c_start_in %0d valid_in %0d", dut.pe_top_inst.clk, dut.pe_top_inst.seg_end, dut.pe_top_inst.start, dut.pe_top_inst.c_start_in, dut.pe_top_inst.valid_in);
-        $display("dut.start%0d", dut.start);
+       // $display("dut.pe_top_inst[0].seg_start %0d  seg_end %0d start %0d c_start_in %0d valid_in %0d", dut.pe_top_inst.clk, dut.pe_top_inst.seg_end, dut.pe_top_inst.start, dut.pe_top_inst.c_start_in, dut.pe_top_inst.valid_in);
+        // $display("dut.start%0d", dut.start);
         for(int i = 0; i < `NUM_SEGMENTS; i++) begin
       //      $display("seg_begin[%0d]=%0d  seg_end[%0d]=%0d", i, dut.seg_begin[i], i, dut.seg_end[i]);
         end
