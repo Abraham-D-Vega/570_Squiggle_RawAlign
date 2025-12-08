@@ -7,9 +7,9 @@
 module pe_start(
     input Anchor c_start_in, //from level up
     input logic valid_in, //From level up
-    input logic [`WINDOW_SIZE-2:0] [31:0] prev_scores, //from other pes
-    input Anchor[`WINDOW_SIZE-2:0] prev_starts, //from other pes
-    input Anchor[`WINDOW_SIZE-2:0] prev_ends, //from other pes
+    input logic [`NUM_PEs-2:0] [31:0] prev_scores, //from other pes
+    input Anchor[`NUM_PEs-2:0] prev_starts, //from other pes
+    input Anchor[`NUM_PEs-2:0] prev_ends, //from other pes
     
     output Anchor curr_anchor, //To other pes
     output Anchor start_out,//to next pe

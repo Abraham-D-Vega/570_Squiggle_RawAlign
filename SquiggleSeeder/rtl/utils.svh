@@ -59,8 +59,9 @@
 `define WINDOW_SIZE 2000
 `define SEG_OVERLAP `WINDOW_SIZE       // must be >= WINDOW_SIZE
 `define MAX_DEV `WINDOW_SIZE
-`define NUM_SEGMENTS 1 //TODO actually set this to a reasonable number
+`define NUM_SEGMENTS 100 //TODO actually set this to a reasonable number
 `define CNT_SIZE 10 // number of cnt bits for segment_characterizer
+`define NUM_PEs 600
 typedef struct packed {
     logic [10:0] q;
     logic [31:0] r;
