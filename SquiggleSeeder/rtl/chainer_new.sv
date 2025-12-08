@@ -14,7 +14,7 @@ module chainer_new (
     logic [`NUM_SEGMENTS-1:0][31:0] best_scores;
     Anchor [`NUM_SEGMENTS-1:0] best_starts;
     Anchor [`NUM_SEGMENTS-1:0] best_ends;
-    logic [`NUM_SEGMENTS-1:0] done;
+    logic [`NUM_SEGMENTS-1:0] done, valid_segments;
     logic start; // signal from seg_characterizer saying when to start the PE looping
     
     segment_characterizer seg_char (
@@ -52,8 +52,10 @@ module chainer_new (
         best_scores_in = '0;
         best_starts_in = '0;
         best_ends_in   = '0;
-
-        if(done == '1) begin
+        for(int j = 0; j < `NUM_SEGMENTS; j++) begin
+            valid_segments[j] = (seg_begin[j] == seg_end[j]);
+        end
+        if((done|(~valid_segments)) == '1) begin
             best_scores_in = best_scores;
             best_starts_in = best_starts;
             best_ends_in   = best_ends;
