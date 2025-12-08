@@ -59,9 +59,9 @@
 `define WINDOW_SIZE 2000
 `define SEG_OVERLAP `WINDOW_SIZE       // must be >= WINDOW_SIZE
 `define MAX_DEV `WINDOW_SIZE
-`define NUM_SEGMENTS 100 //TODO actually set this to a reasonable number
+`define NUM_SEGMENTS 100 
 `define CNT_SIZE 10 // number of cnt bits for segment_characterizer
-`define NUM_PEs 600
+`define NUM_PEs 150
 typedef struct packed {
     logic [10:0] q;
     logic [31:0] r;
@@ -70,7 +70,7 @@ typedef struct packed {
 
 typedef struct packed{
     logic [31:0] score; 
-    logic [`MAX_NUM_SEEDS-1:0] anchors ; // TODO: anchor_r and anchor_q form the archor pairs, determine max number of slots needed to store these in
+    logic [`MAX_NUM_SEEDS-1:0] anchors ; 
 } Chain;
 
 
